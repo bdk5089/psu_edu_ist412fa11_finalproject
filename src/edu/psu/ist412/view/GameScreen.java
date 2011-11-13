@@ -1,5 +1,6 @@
 package edu.psu.ist412.view;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,10 +38,10 @@ public class GameScreen extends JFrame{
 		add(cpuPanel(), BorderLayout.NORTH);
 		add(probabilityPanel(), BorderLayout.EAST);
 		add(playerPanel(), BorderLayout.SOUTH);
-		add(statisticsPanel, BorderLayout.CENTER);
+		add(statisticsPanel, BorderLayout.WEST);
 		add(communityPanel(), BorderLayout.CENTER);
 		
-		
+		statisticsPanel.setVisible(false);
 		
 		setJMenuBar(menuBar);
 		menuBar.add(fileMenu);
@@ -79,13 +80,12 @@ public class GameScreen extends JFrame{
 				public void actionPerformed(ActionEvent event) {
 					if (showStatistics) {
 						showStatistics = false;
-						remove(statisticsPanel);
+						statisticsPanel.setVisible(false);
 						show();
 					} else {
 						showStatistics = true;
-						add(statisticsPanel, BorderLayout.WEST);
+						statisticsPanel.setVisible(true);
 						show();
-						//toFront();
 					}
 				}
 			}
@@ -105,7 +105,9 @@ public class GameScreen extends JFrame{
 	
 	private JPanel playerPanel() {
 		JPanel panel = new JPanel();
-
+		
+		panel.setLayout(new FlowLayout());
+		
 		panel.add(new JLabel("player cards"));
 		
 		return panel;
@@ -113,7 +115,9 @@ public class GameScreen extends JFrame{
 	
 	private JPanel cpuPanel() {
 		JPanel panel = new JPanel();
-
+		
+		panel.setLayout(new FlowLayout());
+		
 		panel.add(new JLabel("cpu cards"));
 		
 		return panel;
@@ -121,7 +125,9 @@ public class GameScreen extends JFrame{
 	
 	private JPanel communityPanel() {
 		JPanel panel = new JPanel();
-
+		
+		panel.setLayout(new FlowLayout());
+		
 		panel.add(new JLabel("shared cards"));
 		
 		return panel;
@@ -130,14 +136,14 @@ public class GameScreen extends JFrame{
 	private JPanel probabilityPanel() {
 		JPanel panel = new JPanel();
 
-		panel.add(new JLabel("win percentage"));
+		panel.add(new JLabel("win probability"));
 		
 		return panel;
 	}
 	
 	private JPanel statisticsPanel() {
 		JPanel panel = new JPanel();
-
+		
 		panel.add(new JLabel("stats"));
 		
 		return panel;
