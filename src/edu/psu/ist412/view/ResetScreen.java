@@ -27,7 +27,7 @@ public class ResetScreen extends ResetRegistrationScreen{
 		
 		accounts = accts;
 		
-		SubmitButtonHandler submitHandler = new SubmitButtonHandler();
+		SubmitHandler submitHandler = new SubmitHandler();
 		
 		setSubmitHandler(submitHandler);
 	}
@@ -39,7 +39,7 @@ public class ResetScreen extends ResetRegistrationScreen{
 	 * @author Jeff
 	 *
 	 */
-	private class SubmitButtonHandler implements ActionListener {
+	private class SubmitHandler implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			String user = userName.getText();
 			String pass = password.getText();
@@ -53,15 +53,20 @@ public class ResetScreen extends ResetRegistrationScreen{
 				
 			}
 			
-			if (checkUserName(user) && 
-					validatePassword(pass, confPass.getText()) &&
-					validateSecurityQuestion(user, md.digest(answer.getBytes()))) {
-				Account curAccount = accounts.get(user);
-				
-				curAccount.setPassword(md.digest(pass.getBytes()));
-				curAccount.setLocked(false);
-				
-				cancel();
+			if (checkUserName(user)) {
+				if (validatePassword(pass, confPass.getText()) &&
+						validateSecurityQuestion(user, md.digest(answer.getBytes()))) {
+					Account curAccount = accounts.get(user);
+					
+					curAccount.setPassword(md.digest(pass.getBytes()));
+					curAccount.setLocked(false);
+					
+					cancel();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, 
+						"Username is incorrect.", "Warning!", 
+						JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}

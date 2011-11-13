@@ -27,7 +27,7 @@ public class RegistrationScreen extends ResetRegistrationScreen {
 		
 		accounts = accts;
 		
-		SubmitButtonHandler submitHandler = new SubmitButtonHandler();
+		SubmitHandler submitHandler = new SubmitHandler();
 		
 		setSubmitHandler(submitHandler);
 	}
@@ -39,7 +39,7 @@ public class RegistrationScreen extends ResetRegistrationScreen {
 	 * @author Jeff
 	 *
 	 */
-	private class SubmitButtonHandler implements ActionListener {
+	private class SubmitHandler implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			String user = userName.getText();
 			String pass = password.getText();
@@ -86,6 +86,13 @@ public class RegistrationScreen extends ResetRegistrationScreen {
 		if (user.length() > 20) {
 			JOptionPane.showMessageDialog(null, 
 					"Your user name must not exceed twenty (20) characters.", 
+					"Warning!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		
+		if (user.length() == 0) {
+			JOptionPane.showMessageDialog(null, 
+					"You must provide a user name.", 
 					"Warning!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}

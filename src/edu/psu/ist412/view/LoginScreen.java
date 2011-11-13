@@ -4,6 +4,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -89,6 +91,8 @@ public class LoginScreen extends JFrame{
 				}
 			}
 		);
+		
+		passField.addActionListener(new LoginHandler());
 	}
 	
 	private JPanel rightPanel() {	
@@ -140,7 +144,7 @@ public class LoginScreen extends JFrame{
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 		
-		LoginButtonHandler loginHandler = new LoginButtonHandler();
+		LoginHandler loginHandler = new LoginHandler();
 		LOGIN_BUTTON.addActionListener(loginHandler);
 		
 		QuitButtonHandler quitHandler = new QuitButtonHandler();
@@ -253,7 +257,7 @@ public class LoginScreen extends JFrame{
 	 * @author Jeff
 	 *
 	 */
-	private class LoginButtonHandler implements ActionListener {
+	private class LoginHandler implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			setVisible(false);
 			

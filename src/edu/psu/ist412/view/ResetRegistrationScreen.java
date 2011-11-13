@@ -24,6 +24,8 @@ import edu.psu.ist412.logon.Account;
  */
 public class ResetRegistrationScreen extends JFrame {
 	
+	private ActionListener submitHandler;
+	
 	private static final JLabel USERNAME_LABEL = new JLabel("Username:  ");
 	private static final JLabel PASSWORD_LABEL = new JLabel("Password:  ");
 	private static final JLabel CONFIRM_LABEL = new JLabel("Confirm Password:  ");
@@ -113,6 +115,14 @@ public class ResetRegistrationScreen extends JFrame {
 		questionPanel.add(QUESTION);
 		questionPanel.add(securityAns);
 		
+		securityAns.addActionListener(
+			new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					SUBMIT_BUTTON.doClick();
+				}
+			}
+		);
+		
 		return questionPanel;
 	}
 	
@@ -201,6 +211,7 @@ public class ResetRegistrationScreen extends JFrame {
 	 * @param handler
 	 */
 	protected void setSubmitHandler(ActionListener handler) {
+		submitHandler = handler;
 		SUBMIT_BUTTON.addActionListener(handler);
 	}
 	

@@ -18,7 +18,10 @@ public class GameScreen extends JFrame{
 	private final JMenuBar menuBar = new JMenuBar();
 	private final JMenu fileMenu = new JMenu("File");
 	private final JMenuItem logoutItem = new JMenuItem("Logout");
-	private final JMenuItem saveLogoutItem = new JMenuItem("Save and Logout");
+	
+	//TODO:  determine if we're going to have the save option
+	//private final JMenuItem saveLogoutItem = new JMenuItem("Save and Logout");
+	
 	private final JMenuItem statisticsItem = new JMenuItem("Show/Hide Statistics");
 	
 	private boolean showStatistics = false;
@@ -46,7 +49,7 @@ public class GameScreen extends JFrame{
 		setJMenuBar(menuBar);
 		menuBar.add(fileMenu);
 		fileMenu.add(logoutItem);
-		fileMenu.add(saveLogoutItem);
+		//fileMenu.add(saveLogoutItem);
 		fileMenu.add(statisticsItem);
 		
 		logoutItem.addActionListener(
@@ -62,18 +65,18 @@ public class GameScreen extends JFrame{
 			}
 		);
 		
-		saveLogoutItem.addActionListener(
-			new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					int choice = JOptionPane.showConfirmDialog(null, 
-							"Are you sure you want to save and logout?", 
-							"Warning!", JOptionPane.YES_NO_OPTION);
-					if (choice == 0) {
-						logout();
-					}
-				}
-			}
-		);
+//		saveLogoutItem.addActionListener(
+//			new ActionListener() {
+//				public void actionPerformed(ActionEvent event) {
+//					int choice = JOptionPane.showConfirmDialog(null, 
+//							"Are you sure you want to save and logout?", 
+//							"Warning!", JOptionPane.YES_NO_OPTION);
+//					if (choice == 0) {
+//						logout();
+//					}
+//				}
+//			}
+//		);
 		
 		statisticsItem.addActionListener(
 			new ActionListener() {
