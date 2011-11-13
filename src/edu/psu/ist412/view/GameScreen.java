@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
-
 public class GameScreen extends JFrame{
 	
 	private final JMenuBar menuBar = new JMenuBar();
