@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="FinalProject" basedir="." default="build-all">
+<!--
+World Campus Team 1:
+Bruce Kennedy	bdk5089@psu.edu
+Jeff Rockwell	jyr5227@psu.edu
+Pam Edmonston	pss138@psu.edu
+
+Pennsylvania State University
+IST 412 Fall 2011
+D. Mudgett
+-->
+	<property file="build.properties"/>
+	<property name="appName" value="WorldCampus_Team1_KenRockEd_FinalProject"/>
+	<property name="mainClass" value="edu.psu.ist412.view.Program"/>
+	<property name="testSuite" value="edu.psu.ist412.junit.AllTests"/>
+	
+<!--
+Clean Doc: Delete the doc directory.
+-->	
+	<target name="clean-doc">
+		<delete dir="${docDirectory}"/>
+	</target>
+	
+<!--
+Clean Bin: Delete the bin directory.
+-->	
+	<target name="clean-bin">
+		<delete dir="${binDirectory}"/>
+	</target>
+	
+<!--
+Clean Dist: Delete the dist directory.
+-->	
+	<target name="clean-dist">
+		<delete dir="${distDirectory}"/>
+	</target>
+
+<!--
+Clean: Delete the dist and bin directories.
+-->	
+	<target name="clean" depends="clean-bin,clean-dist"/>
+	
+<!--
+Compile: Incremental compile, only compiles files 
+that have changed since the last compile
+-->
+    <target name="compile">
+		<!--Since I do not delete any of the class files, then the javac will default only compile those files that have changed-->
+		<javac srcdir="${srcDirectory}" destdir="${binDirectory}"
+			includeAntRuntime = "no" fork="yes"/>
+		<delete dir="${binDirectory}/META-INF"/>
+    </target>
+	
+<!--
+Compile All: Create the bin directory, copy any .properties file(s) 
+from the src directory to the bin directory, and compile the code in 
+the src directory, putting the generated .class files into the bin directory.
+-->	
+    <target name="compile-all" depends="clean">
+		<mkdir dir="${binDirectory}"/>
+		<copy todir="${binDirectory}">
+		  <fileset dir="${srcDirectory}" includes="*.properties"/>
+		</copy>
+		<unzip dest="${binDirectory}">
+			<fileset dir="${libDirectory}">
+				<include name="**/*.jar" />
+			</fileset>    
+		</unzip>
+		<javac srcdir="${srcDirectory}" destdir="${binDirectory}"
+			includeAntRuntime = "no" fork="yes"/>
+		<delete dir="${binDirectory}/META-INF"/>
+    </target>
+
+<!--
+Build: Incremental build based on "compile" target.
+-->	
+    <target name="build" depends="compile">	
+		<jar destfile="${distDirectory}/${appName}.jar" basedir="${binDirectory}">
+			<manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+		</jar>
+    </target>
+	
+<!--
+Build All: Create the dist directory, jar the files in the bin directory, 
+placing the resulting .jar file in the dist directory.
+-->
+    <target name="build-all" depends="compile-all">
+		<mkdir dir="${distDirectory}"/>
+		<jar destfile="${distDirectory}/${appName}.jar" basedir="${binDirectory}">
+			<manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+		</jar>
+    </target>
+
+<!--
+Build Ind: Just jar the .class files without recompile
+-->	
+    <target name="build-ind">
+		<jar destfile="${distDirectory}/${appName}.jar" basedir="${binDirectory}">
+			<manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+		</jar>
+    </target>
+	
+<!--
+Run: Build and run the jar
+-->	
+    <target name="run" depends="build">
+		<java jar="${distDirectory}/${appName}.jar" fork="true"/>
+    </target>
+	
+<!--
+Run All: Run the .jar file in the dist directory, using the TestDecisions 
+class as the executable class.
+-->	
+    <target name="run-all" depends="build-all">
+		<java jar="${distDirectory}/${appName}.jar" fork="true"/>
+    </target>
+
+<!--
+Run Ind: Just run the jar file without rebuilding.
+-->
+    <target name="run-ind" depends="build-ind">
+		<java jar="${distDirectory}/${appName}.jar" fork="true"/>
+    </target>
+
+<!--
+Create the Javadoc html files from the files in the src directory, 
+placing them in the doc folder.
+-->	
+    <target name="doc" depends="clean-doc">
+		<mkdir dir="${docDirectory}"/>
+		<javadoc packagenames="*"
+		   sourcepath="${srcDirectory}"
+		   defaultexcludes="yes"
+		   destdir="${docDirectory}"
+		   author="true"
+		   version="true"
+		   use="true"/>
+    </target>
+
+
+<!--
+JUnit Test: Test all using the Junit test suite called AllTests
+-->
+
+	<target name="test-suite" depends="build-all">
+		<junit fork="yes" haltonfailure="yes">
+			<test name="${testSuite}" />
+			<formatter type="plain" usefile="false" />
+			<classpath>
+			   <pathelement location="${distDirectory}/${appName}.jar"/>
+			</classpath>
+		</junit>
+	</target>
+	
+	
+</project>
