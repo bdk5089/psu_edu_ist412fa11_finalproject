@@ -112,7 +112,28 @@ public class Deck {
 	 * @param hand
 	 */
 	public void dealCard(Hand hand){
-		//	hand.addCard(cards.pop())
+		Card cardToDeal = getCardAt(1);
+		try {
+			hand.receiveDealtCard(cardToDeal);
+			removeCardAt(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 
+	 * @param hand
+	 */
+	public void dealCard(Table table){
+		Card cardToDeal = getCardAt(1);
+		try {
+			table.receiveDealtCard(cardToDeal);
+			removeCardAt(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * getCardAt()
@@ -124,6 +145,12 @@ public class Deck {
 			return cards.get(idx-1);
 		}else{
 			return null;
+		}
+	}
+	
+	public void removeCardAt(int idx){
+		if (idx > 0 && idx <= cards.size()){
+			cards.remove(idx-1);
 		}
 	}
 	/**
