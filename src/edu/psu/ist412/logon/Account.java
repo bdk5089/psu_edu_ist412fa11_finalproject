@@ -15,7 +15,7 @@ public class Account {
 	private boolean isLocked = false;
 	
 	// number of failed attempts
-	private int attempts = 0;
+	private int attempts = 1;
 	
 	/**
 	 * Default constructor

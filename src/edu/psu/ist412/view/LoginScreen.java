@@ -184,28 +184,37 @@ public class LoginScreen extends JFrame{
 				
 				return false;
 			}
-			
-			if (MessageDigest.isEqual(passHash, curAcct.getPassword())) {
-				curAcct.successfulAttempt();
-				
-				userField.setText(null);
-				passField.setText(null);
-				
-				return true;
-			} else {
-				curAcct.failedAttempt();
-				
-				passField.setText(null);
-				
-				JOptionPane.showMessageDialog(null, 
-						"Entered password is incorrect.", 
-						"Warning!", JOptionPane.WARNING_MESSAGE);
-				
-				if (curAcct.getAttempts() == 3) {
-					curAcct.setLocked(true);
+			else {
+				if (MessageDigest.isEqual(passHash, curAcct.getPassword())) {
+					curAcct.successfulAttempt();
+					
+					userField.setText(null);
+					passField.setText(null);
+					
+					return true;
+				} else {
+					curAcct.failedAttempt();
+					
+					passField.setText(null);
+					
+					if (curAcct.getAttempts() == 3) {
+						curAcct.setLocked(true);
+					}
+					
+					if (curAcct.isLocked()) {
+						JOptionPane.showMessageDialog(null, 
+								"Account is locked. You must reset your account.", 
+								"Warning!", JOptionPane.WARNING_MESSAGE);
+						
+						return false;
+					} else {
+						JOptionPane.showMessageDialog(null, 
+								"Entered password is incorrect.", 
+								"Warning!", JOptionPane.WARNING_MESSAGE);
+					}
+					
+					return false;
 				}
-				
-				return false;
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Username not found.", 
