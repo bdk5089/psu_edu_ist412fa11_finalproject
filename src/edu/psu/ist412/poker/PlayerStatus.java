@@ -2,6 +2,7 @@ package edu.psu.ist412.poker;
 /**
  * 
  * @author Pam
+ * this is another modification by BK
  *
  */
 public class PlayerStatus {
