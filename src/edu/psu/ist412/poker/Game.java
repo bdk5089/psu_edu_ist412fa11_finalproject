@@ -3,14 +3,16 @@ package edu.psu.ist412.poker;
 import java.util.ArrayList;
 
 public class Game {
-	private ArrayList<Player> players = new ArrayList<Player>();
-	private Table table = new Table();
+	private ArrayList<Player> players;
+	private Table table;
+	private Deck deck;
 	private Player currentPlayer;
 	/**
 	 * 
 	 */
-	public Game() {
-		super();
+	public Game(ArrayList<Player> players) {
+		super();	
+		this.players = players;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -34,23 +36,43 @@ public class Game {
 	}
 	
 	public void startGame(){
-		//TODO
+		startRound();
+		dealHands();
+		dealFlop();
+		dealTurn();
+		dealRiver();
 	}
 	
 	public void startRound(){
-		//TODO
+		table = new Table();	
+		deck = new Deck();	
+		for (int i=0;i<players.size();i++){
+			Hand h = players.get(i).clearHand();
+			h.setDeck(deck);
+			h.setTable(table);
+		}
+	}
+	
+	public void dealHands(){
+		for (int i=0;i<players.size();i++){
+			Hand h = players.get(i).getHand();
+			deck.dealCard(h);
+			deck.dealCard(h);
+		}		
 	}
 	
 	public void dealFlop(){
-		//TODO
+		deck.dealCard(table);
+		deck.dealCard(table);
+		deck.dealCard(table);
 	}
 	
 	public void dealTurn(){
-		//TODO
+		deck.dealCard(table);
 	}
 	
 	public void dealRiver(){
-		//TODO
+		deck.dealCard(table);
 	}
 	
 	public void gotoNextPlayer(){

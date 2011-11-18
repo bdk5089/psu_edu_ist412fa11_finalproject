@@ -1,12 +1,13 @@
 package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
+import java.util.Observable;
 /**
  * 
  * @author KennedyBD
  *
  */
-public class Deck {
+public class Deck extends Observable{
 	
 	private static ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
 	private static ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
@@ -48,7 +49,7 @@ public class Deck {
 		}
 		
 		for (int i=0;i<10;i++){
-			System.out.println("Shuffle #"+(i+1));
+			//System.out.println("Shuffle #"+(i+1));
 			shuffle();
 		}
 	}
@@ -58,9 +59,9 @@ public class Deck {
 	 */
 	@Override
 	public String toString() {
-		String s = "";
+		String s = "Deck:\n";
 		for (int i=0;i<cards.size();i++){
-			s += cards.get(i)+"\n";
+			s += "  "+ cards.get(i)+"\n";
 		}
 		return s;
 	}
@@ -112,13 +113,17 @@ public class Deck {
 	 * @param hand
 	 */
 	public void dealCard(Hand hand){
-		Card cardToDeal = getCardAt(1);
-		try {
-			hand.receiveDealtCard(cardToDeal);
-			removeCardAt(1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		dealCard(hand,1);
+	}
+	public void dealCard(Hand hand, int i){
+		Card cardToDeal = getCardAt(i);
+		if (cardToDeal != null && hand.isReady()){
+			removeCardAt(i);
+			try {
+				hand.addCard(cardToDeal);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	/**
@@ -126,13 +131,17 @@ public class Deck {
 	 * @param hand
 	 */
 	public void dealCard(Table table){
-		Card cardToDeal = getCardAt(1);
-		try {
-			table.receiveDealtCard(cardToDeal);
-			removeCardAt(1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		dealCard(table,1);
+	}
+	public void dealCard(Table table, int i){
+		Card cardToDeal = getCardAt(i);
+		if (cardToDeal != null && table.isReady()){
+			removeCardAt(i);
+			try {
+				table.addCard(cardToDeal);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	/**
@@ -151,6 +160,8 @@ public class Deck {
 	public void removeCardAt(int idx){
 		if (idx > 0 && idx <= cards.size()){
 			cards.remove(idx-1);
+			setChanged();
+			notifyObservers(this);
 		}
 	}
 	/**

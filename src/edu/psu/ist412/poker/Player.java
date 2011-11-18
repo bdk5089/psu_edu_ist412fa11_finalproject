@@ -70,6 +70,14 @@ public class Player {
 		this.status = status;
 	}
 
+	/** 
+	 * @return the hand
+	 */
+	public Hand clearHand() {
+		hand = new Hand();
+		return hand;
+	}
+	
 	/**
 	 * @return the hand
 	 */
