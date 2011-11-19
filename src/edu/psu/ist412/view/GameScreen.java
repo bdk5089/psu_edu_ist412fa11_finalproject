@@ -48,9 +48,9 @@ public class GameScreen extends JFrame{
 		
 		setJMenuBar(menuBar);
 		menuBar.add(fileMenu);
+		fileMenu.add(statisticsItem);
 		fileMenu.add(logoutItem);
 		//fileMenu.add(saveLogoutItem);
-		fileMenu.add(statisticsItem);
 		
 		logoutItem.addActionListener(
 			new ActionListener() {
