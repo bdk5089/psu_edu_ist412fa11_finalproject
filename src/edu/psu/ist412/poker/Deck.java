@@ -118,9 +118,10 @@ public class Deck extends Observable{
 	public void dealCard(Hand hand, int i){
 		Card cardToDeal = getCardAt(i);
 		if (cardToDeal != null && hand.isReady()){
-			removeCardAt(i);
+			
 			try {
 				hand.addCard(cardToDeal);
+				removeCardAt(i);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -136,9 +137,10 @@ public class Deck extends Observable{
 	public void dealCard(Table table, int i){
 		Card cardToDeal = getCardAt(i);
 		if (cardToDeal != null && table.isReady()){
-			removeCardAt(i);
+			
 			try {
 				table.addCard(cardToDeal);
+				removeCardAt(i);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
