@@ -73,46 +73,36 @@ public class Hand extends Object implements Observer{
 			System.out.println("CALCULATING PROBABILITIES");
 			System.out.println(this);
 			System.out.println(table);
-			//System.out.println(deck);
-			/*
+			
+			ArrayList<Card> sorted = sortByValue(getCombined());
+			int dealt = sorted.size();
+			int remaining = 7-dealt;
+			int decksize = 52-dealt;
+			
 			//Straight Flush
-			System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
+			//System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
 			
 			//Four of a Kind
-			System.out.println("Calculating... Four of a Kind");
+			//System.out.println("Calculating... Four of a Kind");
 			
 			//Full House
-			System.out.println("Calculating... Full House");
+			//System.out.println("Calculating... Full House");
 			
 			//Flush (Same Suit)
-			System.out.println("Calculating... Flush (Same Suit)");
+			//System.out.println("Calculating... Flush (Same Suit)");
 			
 			//Straight
-			System.out.println("Calculating... Straight (Sequential)");
+			//System.out.println("Calculating... Straight (Sequential)");
 			
 			//Three of a Kind
-			System.out.println("Calculating... Three of a Kind");
+			//System.out.println("Calculating... Three of a Kind");
 			
 			//Two Pair
-			System.out.println("Calculating... Two Pair");
-			
+			//System.out.println("Calculating... Two Pair");
+
 			//One Pair
-			System.out.println("Calculating... One Pair");
-			
-			*/
-			if (cards.get(0).getValue().equals(cards.get(1).getValue())){
-				System.out.println("Already have same value (pair)");
-			}
-			if (cards.get(0).getSuit().equals(cards.get(1).getSuit())){
-				System.out.println("Already have same suit (start of flush)");
-			}
-			if (Math.abs(cards.get(0).getValue().getRank() - cards.get(1).getValue().getRank())==1){
-				System.out.println("Already have sequential values (start of straight)");
-			}
-			if (!(cards.get(0).getSuit().equals(cards.get(1).getSuit()))
-				&& !(cards.get(0).getValue().equals(cards.get(1).getValue()))){
-				System.out.println("Different suits and values");
-			}
+			//System.out.println("Calculating... One Pair");
+						
 			probability = .99;
 		}
 	}
@@ -126,6 +116,62 @@ public class Hand extends Object implements Observer{
 	}
 
 
+	private ArrayList<Card> getCombined(){
+		ArrayList<Card> combined = new ArrayList<Card>();
+		for (int i=0;i<this.getCards().size();i++){
+			combined.add(this.getCards().get(i));
+		}
+		for (int i=2;i<table.getCards().size()+2;i++){
+			combined.add(table.getCards().get(i-2));
+		}	
+		return combined;
+	}
 	
+	private int countSuit(ArrayList<Card> collection, CardSuit s){
+		int counter = 0;
+		CardSuit suit;
+		for (int i=0;i<collection.size();i++){
+			suit = collection.get(i).getSuit();
+			if (suit.getValue().equals(s.getValue())){
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	private int countValue(ArrayList<Card> collection, CardValue v){
+		int counter = 0;
+		CardValue rank;
+		for (int i=0;i<collection.size();i++){
+			rank = collection.get(i).getValue();
+			if (rank.getRank()==v.getRank()){
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	private ArrayList<Card> sortByValue(ArrayList<Card> combined){
+		ArrayList<Card> sorted = new ArrayList<Card>();
+		for (int i=0;i<combined.size();i++){
+			if (i==0){
+				sorted.add(combined.get(i));
+			}else{
+				int j=0;
+				for (j=0;j<sorted.size();j++){
+					if (combined.get(i).getValue().getRank() < sorted.get(j).getValue().getRank()){
+						sorted.add(j,combined.get(i));
+						sorted.trimToSize();
+						break;
+					}
+				}
+				if (j==sorted.size()){
+					sorted.add(combined.get(i));
+					sorted.trimToSize();					
+				}
+			}
+		}
+		return sorted;
+	}
 	
 }

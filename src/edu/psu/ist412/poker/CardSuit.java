@@ -11,6 +11,10 @@ public class CardSuit {
 		this.value = value;
 		this.abbrv = abbrv;
 	}
+	public CardSuit(String value) {
+		this.value = value;
+		this.abbrv = (String) value.substring(0,1);
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

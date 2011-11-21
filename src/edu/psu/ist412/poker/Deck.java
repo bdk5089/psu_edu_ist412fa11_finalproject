@@ -35,10 +35,10 @@ public class Deck extends Observable{
 			cardValues.add(new CardValue("Ace","A",14));
 		}
 		if (cardSuits.size() == 0){
-			cardSuits.add(new CardSuit("Hearts","H"));
-			cardSuits.add(new CardSuit("Diamonds","D"));
-			cardSuits.add(new CardSuit("Clubs","C"));
-			cardSuits.add(new CardSuit("Spades","S"));
+			cardSuits.add(new CardSuit("Hearts"));
+			cardSuits.add(new CardSuit("Diamonds"));
+			cardSuits.add(new CardSuit("Clubs"));
+			cardSuits.add(new CardSuit("Spades"));
 		}
 		
 		for (int i=0;i<cardValues.size();i++){
