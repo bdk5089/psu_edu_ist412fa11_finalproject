@@ -35,6 +35,7 @@ public class Project {
 		loginScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		loginScreen.setSize(550, 195);
 		loginScreen.setVisible(true);
+		loginScreen.setLocationRelativeTo(null);
 	}
 	
 	/**

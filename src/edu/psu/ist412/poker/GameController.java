@@ -34,4 +34,9 @@ public class GameController {
 		games.get(games.size()-1).startGame();
 	}
 	
+	public Game getCurrentGame() {
+		//TODO: need to actually get current game instead of hard-coding
+		return games.get(0);
+	}
+	
 }

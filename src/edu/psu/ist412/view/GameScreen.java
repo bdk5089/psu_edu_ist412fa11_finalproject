@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -11,6 +12,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import edu.psu.ist412.poker.Card;
+import edu.psu.ist412.poker.GameController;
 
 
 public class GameScreen extends JFrame{
@@ -28,11 +32,16 @@ public class GameScreen extends JFrame{
 	
 	// a reference to the login screen
 	private JFrame loginScreen;
+	
+	GameController gc;
 
-	public GameScreen(JFrame login) {
+	public GameScreen(JFrame login, GameController controller) {
 		super("IST 412 Texas Hold'em");
 		
 		loginScreen = login;
+		
+		gc = controller;
+		gc.createGame();
 		
 		getContentPane().setLayout(new BorderLayout());
 		
@@ -97,7 +106,7 @@ public class GameScreen extends JFrame{
 	}
 	
 	/**
-	 * Gets rid of the calculation window, and brings back the login screen.
+	 * Gets rid of the game window, and brings back the login screen.
 	 */
 	private void logout() {
 		dispose();		
@@ -111,7 +120,11 @@ public class GameScreen extends JFrame{
 		
 		panel.setLayout(new FlowLayout());
 		
-		panel.add(new JLabel("player cards"));
+		for (Card c : gc.getCurrentGame().getPlayers().get(0).getHand().getCards()) {
+			JLabel card = new JLabel();
+			card.setIcon(c.getImage());
+			panel.add(card);
+		}
 		
 		return panel;
 	}
@@ -121,7 +134,15 @@ public class GameScreen extends JFrame{
 		
 		panel.setLayout(new FlowLayout());
 		
-		panel.add(new JLabel("cpu cards"));
+		JLabel card1 = new JLabel();
+		card1.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
+		
+		panel.add(card1);
+		
+		JLabel card2 = new JLabel();
+		card2.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
+		
+		panel.add(card2);
 		
 		return panel;
 	}
@@ -131,7 +152,11 @@ public class GameScreen extends JFrame{
 		
 		panel.setLayout(new FlowLayout());
 		
-		panel.add(new JLabel("shared cards"));
+		for (Card c : gc.getCurrentGame().getTable().getCards()) {
+			JLabel card = new JLabel();
+			card.setIcon(c.getImage());
+			panel.add(card);
+		}
 		
 		return panel;
 	}

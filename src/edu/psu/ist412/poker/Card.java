@@ -1,4 +1,7 @@
 package edu.psu.ist412.poker;
+
+import javax.swing.ImageIcon;
+
 /**
  * 
  * @author KennedyBD
@@ -42,6 +45,14 @@ public class Card {
 		return value;
 	}
 
-	
+	/**
+	 * @return the image associated with the card
+	 */
+	public ImageIcon getImage() {
+		String cardName = "/edu/psu/ist412/view/graphics/" + value.toString() + 
+			suit.toString() + ".png";
+		
+		return new ImageIcon(getClass().getResource(cardName));
+	}
 	
 }

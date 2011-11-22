@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +24,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import edu.psu.ist412.logon.Account;
+import edu.psu.ist412.poker.GameController;
 
 /**
  * This class builds the login screen.
@@ -61,6 +60,8 @@ public class LoginScreen extends JFrame{
 	private final JMenuBar menuBar = new JMenuBar();
 	private final JMenu fileMenu = new JMenu("File");
 	private final JMenuItem quitItem = new JMenuItem("Quit");
+	
+	GameController controller = new GameController();
 	
 	/**
 	 * Constructor
@@ -271,10 +272,11 @@ public class LoginScreen extends JFrame{
 			setVisible(false);
 			
 			if (login(userField.getText(), passField.getText())) {
-				GameScreen gameScreen = new GameScreen(loginScreen);
+				GameScreen gameScreen = new GameScreen(loginScreen, controller);
 				gameScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				gameScreen.setSize(750, 650);
+				gameScreen.setSize(625, 375);
 				gameScreen.setVisible(true);
+				gameScreen.setLocationRelativeTo(null);
 			} else {
 				loginScreen.setVisible(true);
 			}
@@ -308,6 +310,7 @@ public class LoginScreen extends JFrame{
 			resetScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			resetScreen.setSize(335, 275);
 			resetScreen.setVisible(true);
+			resetScreen.setLocationRelativeTo(null);
 		}
 	}
 	
@@ -326,6 +329,7 @@ public class LoginScreen extends JFrame{
 			registerScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			registerScreen.setSize(335, 275);
 			registerScreen.setVisible(true);
+			registerScreen.setLocationRelativeTo(null);
 		}
 	}
 	
