@@ -100,8 +100,119 @@ public class Hand extends Object implements Observer{
 			cardValues.add(new CardValue("King","K",13));
 			cardValues.add(new CardValue("Ace","A",14));
 			
-			int num = 0;
+			int numValue = 0;
+			int numSuit = 0;
 			int n = 0;
+			double temp = 0;
+			
+			//Royal Straight Flush
+			//System.out.println("Calculating... Royal Straight Flush (Same Suit, T-A, Sequential)");
+			double royalFlush = 0;
+			temp = 0;
+			if (dealt == 2){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue == 2){
+						temp = (double)(1*DMath.combination(decksize-3,2)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue ==1){
+						temp = (double)(1*DMath.combination(decksize-4,1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue ==0){
+						temp = (double)(1
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}else if (dealt == 3){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue == 3){
+						temp = (double)(1*DMath.combination(decksize-2,2)
+								)/(double)DMath.combination(decksize, remaining);
+					} else if (numValue == 2){
+						temp = (double)(1*DMath.combination(decksize-3,1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue ==1){
+						temp = (double)(1
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}else if (dealt == 4){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue == 4){
+						temp = (double)(1*DMath.combination(decksize-1,2)
+								)/(double)DMath.combination(decksize, remaining);
+					} else if (numValue == 3){
+						temp = (double)(1*DMath.combination(decksize-2,1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue ==2){
+						temp = (double)(1
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}else if (dealt == 5){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue >= 5){
+						temp = 1;
+					} else if (numValue == 4){
+						temp = (double)(1*DMath.combination(decksize-1,1)
+								)/(double)DMath.combination(decksize, remaining);
+					} else if (numValue == 3){
+						temp = (double)(1
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}else if (dealt == 6){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue >= 5){
+						temp = 1;
+					} else if (numValue == 4){
+						temp = (double)(1
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}else if (dealt == 7){
+				for (int j=0;j<cardSuits.size();j++){
+					numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+					//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
+					if (numValue >= 5){
+						temp = 1;
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					royalFlush = royalFlush + temp;
+				}
+			}
+			System.out.println("Probability for Royal Flush is "+royalFlush);			
 			
 			//Straight Flush
 			//System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
@@ -111,19 +222,19 @@ public class Hand extends Object implements Observer{
 			//System.out.println("Calculating... Four of a Kind");
 		
 			double kind4 = 0;
-			double temp = 0;
+			temp = 0;
 			if (dealt == 2){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num == 2){
-						temp = (double)(DMath.combination(4-num,2)*DMath.combination(decksize-(4-num),3)
+					if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),3)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 1){
-						temp = (double)(DMath.combination(4-num,3)*DMath.combination(decksize-(4-num),2)
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),2)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 0){
-						temp = (double)(DMath.combination(4-num,4)*DMath.combination(decksize-(4-num),1)
+					}else if (numValue == 0){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),1)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -133,19 +244,19 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 3){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num == 3){
-						temp = (double)(DMath.combination(4-num,1)*DMath.combination(decksize-(4-num),3)
+					if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),3)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 2){
-						temp = (double)(DMath.combination(4-num,2)*DMath.combination(decksize-(4-num),2)
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),2)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 1){
-						temp = (double)(DMath.combination(4-num,3)*DMath.combination(decksize-(4-num),1)
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),1)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 0){
-						temp = (double)(DMath.combination(4-num,4)*DMath.combination(decksize-(4-num),0)
+					}else if (numValue == 0){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -155,18 +266,18 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 4){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num == 4){
+					if (numValue == 4){
 						temp = 1;
-					}else if (num == 3){
-						temp = (double)(DMath.combination(4-num,1)*DMath.combination(decksize-(13-num),2)
+					}else if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(13-numValue),2)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 2){
-						temp = (double)(DMath.combination(4-num,2)*DMath.combination(decksize-(13-num),1)
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(13-numValue),1)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 1){
-						temp = (double)(DMath.combination(4-num,4)*DMath.combination(decksize-(4-num),0)
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -176,15 +287,15 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 5){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num >= 4){
+					if (numValue >= 4){
 						temp = 1;
-					}else if (num == 3){
-						temp = (double)(DMath.combination(4-num,1)*DMath.combination(decksize-(4-num),1)
+					}else if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),1)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 2){
-						temp = (double)(DMath.combination(4-num,2)
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)
 								)/(double)DMath.combination(decksize, remaining);
 					}else {
 						temp = 0;
@@ -194,12 +305,12 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 6){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num >= 4){
+					if (numValue >= 4){
 						temp = 1;
-					}else if (num == 3){
-						temp = ((double)DMath.combination((4-num),1)
+					}else if (numValue == 3){
+						temp = ((double)DMath.combination((4-numValue),1)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -209,9 +320,9 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 7){
 				for (int i=0;i<cardValues.size();i++){
-					num = countValue(sorted, cardValues.get(i));
+					numValue = countValue(sorted, cardValues.get(i));
 					//System.out.println(cardValues.get(i)+" "+num);
-					if (num >= 4){
+					if (numValue >= 4){
 						temp = 1;
 					}else{
 						temp = 0;
@@ -221,24 +332,27 @@ public class Hand extends Object implements Observer{
 				}
 			}
 			System.out.println("Probability for 4 of Kind is "+kind4);
+			
 			//Full House
 			//System.out.println("Calculating... Full House");
+			
+			
 			
 			//Flush (Same Suit)
 			double flush = 0;
 			temp = 0;
 			if (dealt == 2){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num == 2){
-						temp = (double)(DMath.combination(13-num,3)*DMath.combination(decksize-(13-num),2)
+					if (numSuit == 2){
+						temp = (double)(DMath.combination(13-numSuit,3)*DMath.combination(decksize-(13-numSuit),2)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 1){
-						temp = (double)(DMath.combination(13-num,4)*DMath.combination(decksize-(13-num),1)
+					}else if (numSuit == 1){
+						temp = (double)(DMath.combination(13-numSuit,4)*DMath.combination(decksize-(13-numSuit),1)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 0){
-						temp = (double)(DMath.combination(13-num,5))/(double)DMath.combination(decksize, remaining);
+					}else if (numSuit == 0){
+						temp = (double)(DMath.combination(13-numSuit,5))/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
 					}
@@ -247,19 +361,19 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 3){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num == 3){
-						temp = (double)(DMath.combination(13-num,2)*DMath.combination(decksize-(13-num),2)
-								+ DMath.combination(13-num,3)*DMath.combination(decksize-(13-num),1)
-								+ DMath.combination(13-num,4)
+					if (numSuit == 3){
+						temp = (double)(DMath.combination(13-numSuit,2)*DMath.combination(decksize-(13-numSuit),2)
+								+ DMath.combination(13-numSuit,3)*DMath.combination(decksize-(13-numSuit),1)
+								+ DMath.combination(13-numSuit,4)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 2){
-						temp = (double)(DMath.combination(13-num,3)*DMath.combination(decksize-(13-num),1)
-								+ DMath.combination(13-num,4)
+					}else if (numSuit == 2){
+						temp = (double)(DMath.combination(13-numSuit,3)*DMath.combination(decksize-(13-numSuit),1)
+								+ DMath.combination(13-numSuit,4)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 1){
-						temp = (double)(DMath.combination(13-num,4)
+					}else if (numSuit == 1){
+						temp = (double)(DMath.combination(13-numSuit,4)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -269,19 +383,19 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 4){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num == 4){
-						temp = (double)(DMath.combination(13-num,1)*DMath.combination(decksize-(13-num),2)
-								+ DMath.combination(13-num,2)*DMath.combination(decksize-(13-num),1)
-								+ DMath.combination(13-num,3)
+					if (numSuit == 4){
+						temp = (double)(DMath.combination(13-numSuit,1)*DMath.combination(decksize-(13-numSuit),2)
+								+ DMath.combination(13-numSuit,2)*DMath.combination(decksize-(13-numSuit),1)
+								+ DMath.combination(13-numSuit,3)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 3){
-						temp = (double)(DMath.combination(13-num,2)*DMath.combination(decksize-(13-num),1)
-								+ DMath.combination(13-num,3)
+					}else if (numSuit == 3){
+						temp = (double)(DMath.combination(13-numSuit,2)*DMath.combination(decksize-(13-numSuit),1)
+								+ DMath.combination(13-numSuit,3)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 2){
-						temp = (double)(DMath.combination(13-num,3)
+					}else if (numSuit == 2){
+						temp = (double)(DMath.combination(13-numSuit,3)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -291,16 +405,16 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 5){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num >= 5){
+					if (numSuit >= 5){
 						temp = 1;
-					}else if (num == 4){
-						temp = (double)(DMath.combination(13-num,1)*DMath.combination(decksize-(13-num),1)
-								+ DMath.combination(13-num,2)
+					}else if (numSuit == 4){
+						temp = (double)(DMath.combination(13-numSuit,1)*DMath.combination(decksize-(13-numSuit),1)
+								+ DMath.combination(13-numSuit,2)
 								)/(double)DMath.combination(decksize, remaining);
-					}else if (num == 3){
-						temp = (double)(DMath.combination(13-num,2)
+					}else if (numSuit == 3){
+						temp = (double)(DMath.combination(13-numSuit,2)
 								)/(double)DMath.combination(decksize, remaining);
 					}else {
 						temp = 0;
@@ -310,12 +424,12 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 6){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num >= 5){
+					if (numSuit >= 5){
 						temp = 1;
-					}else if (num == 4){
-						temp = ((double)DMath.combination((13-num),1)
+					}else if (numSuit == 4){
+						temp = ((double)DMath.combination((13-numSuit),1)
 								)/(double)DMath.combination(decksize, remaining);
 					}else{
 						temp = 0;
@@ -325,9 +439,9 @@ public class Hand extends Object implements Observer{
 				}
 			}else if (dealt == 7){
 				for (int i=0;i<cardSuits.size();i++){
-					num = countSuit(sorted, cardSuits.get(i));
+					numSuit = countSuit(sorted, cardSuits.get(i));
 					//System.out.println(cardSuits.get(i));
-					if (num >= 5){
+					if (numSuit >= 5){
 						temp = 1;
 					}else{
 						temp = 0;
@@ -438,6 +552,31 @@ public class Hand extends Object implements Observer{
 		}
 		return counter;
 	}
+	
+	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd){
+		int counter = 0;
+		CardValue rank;
+		for (int i=0;i<collection.size();i++){
+			rank = collection.get(i).getValue();
+			if (rank.getRank()>=vStart.getRank() && rank.getRank()<=vEnd.getRank()){
+					counter++;
+			}
+		}
+		return counter;
+	}
+	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd, CardSuit suit){
+		int counter = 0;
+		CardValue rank;
+		for (int i=0;i<collection.size();i++){
+			rank = collection.get(i).getValue();
+			if (rank.getRank()>=vStart.getRank() && rank.getRank()<=vEnd.getRank()){
+				if (suit.getValue().equals(collection.get(i).getSuit().getValue())){
+					counter++;
+				}
+			}
+		}
+		return counter;
+	}	
 	
 	private ArrayList<Card> sortByValue(ArrayList<Card> combined){
 		ArrayList<Card> sorted = new ArrayList<Card>();
