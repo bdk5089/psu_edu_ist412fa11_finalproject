@@ -17,7 +17,11 @@ public class Deck extends Observable{
 	/**
 	 * 
 	 */
-	public Deck() {
+	public Deck(){
+		this(true);
+	}
+	
+	public Deck(boolean shuffle) {
 		
 		if (cardValues.size() == 0 ){
 			cardValues.add(new CardValue("2","2",2));
@@ -41,16 +45,16 @@ public class Deck extends Observable{
 			cardSuits.add(new CardSuit("Spades"));
 		}
 		
-		for (int i=0;i<cardValues.size();i++){
-			for (int j=0;j<cardSuits.size();j++){
-				Card card = new Card(cardSuits.get(j), cardValues.get(i));
-				cards.add(card);
-			}
+		for (int j=0;j<cardValues.size();j++){
+		for (int i=0;i<cardSuits.size();i++){
+			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
 		}
-		
-		for (int i=0;i<10;i++){
-			//System.out.println("Shuffle #"+(i+1));
-			shuffle();
+		}
+		if (shuffle){
+			for (int i=0;i<10;i++){
+				//System.out.println("Shuffle #"+(i+1));
+				shuffle();
+			}
 		}
 	}
 	

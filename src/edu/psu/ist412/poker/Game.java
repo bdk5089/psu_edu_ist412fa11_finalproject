@@ -45,7 +45,7 @@ public class Game {
 	
 	public void startRound(){
 		table = new Table();	
-		deck = new Deck();	
+		deck = new Deck(false);	
 		for (int i=0;i<players.size();i++){
 			Hand h = players.get(i).clearHand();
 			h.setDeck(deck);

@@ -55,4 +55,12 @@ public class Card {
 		return new ImageIcon(getClass().getResource(cardName));
 	}
 	
+	/**
+	 * @return the back side image associated with the card
+	 */
+	public ImageIcon getImageBack() {
+		String cardName = "/edu/psu/ist412/view/graphics/back.png";
+		
+		return new ImageIcon(getClass().getResource(cardName));
+	}
 }
