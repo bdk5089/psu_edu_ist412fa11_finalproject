@@ -4,6 +4,7 @@ public class CardValue {
 	private String value;
 	private String abbrv;
 	private int rank;
+	private int rank2;
 	/**
 	 * @param value
 	 * @param abbrv
@@ -13,6 +14,12 @@ public class CardValue {
 		this.value = value;
 		this.abbrv = abbrv;
 		this.rank = rank;
+	}
+	public CardValue(String value, String abbrv, int rank, int rank2) {
+		this.value = value;
+		this.abbrv = abbrv;
+		this.rank = rank;
+		this.rank2 = rank2;
 	}
 	
 	/* (non-Javadoc)
@@ -44,5 +51,12 @@ public class CardValue {
 		return rank;
 	}	
 	
+	public int getRank(boolean alt){
+		if (alt){
+			return rank2;
+		}else{
+			return rank;
+		}
+	}
 	
 }

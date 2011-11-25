@@ -36,7 +36,7 @@ public class Deck extends Observable{
 			cardValues.add(new CardValue("Jack","J",11));
 			cardValues.add(new CardValue("Queen","Q",12));
 			cardValues.add(new CardValue("King","K",13));
-			cardValues.add(new CardValue("Ace","A",14));
+			cardValues.add(new CardValue("Ace","A",14,1));
 		}
 		if (cardSuits.size() == 0){
 			cardSuits.add(new CardSuit("Hearts"));
@@ -44,18 +44,20 @@ public class Deck extends Observable{
 			cardSuits.add(new CardSuit("Clubs"));
 			cardSuits.add(new CardSuit("Spades"));
 		}
-		/*
-		for (int j=0;j<cardValues.size();j++){
+		
 		for (int i=0;i<cardSuits.size();i++){
+		for (int j=0;j<cardValues.size();j++){
+			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
+		}
+		}
+		/*
+		for (int i=cardSuits.size()-1;i>=0;i--){
+		for (int j=cardValues.size()-1;j>=0;j--){
 			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
 		}
 		}
 		*/
-		for (int j=cardValues.size()-1;j>=0;j--){
-		for (int i=cardSuits.size()-1;i>=0;i--){
-			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
-		}
-		}
+		
 		if (shuffle){
 			for (int i=0;i<10;i++){
 				//System.out.println("Shuffle #"+(i+1));
