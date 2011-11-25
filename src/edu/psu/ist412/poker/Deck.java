@@ -45,8 +45,8 @@ public class Deck extends Observable{
 			cardSuits.add(new CardSuit("Spades"));
 		}
 		
-		for (int i=0;i<cardSuits.size();i++){
 		for (int j=0;j<cardValues.size();j++){
+		for (int i=0;i<cardSuits.size();i++){
 			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
 		}
 		}

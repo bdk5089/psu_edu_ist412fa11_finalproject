@@ -448,7 +448,119 @@ public class Hand extends Object implements Observer{
 			
 			//Full House
 			//System.out.println("Calculating... Full House");
-			// TODO need to calculate Full House
+			// TODO
+			double fullHouse = 0;
+			temp = 0;
+			if (dealt == 2){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),3)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),2)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 0){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}else if (dealt == 3){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),3)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),2)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 0){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}else if (dealt == 4){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue == 4){
+						temp = 1;
+					}else if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),2)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 1){
+						temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}else if (dealt == 5){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue >= 4){
+						temp = 1;
+					}else if (numValue == 3){
+						temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else if (numValue == 2){
+						temp = (double)(DMath.combination(4-numValue,2)
+								)/(double)DMath.combination(decksize, remaining);
+					}else {
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}else if (dealt == 6){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue >= 4){
+						temp = 1;
+					}else if (numValue == 3){
+						temp = ((double)DMath.combination((4-numValue),1)
+								)/(double)DMath.combination(decksize, remaining);
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}else if (dealt == 7){
+				for (int i=0;i<cardValues.size();i++){
+					numValue = countValue(sorted, cardValues.get(i));
+					//System.out.println(cardValues.get(i)+" "+num);
+					if (numValue >= 4){
+						temp = 1;
+					}else{
+						temp = 0;
+					}
+					//System.out.println(temp);
+					fullHouse = fullHouse + temp;
+				}
+			}
+			System.out.println("Probability for Full House is "+fullHouse);
+			
 			
 			
 			//Flush (Same Suit)
@@ -566,7 +678,6 @@ public class Hand extends Object implements Observer{
 			}
 			System.out.println("Probability for Flush is "+flush);
 
-			
 			//Straight
 			//System.out.println("Calculating... Straight (Sequential)");
 			
@@ -594,7 +705,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					straight = straight + temp;
+					straight = Math.min(1,straight + temp);
 				}
 			}else if (dealt == 3){
 				for (int j=0;j<cardSuits.size();j++){
@@ -613,7 +724,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					straight = straight + temp;
+					straight = Math.min(1,straight + temp);
 				}
 			}else if (dealt == 4){
 				for (int j=0;j<cardSuits.size();j++){
@@ -632,7 +743,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					straight = straight + temp;
+					straight = Math.min(1,straight + temp);
 				}
 			}else if (dealt == 5){
 				for (int j=0;j<cardSuits.size();j++){
@@ -707,7 +818,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}else if (dealt == 3){
 				for (int i=0;i<cardValues.size();i++){
@@ -728,7 +839,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}else if (dealt == 4){
 				for (int i=0;i<cardValues.size();i++){
@@ -749,7 +860,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}else if (dealt == 5){
 				for (int i=0;i<cardValues.size();i++){
@@ -767,7 +878,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}else if (dealt == 6){
 				for (int i=0;i<cardValues.size();i++){
@@ -782,7 +893,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}else if (dealt == 7){
 				for (int i=0;i<cardValues.size();i++){
@@ -794,7 +905,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind3 = kind3 + temp;
+					kind3 = Math.min(1,kind3 + temp);
 				}
 			}
 			System.out.println("Probability for 3 of Kind is "+kind3);
@@ -823,7 +934,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}else if (dealt == 3){
 				for (int i=0;i<cardValues.size();i++){
@@ -841,7 +952,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}else if (dealt == 4){
 				for (int i=0;i<cardValues.size();i++){
@@ -859,7 +970,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}else if (dealt == 5){
 				for (int i=0;i<cardValues.size();i++){
@@ -877,7 +988,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}else if (dealt == 6){
 				for (int i=0;i<cardValues.size();i++){
@@ -892,7 +1003,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}else if (dealt == 7){
 				for (int i=0;i<cardValues.size();i++){
@@ -904,7 +1015,7 @@ public class Hand extends Object implements Observer{
 						temp = 0;
 					}
 					//System.out.println(temp);
-					kind2 = kind2 + temp;
+					kind2 = Math.min(1,kind2 + temp);
 				}
 			}
 			System.out.println("Probability for 2 of Kind is "+kind2);
@@ -958,37 +1069,91 @@ public class Hand extends Object implements Observer{
 		return counter;
 	}
 	
-	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd){
+	private int countValue(ArrayList<Card> collection, CardValue v, CardSuit suit){
 		int counter = 0;
 		CardValue rank;
 		for (int i=0;i<collection.size();i++){
 			rank = collection.get(i).getValue();
-			if (vStart.getAbbrv().equals("A")){
-				if (rank.getRank(true)>=vStart.getRank(true) && rank.getRank(true)<=vEnd.getRank()){
-					counter++;
-				}					
-			}else{
-				if (rank.getRank()>=vStart.getRank() && rank.getRank()<=vEnd.getRank()){
+			if (rank.getRank()==v.getRank() && collection.get(i).getSuit().getAbbrv().equals(suit.getAbbrv())){
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd){
+		//non-suited
+		int counter = 0;
+	
+		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
+		cardValues.add(new CardValue("Ace","A",14,1));
+		cardValues.add(new CardValue("2","2",2));
+		cardValues.add(new CardValue("3","3",3));
+		cardValues.add(new CardValue("4","4",4));
+		cardValues.add(new CardValue("5","5",5));
+		cardValues.add(new CardValue("6","6",6));
+		cardValues.add(new CardValue("7","7",7));
+		cardValues.add(new CardValue("8","8",8));
+		cardValues.add(new CardValue("9","9",9));
+		cardValues.add(new CardValue("10","T",10));
+		cardValues.add(new CardValue("Jack","J",11));
+		cardValues.add(new CardValue("Queen","Q",12));
+		cardValues.add(new CardValue("King","K",13));
+		cardValues.add(new CardValue("Ace","A",14,1));
+		
+		for (int i=0;i<cardValues.size();i++){
+			CardValue card = cardValues.get(i);
+			if (cardValues.get(i).getAbbrv().equals("A")){
+				if (card.getRank(true)>=vStart.getRank(true) && card.getRank(true)<=vEnd.getRank()){
+					int num = countValue(collection, cardValues.get(i));
+					if (num > 0){
 						counter++;
+					}
+				}
+			}else{
+				if (card.getRank()>=vStart.getRank() && card.getRank()<=vEnd.getRank()){
+					int num = countValue(collection, cardValues.get(i));
+					if (num > 0){
+						counter++;
+					}
 				}
 			}
 		}
 		return counter;
 	}
+	
 	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd, CardSuit suit){
 		int counter = 0;
-		CardValue rank;
-		for (int i=0;i<collection.size();i++){
-			rank = collection.get(i).getValue();
-			if (vStart.getAbbrv().equals("A")){
-				if (rank.getRank(true)>=vStart.getRank(true) && rank.getRank(true)<=vEnd.getRank()){
-					if (suit.getValue().equals(collection.get(i).getSuit().getValue())){
+		
+		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
+		cardValues.add(new CardValue("Ace","A",14,1));
+		cardValues.add(new CardValue("2","2",2));
+		cardValues.add(new CardValue("3","3",3));
+		cardValues.add(new CardValue("4","4",4));
+		cardValues.add(new CardValue("5","5",5));
+		cardValues.add(new CardValue("6","6",6));
+		cardValues.add(new CardValue("7","7",7));
+		cardValues.add(new CardValue("8","8",8));
+		cardValues.add(new CardValue("9","9",9));
+		cardValues.add(new CardValue("10","T",10));
+		cardValues.add(new CardValue("Jack","J",11));
+		cardValues.add(new CardValue("Queen","Q",12));
+		cardValues.add(new CardValue("King","K",13));
+		cardValues.add(new CardValue("Ace","A",14,1));
+		
+		for (int i=0;i<cardValues.size();i++){
+			CardValue card = cardValues.get(i);
+			if (cardValues.get(i).getAbbrv().equals("A")){
+				if (card.getRank(true)>=vStart.getRank(true) && card.getRank(true)<=vEnd.getRank()){
+					int num = countValue(collection, cardValues.get(i), suit);
+					if (num > 0){
 						counter++;
 					}
-				}					
+				}
 			}else{
-				if (rank.getRank()>=vStart.getRank() && rank.getRank()<=vEnd.getRank()){
-					if (suit.getValue().equals(collection.get(i).getSuit().getValue())){
+				if (card.getRank()>=vStart.getRank() && card.getRank()<=vEnd.getRank()){
+					int num = countValue(collection, cardValues.get(i), suit);
+					if (num > 0){
 						counter++;
 					}
 				}
@@ -1020,4 +1185,26 @@ public class Hand extends Object implements Observer{
 		return sorted;
 	}
 	
+	private ArrayList<Card> sortByCount(ArrayList<Card> combined){
+		ArrayList<Card> sorted = new ArrayList<Card>();
+		for (int i=0;i<combined.size();i++){
+			if (i==0){
+				sorted.add(combined.get(i));
+			}else{
+				int j=0;
+				for (j=0;j<sorted.size();j++){
+					if (countValue(combined, combined.get(i).getValue()) > countValue(sorted, sorted.get(j).getValue())){
+						sorted.add(j,combined.get(i));
+						sorted.trimToSize();
+						break;
+					}
+				}
+				if (j==sorted.size()){
+					sorted.add(combined.get(i));
+					sorted.trimToSize();					
+				}
+			}
+		}
+		return sorted;
+	}	
 }
