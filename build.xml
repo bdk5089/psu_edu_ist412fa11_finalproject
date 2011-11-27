@@ -11,7 +11,7 @@ IST 412 Fall 2011
 D. Mudgett
 -->
 	<property file="build.properties"/>
-	<property name="appName" value="WorldCampus_Team1_KenRockEd_FinalProject"/>
+	<property name="appName" value="IST412_WorldCampusTeam1_FinalProject"/>
 	<property name="mainClass" value="edu.psu.ist412.program.Project"/>
 	<property name="testSuite" value="edu.psu.ist412.test.AllTests"/>
 	
