@@ -270,11 +270,12 @@ public class LoginScreen extends JFrame{
 	private class LoginHandler implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			setVisible(false);
+			userField.grabFocus();
 			
 			if (login(userField.getText(), passField.getText())) {
 				GameScreen gameScreen = new GameScreen(loginScreen, controller);
 				gameScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				gameScreen.setSize(625, 375);
+				gameScreen.setSize(625, 525);
 				gameScreen.setVisible(true);
 				gameScreen.setLocationRelativeTo(null);
 			} else {
