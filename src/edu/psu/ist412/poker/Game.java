@@ -3,6 +3,11 @@ package edu.psu.ist412.poker;
 import java.util.ArrayList;
 
 public class Game {
+	public enum GameState {START, FLOP, TURN, RIVER};
+	private GameState state = GameState.START;
+	
+	private ArrayList<Card> tableCards = new ArrayList<Card>();
+	
 	private ArrayList<Player> players;
 	private Table table;
 	private Deck deck;
@@ -38,14 +43,11 @@ public class Game {
 	public void startGame(){
 		startRound();
 		dealHands();
-		dealFlop();
-		dealTurn();
-		dealRiver();
 	}
 	
 	public void startRound(){
 		table = new Table();	
-		deck = new Deck(false);	
+		deck = new Deck();	
 		for (int i=0;i<players.size();i++){
 			Hand h = players.get(i).clearHand();
 			h.setDeck(deck);
@@ -58,7 +60,11 @@ public class Game {
 			Hand h = players.get(i).getHand();
 			deck.dealCard(h);
 			deck.dealCard(h);
-		}		
+		}
+		
+		for (int i = 1; i < 6; i++) {
+			tableCards.add(deck.getCardAt(i));
+		}
 	}
 	
 	public void dealFlop(){
@@ -79,6 +85,14 @@ public class Game {
 		//TODO
 	}
 	
-	
+	public GameState getState() {
+		return state;
+	}
+	public void setState(GameState state) {
+		this.state = state;
+	}
+	public ArrayList<Card> getTableCards() {
+		return tableCards;
+	}
 	
 }
