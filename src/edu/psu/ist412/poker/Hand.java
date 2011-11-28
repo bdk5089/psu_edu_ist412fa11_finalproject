@@ -2,9 +2,12 @@ package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
+
 
 public class Hand extends Object implements Observer{
 
@@ -73,6 +76,11 @@ public class Hand extends Object implements Observer{
 	}	
 	
 	public Map<String, Double> getProbability(){
+		try {
+			calculateProbability();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return probability;
 	}
 
@@ -95,12 +103,23 @@ public class Hand extends Object implements Observer{
 			probability.put("2 Pair", calculate2Pair());
 			probability.put("2 of a Kind", calculate2Kind());
 			
-			System.out.println(probability);
+			Set set = probability.entrySet();
+			Iterator i = set.iterator();
+		    while(i.hasNext()){
+		    	 Map.Entry me = (Map.Entry)i.next();
+		    	 String padding = "";
+		    	 for (int p=0;p<15-me.getKey().toString().length();p++){
+		    		 padding+=" ";
+		    	 }
+		    	 System.out.println("Probability of "+ me.getKey() +padding+  " : " + me.getValue() );
+		    }
+
 		}
 		System.out.println("");
 	}
 
 	private double calculateRoyalFlush(){
+		//System.out.println("Calculating... Royal Straight Flush (Same Suit, T-A, Sequential)");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -128,14 +147,8 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;
-		
-		//Royal Straight Flush
-		//System.out.println("Calculating... Royal Straight Flush (Same Suit, T-A, Sequential)");
 		double sumProbability = 0;
-		temp = 0;
 		if (dealt == 2){
 			for (int j=0;j<cardSuits.size();j++){
 				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
@@ -239,11 +252,12 @@ public class Hand extends Object implements Observer{
 				sumProbability = sumProbability + temp;
 			}
 		}
-		System.out.println("Probability for Royal Flush is "+sumProbability);	
+		//System.out.println("Probability for Royal Flush is "+sumProbability);	
 		return sumProbability;
 	}
 	
 	private double calculateStraightFlush(){
+		//System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -271,14 +285,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;
-				
-		//Straight Flush
-		//System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
 		double sumProbability = 0;
-		temp = 0;
+
 		cardValues.add(0,new CardValue("Ace","A",14,1));
 		for (int i=0;i<cardValues.size()-5;i++){
 		CardValue startCard = cardValues.get(i);
@@ -390,11 +399,12 @@ public class Hand extends Object implements Observer{
 		}
 		cardValues.remove(0);
 		cardValues.trimToSize();
-		System.out.println("Probability for Straight Flush is "+sumProbability);						
+		//System.out.println("Probability for Straight Flush is "+sumProbability);						
 		return sumProbability;	
 	}
 	
 	private double calculate4Kind(){
+		//System.out.println("Calculating... Four of a Kind");
 		
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
@@ -423,15 +433,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;
-				
-		//Four of a Kind
-		//System.out.println("Calculating... Four of a Kind");
-	
 		double sumProbability = 0;
-		temp = 0;
+
 		if (dealt == 2){
 			for (int i=0;i<cardValues.size();i++){
 				numValue = countValue(sorted, cardValues.get(i));
@@ -540,12 +544,13 @@ public class Hand extends Object implements Observer{
 				sumProbability = sumProbability + temp;
 			}
 		}
-		System.out.println("Probability for 4 of Kind is "+sumProbability);	
+		//System.out.println("Probability for 4 of Kind is "+sumProbability);	
 		return sumProbability;
 	}
 	
 	//TODO
 	private double calculateFullHouse(){
+		//System.out.println("Calculating... Full House");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -573,14 +578,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;			
-		//Full House
-		//System.out.println("Calculating... Full House");
-
 		double sumProbability = 0;
-		temp = 0;
+
 		if (dealt == 2){
 			for (int i=0;i<cardValues.size();i++){
 				numValue = countValue(sorted, cardValues.get(i));
@@ -689,11 +689,12 @@ public class Hand extends Object implements Observer{
 				sumProbability = sumProbability + temp;
 			}
 		}
-		System.out.println("Probability for Full House is "+sumProbability);		
+		//System.out.println("Probability for Full House is "+sumProbability);		
 		return sumProbability;
 	}
 	
 	private double calculateFlush(){
+		//System.out.println("Calculating... Flush");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -720,14 +721,10 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("King","K",13));
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
-		int numValue = 0;
 		int numSuit = 0;
-		int n = 0;
 		double temp = 0;		
-		//Flush (Same Suit)
-		//System.out.println("Calculating... Flush");
 		double sumProbability = 0;
-		temp = 0;
+
 		if (dealt == 2){
 			for (int i=0;i<cardSuits.size();i++){
 				numSuit = countSuit(sorted, cardSuits.get(i));
@@ -837,11 +834,12 @@ public class Hand extends Object implements Observer{
 				sumProbability = sumProbability + temp;
 			}
 		}
-		System.out.println("Probability for Flush is "+sumProbability);		
+		//System.out.println("Probability for Flush is "+sumProbability);		
 		return sumProbability;
 	}
 	
 	private double calculateStraight(){
+		//System.out.println("Calculating... Straight");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -869,12 +867,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;		
-
 		double sumProbability= 0;
-		temp = 0;
+
 		cardValues.add(0,new CardValue("Ace","A",14,1));
 		for (int i=0;i<cardValues.size()-5;i++){
 		CardValue startCard = cardValues.get(i);
@@ -986,12 +981,12 @@ public class Hand extends Object implements Observer{
 		}
 		cardValues.remove(0);
 		cardValues.trimToSize();
-		System.out.println("Probability for Straight is "+sumProbability);
-		
+		//System.out.println("Probability for Straight is "+sumProbability);
 		return sumProbability;
 	}
 	
 	private double calculate3Kind(){
+		//System.out.println("Calculating... Three of a Kind");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -1019,15 +1014,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;	
-		
-		//Three of a Kind
-		//System.out.println("Calculating... Three of a Kind");
-		
 		double sumProbability = 0;
-		temp = 0;
+
 		if (dealt == 2){
 			for (int i=0;i<cardValues.size();i++){
 				numValue = countValue(sorted, cardValues.get(i));
@@ -1135,16 +1124,18 @@ public class Hand extends Object implements Observer{
 				sumProbability = Math.min(1,sumProbability + temp);
 			}
 		}
-		System.out.println("Probability for 3 of Kind is "+sumProbability);
+		//System.out.println("Probability for 3 of Kind is "+sumProbability);
 		return sumProbability;
 	}
 	
 	//TODO	
 	private double calculate2Pair(){
-		return 1;
+		
+		return 0;
 	}
 	
 	private double calculate2Kind(){
+		//System.out.println("Calculating... One Pair");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
@@ -1172,14 +1163,9 @@ public class Hand extends Object implements Observer{
 		cardValues.add(new CardValue("Ace","A",14,1));
 		
 		int numValue = 0;
-		int numSuit = 0;
-		int n = 0;
 		double temp = 0;
-		
-		//One Pair
-		//System.out.println("Calculating... One Pair");
 		double sumProbability = 0;
-		temp = 0;
+
 		if (dealt == 2){
 			for (int i=0;i<cardValues.size();i++){
 				numValue = countValue(sorted, cardValues.get(i));
@@ -1280,7 +1266,7 @@ public class Hand extends Object implements Observer{
 				sumProbability = Math.min(1,sumProbability + temp);
 			}
 		}
-		System.out.println("Probability for 2 of Kind is "+sumProbability);	
+		//System.out.println("Probability for 2 of Kind is "+sumProbability);	
 		return sumProbability;
 	}
 	
@@ -1458,4 +1444,5 @@ public class Hand extends Object implements Observer{
 		}
 		return sorted;
 	}	
+
 }
