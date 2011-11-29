@@ -200,6 +200,19 @@ public class ResetRegistrationScreen extends JFrame {
 		}
 		
 		if (!number || !upper || !special) {
+			if (!number) {
+				JOptionPane.showMessageDialog(null, 
+						"Your password must include a number.", "Warning!", 
+						JOptionPane.WARNING_MESSAGE);
+			} else if (!upper) {
+				JOptionPane.showMessageDialog(null, 
+						"Your password must include an upper case letter.", 
+						"Warning!", JOptionPane.WARNING_MESSAGE);
+			} else if (!special) {
+				JOptionPane.showMessageDialog(null, 
+						"Your password must include a special character.", 
+						"Warning!", JOptionPane.WARNING_MESSAGE);
+			}
 			return false;
 		} else {
 			return true;
