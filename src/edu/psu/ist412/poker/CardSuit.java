@@ -9,7 +9,7 @@ public class CardSuit {
 	 */
 	public CardSuit(String value, String abbrv) {
 		this.value = value;
-		this.abbrv = abbrv;
+		this.abbrv = (String) abbrv.substring(0,1);;
 	}
 	public CardSuit(String value) {
 		this.value = value;
