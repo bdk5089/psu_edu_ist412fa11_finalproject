@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.Player;
 /**
- * JUnit test for the Game classes/methods
+ * JUnit test for the Game class/methods
  * @author PEdmonston
  */
 public class GameTest extends TestCase {
