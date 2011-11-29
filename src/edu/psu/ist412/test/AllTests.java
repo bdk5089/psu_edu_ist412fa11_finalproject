@@ -12,6 +12,7 @@ public class AllTests {
 		//System Logic Tests
 		suite.addTestSuite(CardTest.class);
 		suite.addTestSuite(DeckTest.class);
+		suite.addTestSuite(DMathTest.class);
 		suite.addTestSuite(GameControllerTest.class);
 		suite.addTestSuite(GameTest.class);
 		suite.addTestSuite(HandTest.class);
