@@ -1,5 +1,10 @@
 package edu.psu.ist412.poker;
 
+/**
+ * 
+ * @author KennedyBD
+ *
+ */
 public class Player {
 	private int position = 0;
 	private Hand hand;
@@ -20,10 +25,9 @@ public class Player {
 		this.isHuman = isHuman;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Player.
 	 */
-	@Override
 	public String toString() {
 		return "Player [position=" + position + "]";
 	}

@@ -2,25 +2,30 @@ package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
 import java.util.Observable;
-/**
- * 
- * @author KennedyBD
- *
- */
-public class Table extends Observable{
 
-	private ArrayList<Card> cards = new ArrayList<Card>();
+/**
+* 
+* @author KennedyBD
+*
+*/
+public class Table extends Observable {
+
+	private ArrayList<Card> cards;
+	
 	/**
-	 * 
+	 * Instantiates an ArrayList of card objects 
+	 * that is empty.  Must use addCard method to 
+	 * build the contents of the table. 
 	 */
 	public Table() {
 		super();
+		cards = new ArrayList<Card>();
 	}
 
-	/* (non-Javadoc)s
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Table. Multiple lines output,
+	 * one line for each card on the table.
 	 */
-	@Override
 	public String toString() {
 		String s="Table: \n";
 		for(int i=0;i<cards.size();i++){
@@ -28,7 +33,13 @@ public class Table extends Observable{
 		}
 		return s;
 	}
-
+	
+	/**
+	 * Determines if the table is ready to receive a card.
+	 * If the table has 5 cards it can no longer receive cards and
+	 * therefore is no longer ready.
+	 * @return
+	 */
 	public boolean isReady(){
 		if (cards.size()<5){
 			return true;
@@ -36,6 +47,14 @@ public class Table extends Observable{
 		return false;
 	}
 	
+	/**
+	 * Add card to the table, if card added makes
+	 * the table of size 3 or greater than all objects
+	 * observing this object are notified that it 
+	 * has been changed.
+	 * @param c
+	 * @throws Exception
+	 */
 	public void addCard(Card c) throws Exception{
 		if (c == null){
 			throw(new Exception("Hand cannot receive null card."));
@@ -51,10 +70,18 @@ public class Table extends Observable{
 		}
 	}
 	
+	/**
+	 * Return the cards ArrayList
+	 * @return
+	 */
 	public ArrayList<Card> getCards(){
 		return cards;
 	}	
 	
+	/**
+	 * Return the first 3 cards on the table.
+	 * @return
+	 */
 	public ArrayList<Card> getFlop(){
 		ArrayList<Card> flop = new ArrayList<Card>();
 		for(int i=0;i<3;i++){
@@ -63,17 +90,25 @@ public class Table extends Observable{
 		return flop;
 	}
 	
+	/**
+	 * Return the 4th card of the cards on the table
+	 * as a single element ArrayList
+	 * @return
+	 */
 	public ArrayList<Card> getTurn(){
 		ArrayList<Card> turn = new ArrayList<Card>();
 		turn.add(cards.get(3));	
 		return turn;
 	}
 	
+	/**
+	 * Return the 5th card of the 5 cards in the list
+	 * as a single element ArrayList
+	 * @return
+	 */
 	public ArrayList<Card> getRiver(){
 		ArrayList<Card> river = new ArrayList<Card>();
 		river.add(cards.get(4));	
 		return river;
 	}
-
-	
 }

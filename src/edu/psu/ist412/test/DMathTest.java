@@ -3,6 +3,12 @@ package edu.psu.ist412.test;
 import edu.psu.ist412.poker.DMath;
 import junit.framework.TestCase;
 
+/**
+ * 
+ * @author KennedyBD
+ *
+ */
+
 public class DMathTest extends TestCase {
 
 	public void testPermutations() {

@@ -27,10 +27,9 @@ public class Card {
 		this.value = new CardValue(value);
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Card.
 	 */
-	@Override
 	public String toString() {
 		return "Card ["+value+" of "+ suit + "]";
 	}

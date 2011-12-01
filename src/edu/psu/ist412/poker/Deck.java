@@ -51,10 +51,9 @@ public class Deck extends Observable{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Deck, multiple lines, 1 line per card.
 	 */
-	@Override
 	public String toString() {
 		String s = "Deck:\n";
 		for (int i=0;i<cards.size();i++){

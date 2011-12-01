@@ -51,10 +51,10 @@ public class CardSuit {
 			throw(new Exception("Invalid Suit String"));
 		}
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	
+	/**
+	 * Returns string representation of CardSuit.
 	 */
-	@Override
 	public String toString() {
 		return abbrv;
 	}

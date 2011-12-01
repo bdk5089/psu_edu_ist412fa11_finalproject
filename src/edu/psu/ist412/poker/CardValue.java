@@ -111,10 +111,9 @@ public class CardValue {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of CardVale.
 	 */
-	@Override
 	public String toString() {
 		return abbrv;
 	}
