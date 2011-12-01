@@ -49,9 +49,9 @@ public class CardTest extends TestCase {
 	 * test CardSuit
 	 */	
 	public void testSuit(){
-		assertTrue(s.getValue() == "Hearts");
-		assertTrue(s.getAbbrv()=="H");
-		assertTrue(s.toString()== s.getAbbrv());
+		assertTrue(s.getValue().equals("Hearts"));
+		assertTrue(s.getAbbrv().equals("H"));
+		assertTrue(s.toString().equals(s.getAbbrv()));
 	}
 	
 	/**

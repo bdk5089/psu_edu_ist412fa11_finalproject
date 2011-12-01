@@ -19,7 +19,7 @@ public class HandTest extends TestCase {
 			h.setDeck(d);
 			assertTrue(true);
 		}catch(Exception e){
-			assertTrue(false);
+			assertTrue("Error", false);
 		}	
 	}
 	public void testSetTable(){
@@ -29,7 +29,7 @@ public class HandTest extends TestCase {
 			h.setTable(t);
 			assertTrue(true);
 		}catch(Exception e){
-			assertTrue(false);
+			assertTrue("Error", false);
 		}	
 	}
 	
