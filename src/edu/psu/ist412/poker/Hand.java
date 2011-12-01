@@ -11,6 +11,16 @@ import java.util.Set;
 
 public class Hand extends Object implements Observer{
 
+	public static String ROYAL_FLUSH = "Royal Flush";
+	public static String STRAIGHT_FLUSH = "Straight Flush";
+	public static String FULL_HOUSE = "Full House";
+	public static String STRAIGHT = "Straight";
+	public static String FOUR_KIND = "4 of a Kind";
+	public static String THREE_KIND = "3 of a Kind";
+	public static String TWO_KIND = "2 of a Kind";
+	public static String TWO_PAIR = "2 Pair";
+	public static String FLUSH = "Flush";
+	
 	private ArrayList<Card> cards = new ArrayList<Card>();
 	private Map<String, Double> probability;
 	private Table table;
@@ -93,15 +103,15 @@ public class Hand extends Object implements Observer{
 			System.out.println(table);
 			
 			probability = new HashMap<String, Double>(9);
-			probability.put("Royal Flush", calculateRoyalFlush());
-			probability.put("Straight Flush", calculateStraightFlush());
-			probability.put("4 of a Kind", calculate4Kind());
-			probability.put("Full House", calculateFullHouse());
-			probability.put("Flush", calculateFlush());
-			probability.put("Straight", calculateStraight());
-			probability.put("3 of a Kind", calculate3Kind());
-			probability.put("2 Pair", calculate2Pair());
-			probability.put("2 of a Kind", calculate2Kind());
+			probability.put(Hand.ROYAL_FLUSH, calculateRoyalFlush());
+			probability.put(Hand.STRAIGHT_FLUSH, calculateStraightFlush());
+			probability.put(Hand.FOUR_KIND, calculate4Kind());
+			probability.put(Hand.FULL_HOUSE, calculateFullHouse());
+			probability.put(Hand.FLUSH, calculateFlush());
+			probability.put(Hand.STRAIGHT, calculateStraight());
+			probability.put(Hand.THREE_KIND, calculate3Kind());
+			probability.put(Hand.TWO_PAIR, calculate2Pair());
+			probability.put(Hand.TWO_KIND, calculate2Kind());
 			
 			Set set = probability.entrySet();
 			Iterator i = set.iterator();
@@ -118,40 +128,22 @@ public class Hand extends Object implements Observer{
 		System.out.println("");
 	}
 
-	private double calculateRoyalFlush(){
+	private double calculateRoyalFlush() throws Exception{
 		//System.out.println("Calculating... Royal Straight Flush (Same Suit, T-A, Sequential)");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;
 		double sumProbability = 0;
 		if (dealt == 2){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 2){
 					temp = (double)(1*DMath.combination(decksize-3,2)
@@ -170,7 +162,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 3){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 3){
 					temp = (double)(1*DMath.combination(decksize-2,2)
@@ -189,7 +181,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 4){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 4){
 					temp = (double)(1*DMath.combination(decksize-1,2)
@@ -208,7 +200,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 5){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -226,7 +218,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 6){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -241,7 +233,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 7){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue("10","T",10), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -256,39 +248,21 @@ public class Hand extends Object implements Observer{
 		return sumProbability;
 	}
 	
-	private double calculateStraightFlush(){
+	private double calculateStraightFlush() throws Exception{
 		//System.out.println("Calculating... Straight Flush (Same Suit, Sequential)");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;
 		double sumProbability = 0;
 
-		cardValues.add(0,new CardValue("Ace","A",14,1));
+		cardValues.add(0,new CardValue(CardValue.ACE));
 		for (int i=0;i<cardValues.size()-5;i++){
 		CardValue startCard = cardValues.get(i);
 		CardValue endCard = cardValues.get(i+4);
@@ -403,7 +377,7 @@ public class Hand extends Object implements Observer{
 		return sumProbability;	
 	}
 	
-	private double calculate4Kind(){
+	private double calculate4Kind() throws Exception {
 		//System.out.println("Calculating... Four of a Kind");
 		
 		ArrayList<Card> sorted = sortByValue(getCombined());
@@ -411,26 +385,8 @@ public class Hand extends Object implements Observer{
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;
@@ -549,33 +505,15 @@ public class Hand extends Object implements Observer{
 	}
 	
 	//TODO
-	private double calculateFullHouse(){
+	private double calculateFullHouse() throws Exception {
 		//System.out.println("Calculating... Full House");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;			
@@ -693,33 +631,15 @@ public class Hand extends Object implements Observer{
 		return sumProbability;
 	}
 	
-	private double calculateFlush(){
+	private double calculateFlush() throws Exception {
 		//System.out.println("Calculating... Flush");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numSuit = 0;
 		double temp = 0;		
@@ -838,39 +758,21 @@ public class Hand extends Object implements Observer{
 		return sumProbability;
 	}
 	
-	private double calculateStraight(){
+	private double calculateStraight() throws Exception{
 		//System.out.println("Calculating... Straight");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;		
 		double sumProbability= 0;
 
-		cardValues.add(0,new CardValue("Ace","A",14,1));
+		cardValues.add(0,new CardValue(CardValue.ACE));
 		for (int i=0;i<cardValues.size()-5;i++){
 		CardValue startCard = cardValues.get(i);
 		CardValue endCard = cardValues.get(i+4);
@@ -985,33 +887,15 @@ public class Hand extends Object implements Observer{
 		return sumProbability;
 	}
 	
-	private double calculate3Kind(){
+	private double calculate3Kind() throws Exception {
 		//System.out.println("Calculating... Three of a Kind");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;	
@@ -1129,38 +1013,20 @@ public class Hand extends Object implements Observer{
 	}
 	
 	//TODO	
-	private double calculate2Pair(){
+	private double calculate2Pair() throws Exception {
 		
 		return 0;
 	}
 	
-	private double calculate2Kind(){
+	private double calculate2Kind() throws Exception {
 		//System.out.println("Calculating... One Pair");
 		ArrayList<Card> sorted = sortByValue(getCombined());
 		int dealt = sorted.size();
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
-		cardSuits.add(new CardSuit("Hearts"));
-		cardSuits.add(new CardSuit("Diamonds"));
-		cardSuits.add(new CardSuit("Clubs"));
-		cardSuits.add(new CardSuit("Spades"));
-		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
+		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;
@@ -1318,25 +1184,13 @@ public class Hand extends Object implements Observer{
 		return counter;
 	}
 	
-	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd){
+	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd) throws Exception{
 		//non-suited
 		int counter = 0;
 	
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("Ace","A",14,1));
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardValue> cardValues = CardValue.getAll();
+		cardValues.add(0,new CardValue(CardValue.ACE));
+
 		
 		for (int i=0;i<cardValues.size();i++){
 			CardValue card = cardValues.get(i);
@@ -1359,24 +1213,11 @@ public class Hand extends Object implements Observer{
 		return counter;
 	}
 	
-	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd, CardSuit suit){
+	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd, CardSuit suit) throws Exception{
 		int counter = 0;
 		
-		ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-		cardValues.add(new CardValue("Ace","A",14,1));
-		cardValues.add(new CardValue("2","2",2));
-		cardValues.add(new CardValue("3","3",3));
-		cardValues.add(new CardValue("4","4",4));
-		cardValues.add(new CardValue("5","5",5));
-		cardValues.add(new CardValue("6","6",6));
-		cardValues.add(new CardValue("7","7",7));
-		cardValues.add(new CardValue("8","8",8));
-		cardValues.add(new CardValue("9","9",9));
-		cardValues.add(new CardValue("10","T",10));
-		cardValues.add(new CardValue("Jack","J",11));
-		cardValues.add(new CardValue("Queen","Q",12));
-		cardValues.add(new CardValue("King","K",13));
-		cardValues.add(new CardValue("Ace","A",14,1));
+		ArrayList<CardValue> cardValues = CardValue.getAll();
+		cardValues.add(0,new CardValue(CardValue.ACE));
 		
 		for (int i=0;i<cardValues.size();i++){
 			CardValue card = cardValues.get(i);
