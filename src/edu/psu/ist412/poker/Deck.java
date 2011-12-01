@@ -26,7 +26,7 @@ public class Deck extends Observable{
 		if (cardValues == null){
 			cardValues = CardValue.getAll();
 		}
-		if (cardValues == null){
+		if (cardSuits == null){
 			cardSuits = CardSuit.getAll();
 		}
 		
