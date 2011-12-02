@@ -227,20 +227,16 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
-	private JPanel cpuPanel() {
+	private JPanel cpuPanel() {		
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new FlowLayout());
 		
-		JLabel card1 = new JLabel();
-		card1.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
-		
-		panel.add(card1);
-		
-		JLabel card2 = new JLabel();
-		card2.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
-		
-		panel.add(card2);
+		for (Card c : gc.getCurrentGame().getPlayers().get(1).getHand().getCards()) {
+			JLabel card = new JLabel();
+			card.setIcon(c.getImage());
+			panel.add(card);
+		}
 		
 		return panel;
 	}
