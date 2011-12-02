@@ -9,8 +9,8 @@ import java.util.Observable;
  */
 public class Deck extends Observable{
 	
-	private static ArrayList<CardValue> cardValues = new ArrayList<CardValue>();
-	private static ArrayList<CardSuit> cardSuits = new ArrayList<CardSuit>();
+	private static ArrayList<CardValue> cardValues;
+	private static ArrayList<CardSuit> cardSuits;
 	
 	private ArrayList<Card> cards = new ArrayList<Card>();
 
@@ -23,26 +23,11 @@ public class Deck extends Observable{
 	
 	public Deck(boolean shuffle) {
 		
-		if (cardValues.size() == 0 ){
-			cardValues.add(new CardValue("2","2",2));
-			cardValues.add(new CardValue("3","3",3));
-			cardValues.add(new CardValue("4","4",4));
-			cardValues.add(new CardValue("5","5",5));
-			cardValues.add(new CardValue("6","6",6));
-			cardValues.add(new CardValue("7","7",7));
-			cardValues.add(new CardValue("8","8",8));
-			cardValues.add(new CardValue("9","9",9));
-			cardValues.add(new CardValue("10","T",10));
-			cardValues.add(new CardValue("Jack","J",11));
-			cardValues.add(new CardValue("Queen","Q",12));
-			cardValues.add(new CardValue("King","K",13));
-			cardValues.add(new CardValue("Ace","A",14,1));
+		if (cardValues == null){
+			cardValues = CardValue.getAll();
 		}
-		if (cardSuits.size() == 0){
-			cardSuits.add(new CardSuit("Hearts"));
-			cardSuits.add(new CardSuit("Diamonds"));
-			cardSuits.add(new CardSuit("Clubs"));
-			cardSuits.add(new CardSuit("Spades"));
+		if (cardSuits == null){
+			cardSuits = CardSuit.getAll();
 		}
 		
 		for (int j=0;j<cardValues.size();j++){
@@ -66,8 +51,8 @@ public class Deck extends Observable{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Deck, multiple lines, 1 line per card.
 	 */
 	@Override
 	public String toString() {

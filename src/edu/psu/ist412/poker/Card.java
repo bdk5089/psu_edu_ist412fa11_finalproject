@@ -22,10 +22,13 @@ public class Card {
 		this.suit = suit;
 		this.value = value;
 	}
+	public Card(String suit, String value) throws Exception{
+		this.suit = new CardSuit(suit);
+		this.value = new CardValue(value);
+	}
 	
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Returns string representation of Card.
 	 */
 	@Override
 	public String toString() {

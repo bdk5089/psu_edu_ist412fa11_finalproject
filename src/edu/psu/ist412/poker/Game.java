@@ -2,10 +2,16 @@ package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author KennedyBD
+ *
+ */
 public class Game {
-	public enum GameState {START, FLOP, TURN, RIVER};
-	private GameState state = GameState.START;
 	
+	public enum GameState {START, FLOP, TURN, RIVER};
+	
+	private GameState state = GameState.START;
 	private ArrayList<Card> tableCards = new ArrayList<Card>();
 	
 	private ArrayList<Player> players;
@@ -19,8 +25,10 @@ public class Game {
 		super();	
 		this.players = players;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	
+	/**
+	 * Returns string representation of Game.  How many players, the cards on the table,
+	 * and the current player.
 	 */
 	@Override
 	public String toString() {

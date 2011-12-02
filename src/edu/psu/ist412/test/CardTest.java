@@ -12,17 +12,24 @@ import javax.swing.ImageIcon;
  */
 
 public class CardTest extends TestCase {
-	CardSuit s = new CardSuit("Hearts","H");
-	CardValue v = new CardValue("10","T",10);
-	Card c = new Card(s,v);
+	
+	private CardSuit s;
+	private CardValue v;
+	private Card c;
 	
 	public CardTest(String name) {
 		super(name);
-		
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		try{
+			s = new CardSuit(CardSuit.HEARTS);
+			v = new CardValue(CardValue.TEN);
+			c = new Card(s,v);
+		}catch(Exception e){
+			assertTrue(false);
+		}
 	}
 
 	protected void tearDown() throws Exception {
@@ -35,16 +42,16 @@ public class CardTest extends TestCase {
 	public void testCard(){
 		assertTrue(c.getSuit()== s);
 		assertTrue(c.getValue()== v);
-		assertTrue(c.getImage()instanceof ImageIcon);
+		assertTrue(c.getImage() instanceof ImageIcon);
 	}
 	
 	/**
 	 * test CardSuit
 	 */	
 	public void testSuit(){
-		assertTrue(s.getValue() == "Hearts");
-		assertTrue(s.getAbbrv()=="H");
-		assertTrue(s.toString()== s.getAbbrv());
+		assertTrue(s.getValue().equals("Hearts"));
+		assertTrue(s.getAbbrv().equals("H"));
+		assertTrue(s.toString().equals(s.getAbbrv()));
 	}
 	
 	/**
