@@ -10,6 +10,11 @@ import edu.psu.ist412.poker.Hand;
 import edu.psu.ist412.poker.Table;
 import junit.framework.TestCase;
 
+/**
+ * 
+ * @author KennedyBD
+ *
+ */
 public class HandTest extends TestCase {
 
 	public void testSetDeck(){
@@ -22,6 +27,7 @@ public class HandTest extends TestCase {
 			assertTrue("Error", false);
 		}	
 	}
+	
 	public void testSetTable(){
 		try{
 			Table t = new Table();
