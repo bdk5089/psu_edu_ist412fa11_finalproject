@@ -17,7 +17,7 @@ public class CardValue {
 	public static String KING = "King";
 	public static String ACE = "Ace";
 	
-	public static ArrayList<CardValue> getAll(){
+	public final static ArrayList<CardValue> getAll(){
 		try{
 			ArrayList<CardValue> a = new ArrayList<CardValue>();
 			a.add(new CardValue(CardValue.TWO));
@@ -42,7 +42,7 @@ public class CardValue {
 	private String value;
 	private String abbrv;
 	private int rank;
-	private int rank2;
+
 	/**
 	 * @param value
 	 * @param abbrv
@@ -63,7 +63,7 @@ public class CardValue {
 		else if (value.equals(CardValue.JACK))	{this.abbrv = "J"; this.rank = 11;}
 		else if (value.equals(CardValue.QUEEN))	{this.abbrv = "Q"; this.rank = 12;}
 		else if (value.equals(CardValue.KING))	{this.abbrv = "K"; this.rank = 13;}
-		else if (value.equals(CardValue.ACE))	{this.abbrv = "A"; this.rank = 14; this.rank2 = 1;}
+		else if (value.equals(CardValue.ACE))	{this.abbrv = "A"; this.rank = 14;}
 		else {throw(new Exception("Invalid Card Value String"));}
 	}
 	
@@ -88,32 +88,11 @@ public class CardValue {
 			throw(new Exception("Invalid Card Value String"));
 		}
 	}
-	public CardValue(String value, String abbrv, int rank, int rank2) throws Exception {
-		if (value.equals(CardValue.TWO)
-				|| value.equals(CardValue.THREE)
-				|| value.equals(CardValue.FOUR)
-				|| value.equals(CardValue.FIVE)
-				|| value.equals(CardValue.SIX)
-				|| value.equals(CardValue.SEVEN)
-				|| value.equals(CardValue.EIGHT)
-				|| value.equals(CardValue.NINE)
-				|| value.equals(CardValue.TEN)
-				|| value.equals(CardValue.JACK)
-				|| value.equals(CardValue.QUEEN)
-				|| value.equals(CardValue.KING)
-				|| value.equals(CardValue.ACE)){
-			this.value = value;
-			this.abbrv = abbrv;
-			this.rank = rank;
-			this.rank2 = rank2;
-		}else{
-			throw(new Exception("Invalid Card Value String"));
-		}
-	}
 	
 	/**
 	 * Returns string representation of CardVale.
 	 */
+	@Override
 	public String toString() {
 		return abbrv;
 	}
@@ -125,6 +104,7 @@ public class CardValue {
 		return value;
 	}
 
+	
 	/**
 	 * @return the abbrv
 	 */
@@ -137,14 +117,13 @@ public class CardValue {
 	 */
 	public int getRank() {
 		return rank;
-	}	
-	
-	public int getRank(boolean alt){
-		if (alt){
-			return rank2;
-		}else{
-			return rank;
-		}
+	}
+	/**
+	 * Set the rank, used to create an ACE with rank 1
+	 * @param r
+	 */
+	public void setRank(int r) {
+		rank = r;
 	}
 	
 }

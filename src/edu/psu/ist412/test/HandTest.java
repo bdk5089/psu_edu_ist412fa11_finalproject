@@ -64,6 +64,7 @@ public class HandTest extends TestCase {
 		}
 	}
 	
+	/*
 	public void testGetProbability(){
 		Map<String, Double> p;
 		Hand h;
@@ -97,9 +98,12 @@ public class HandTest extends TestCase {
 			e.printStackTrace();
 		}		
 	}
-	
+	*/
 	
 	public void testRoyalFlush(){
+		System.out.println("-------------------");
+		System.out.println("TESTING ROYAL FLUSH");
+		System.out.println("-------------------");
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -137,7 +141,12 @@ public class HandTest extends TestCase {
 		
 	}
 	
+
 	public void testStraightFlush(){
+		System.out.println("----------------------");
+		System.out.println("TESTING STRAIGHT FLUSH");
+		System.out.println("----------------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -176,6 +185,10 @@ public class HandTest extends TestCase {
 	}
 	
 	public void test4Kind(){
+		System.out.println("-------------------");
+		System.out.println("TESTING 4 OF A KIND");
+		System.out.println("-------------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -214,6 +227,10 @@ public class HandTest extends TestCase {
 	}
 	
 	public void test3Kind(){
+		System.out.println("-------------------");
+		System.out.println("TESTING 3 OF A KIND");
+		System.out.println("-------------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -253,6 +270,10 @@ public class HandTest extends TestCase {
 	}
 	
 	public void test2Kind(){
+		System.out.println("-------------------");
+		System.out.println("TESTING 2 OF A KIND");
+		System.out.println("-------------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -293,8 +314,68 @@ public class HandTest extends TestCase {
 		}
 		
 	}
+	
+	
+	public void testFullHouse(){
+		System.out.println("------------------");
+		System.out.println("TESTING FULL HOUSE");
+		System.out.println("------------------");
+		
+		Map<String, Double> p;
+		Hand h;
+		Table t;
+		
+		try {
+			
+			h = new Hand();
+			t = new Table();
+			h.setTable(t);
+			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
+			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));	
+			h.calculateProbability();	
+			p = h.getProbability();
+			assertTrue(p.get(Hand.FULL_HOUSE) > 0);
+			
+			h = new Hand();
+			t = new Table();
+			h.setTable(t);
+			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
+			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.NINE)));
+			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.NINE)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.ACE)));
+			h.calculateProbability();	
+			p = h.getProbability();
+			assertTrue(p.get(Hand.FULL_HOUSE) == 1);
+
+			h = new Hand();
+			t = new Table();
+			h.setTable(t);
+			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
+			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));
+			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));			
+			h.calculateProbability();	
+			p = h.getProbability();
+			assertTrue(p.get(Hand.FULL_HOUSE) == 0);
+			
+		} catch (Exception e) {
+			assertTrue(false);
+			e.printStackTrace();
+		}
+		
+	}	
 
 	public void test2Pair(){
+		System.out.println("--------------");
+		System.out.println("TESTING 2 PAIR");
+		System.out.println("--------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -334,50 +415,11 @@ public class HandTest extends TestCase {
 			e.printStackTrace();
 		}
 	}
-	
-	public void testFullHouse(){
-		Map<String, Double> p;
-		Hand h;
-		Table t;
-		
-		try {
-			
-			h = new Hand();
-			t = new Table();
-			h.setTable(t);
-			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
-			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.NINE)));
-			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.NINE)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
-			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TEN)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
-			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.ACE)));
-			h.calculateProbability();	
-			p = h.getProbability();
-			assertTrue(p.get(Hand.FULL_HOUSE) == 1);
 
-			h = new Hand();
-			t = new Table();
-			h.setTable(t);
-			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
-			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));
-			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
-			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
-			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));			
-			h.calculateProbability();	
-			p = h.getProbability();
-			assertTrue(p.get(Hand.FULL_HOUSE) == 0);
-			
-		} catch (Exception e) {
-			assertTrue(false);
-			e.printStackTrace();
-		}
-		
-	}
-	
 	public void testStraight(){
+		System.out.println("----------------");
+		System.out.println("TESTING STRAIGHT");
+		System.out.println("----------------");
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -417,6 +459,10 @@ public class HandTest extends TestCase {
 	}
 
 	public void testFlush(){
+		System.out.println("-------------");
+		System.out.println("TESTING FLUSH");
+		System.out.println("-------------");
+		
 		Map<String, Double> p;
 		Hand h;
 		Table t;
@@ -442,7 +488,8 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));			
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.JACK)));			
 			h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FLUSH) == 0);

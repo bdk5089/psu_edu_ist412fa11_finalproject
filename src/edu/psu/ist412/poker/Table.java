@@ -26,6 +26,7 @@ public class Table extends Observable {
 	 * Returns string representation of Table. Multiple lines output,
 	 * one line for each card on the table.
 	 */
+	@Override
 	public String toString() {
 		String s="Table: \n";
 		for(int i=0;i<cards.size();i++){

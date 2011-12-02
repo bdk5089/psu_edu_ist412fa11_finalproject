@@ -30,6 +30,7 @@ public class Card {
 	/**
 	 * Returns string representation of Card.
 	 */
+	@Override
 	public String toString() {
 		return "Card ["+value+" of "+ suit + "]";
 	}

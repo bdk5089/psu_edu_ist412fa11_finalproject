@@ -28,6 +28,7 @@ public class Player {
 	/**
 	 * Returns string representation of Player.
 	 */
+	@Override
 	public String toString() {
 		return "Player [position=" + position + "]";
 	}

@@ -9,7 +9,7 @@ public class CardSuit {
 	public static String CLUBS = "Clubs";
 	public static String SPADES = "Spades";
 	
-	public static ArrayList<CardSuit> getAll(){
+	public final static ArrayList<CardSuit> getAll(){
 		try{
 			ArrayList<CardSuit> a = new ArrayList<CardSuit>();
 			a.add(new CardSuit(CardSuit.HEARTS));
@@ -55,6 +55,7 @@ public class CardSuit {
 	/**
 	 * Returns string representation of CardSuit.
 	 */
+	@Override
 	public String toString() {
 		return abbrv;
 	}

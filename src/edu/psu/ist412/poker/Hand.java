@@ -1,12 +1,16 @@
 package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 
@@ -44,6 +48,7 @@ public class Hand extends Object implements Observer{
 	 * Returns string representation of the Hand, output of multiple lines,
 	 * one for each card in the hand.
 	 */
+	@Override
 	public String toString() {
 		String s="Hand: \n";
 		for(int i=0;i<cards.size();i++){
@@ -150,8 +155,8 @@ public class Hand extends Object implements Observer{
 			throw(new Exception("Too few cards in deck to calculate probability."));
 		}else{
 			System.out.println("CALCULATING PROBABILITIES");
-			System.out.println(this);
-			System.out.println(table);
+			System.out.println("HAND: "+this);
+			System.out.println("TABLE: "+ table);
 			
 			probability = new HashMap<String, Double>(9);
 			probability.put(Hand.ROYAL_FLUSH, calculateRoyalFlush());
@@ -164,19 +169,15 @@ public class Hand extends Object implements Observer{
 			probability.put(Hand.TWO_PAIR, calculate2Pair());
 			probability.put(Hand.TWO_KIND, calculate2Kind());
 			
-			Set set = probability.entrySet();
-			Iterator i = set.iterator();
-		    while(i.hasNext()){
-		    	 Map.Entry me = (Map.Entry)i.next();
-		    	 String padding = "";
-		    	 for (int p=0;p<15-me.getKey().toString().length();p++){
+		    for (Map.Entry<String, Double> entry: probability.entrySet()) {
+		        String padding = "";
+		    	for (int p=0;p<15-entry.getKey().toString().length();p++){
 		    		 padding+=" ";
-		    	 }
-		    	 System.out.println("Probability of "+ me.getKey() +padding+  " : " + me.getValue() );
+		    	}
+		    	System.out.println("Probability of "+ entry.getKey() +padding+  " : " + entry.getValue() );
 		    }
-
+		    System.out.println("");
 		}
-		System.out.println("");
 	}
 	
 	/*
@@ -199,7 +200,7 @@ public class Hand extends Object implements Observer{
 		double sumProbability = 0;
 		if (dealt == 2){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 2){
 					temp = (double)(1*DMath.combination(decksize-3,2)
@@ -218,7 +219,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 3){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 3){
 					temp = (double)(1*DMath.combination(decksize-2,2)
@@ -237,7 +238,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 4){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 4){
 					temp = (double)(1*DMath.combination(decksize-1,2)
@@ -256,7 +257,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 5){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -274,7 +275,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 6){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -289,7 +290,7 @@ public class Hand extends Object implements Observer{
 			}
 		}else if (dealt == 7){
 			for (int j=0;j<cardSuits.size();j++){
-				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue("Ace","A",14),cardSuits.get(j));
+				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
 					temp = 1;
@@ -573,7 +574,6 @@ public class Hand extends Object implements Observer{
 	 * 3 of one kind and two of another kind, potential to have
 	 * 3,2,2 or 3,3,1 or 3,2,1,1
 	 */
-	//TODO
 	private double calculateFullHouse() throws Exception {
 		//System.out.println("Calculating... Full House");
 		ArrayList<Card> sorted = sortByValue(getCombined());
@@ -581,122 +581,258 @@ public class Hand extends Object implements Observer{
 		int remaining = 7-dealt;
 		int decksize = 52-dealt;
 		
-		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
-		ArrayList<CardValue> cardValues = CardValue.getAll();
-		
 		int numValue = 0;
 		double temp = 0;			
 		double sumProbability = 0;
-
+		ArrayList<Integer> dist = getCountDistribution(getCombined());
+		
 		if (dealt == 2){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue == 2){
-					temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),3)
+				if (dist.toString().equals("[2]")){
+					temp = (double)(0
+							//2 triples + 1 kicker
+							+ DMath.combination(2,1)*DMath.combination(12,1)*DMath.combination(4,3)*DMath.combination(11,1)*DMath.combination(4,1)
+							//1 triple + 1 pair + 2 kickers
+							+ DMath.combination(2,1)*DMath.combination(12,1)*DMath.combination(4,2)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+							+ DMath.combination(12,1)*DMath.combination(4,3)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+							//1 triple + 2 pairs
+							+ DMath.combination(2,1)*DMath.combination(12,1)*DMath.combination(4,2)*DMath.combination(11,1)*DMath.combination(4,2)
+							+ DMath.combination(12,1)*DMath.combination(4,3)*DMath.combination(11,1)*Math.pow(DMath.combination(4,2),1)
 							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 1){
-					temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),2)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 0){
-					temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),1)
+				}else if (dist.toString().equals("[1, 1]")){
+					temp = (double)(0
+							//2 triples + 1 kicker
+							+ DMath.combination(3,2)*DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,1)
+							//1 triple + 1 pair + 2 kickers
+							+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(3,1)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+							+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(12,1)*DMath.combination(4,2)*DMath.combination(11,1)*DMath.combination(4,1)
+							//1 triple + 2 pairs
+							+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,2)
 							)/(double)DMath.combination(decksize, remaining);
 				}else{
 					temp = 0;
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
 		}else if (dealt == 3){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue == 3){
-					temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),3)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 2){
-					temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),2)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 1){
-					temp = (double)(DMath.combination(4-numValue,3)*DMath.combination(decksize-(4-numValue),1)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 0){
-					temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
-							)/(double)DMath.combination(decksize, remaining);
-				}else{
-					temp = 0;
-				}
-				//System.out.println(temp);
-				sumProbability = sumProbability + temp;
+			if (dist.toString().equals("[3]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(12,1)*DMath.combination(4,3)*DMath.combination(11,1)*DMath.combination(4,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(12,1)*DMath.combination(4,2)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						//1 triple + 2 pairs
+						+ DMath.combination(12,2)*Math.pow(DMath.combination(4,2),2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,1)
+						+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,1)
+						+ DMath.combination(2,1)*DMath.combination(11,1)*DMath.combination(4,3)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						+ DMath.combination(3,2)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						+ DMath.combination(11,2)*DMath.combination(4,1)*DMath.combination(4,3)
+						//1 triple + 2 pairs
+						+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,2)
+						+ DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,3)
+						+ DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[1, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(3,1)*Math.pow(DMath.combination(3,2),2)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(3,1)*DMath.combination(3,2)*DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,1)
+						+ DMath.combination(3,1)*DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,2)
+						+ DMath.combination(3,1)*DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,3)
+						//1 triple + 2 pairs
+						+ DMath.combination(3,1)*DMath.combination(3,2)*Math.pow(DMath.combination(3,1),2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
 			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;			
 		}else if (dealt == 4){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue == 4){
-					temp = 1;
-				}else if (numValue == 3){
-					temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),2)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 2){
-					temp = (double)(DMath.combination(4-numValue,2)*DMath.combination(decksize-(4-numValue),1)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 1){
-					temp = (double)(DMath.combination(4-numValue,4)*DMath.combination(decksize-(4-numValue),0)
-							)/(double)DMath.combination(decksize, remaining);
-				}else{
-					temp = 0;
-				}
-				//System.out.println(temp);
-				sumProbability = sumProbability + temp;
+			if (dist.toString().equals("[3, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(11,1)*DMath.combination(4,3)
+						+ DMath.combination(3,2)*DMath.combination(11,1)*DMath.combination(4,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(3,1)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						+ DMath.combination(11,2)*DMath.combination(4,1)*DMath.combination(4,2)
+						//1 triple + 2 pairs
+						+ DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 2]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(2,1)*DMath.combination(11,1)*DMath.combination(4,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						//1 triple + 2 pairs
+						+ DMath.combination(2,1)*DMath.combination(2,1)*DMath.combination(11,1)*DMath.combination(4,2)
+						+ DMath.combination(11,1)*DMath.combination(4,3)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(2,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(10,1)*DMath.combination(4,3)
+						+ DMath.combination(2,1)*DMath.combination(3,2)*DMath.combination(10,1)*DMath.combination(4,1)
+						+ DMath.combination(2,1)*DMath.combination(10,1)*DMath.combination(4,2)
+						+ DMath.combination(2,1)*DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(10,1)*DMath.combination(4,1)
+						//1 triple + 2 pairs
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(3,2)
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(3,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[1, 1, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(4,1)*DMath.combination(3,2)*DMath.combination(3,1)*DMath.combination(3,1)
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
 			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;	
 		}else if (dealt == 5){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue >= 4){
-					temp = 1;
-				}else if (numValue == 3){
-					temp = (double)(DMath.combination(4-numValue,1)*DMath.combination(decksize-(4-numValue),1)
-							)/(double)DMath.combination(decksize, remaining);
-				}else if (numValue == 2){
-					temp = (double)(DMath.combination(4-numValue,2)
-							)/(double)DMath.combination(decksize, remaining);
-				}else {
-					temp = 0;
-				}
-				//System.out.println(temp);
-				sumProbability = sumProbability + temp;
+			if (dist.toString().equals("[3, 2]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(11,1)*DMath.combination(4,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)
+						//1 triple + 2 pairs
+						+ DMath.combination(11,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[3, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(3,2)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(10,1)*DMath.combination(4,1)
+						+ DMath.combination(10,1)*DMath.combination(4,2)
+						//1 triple + 2 pairs
+						+ DMath.combination(2,1)*DMath.combination(2,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 2, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(2,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(2,1)*DMath.combination(2,1)*DMath.combination(10,1)*DMath.combination(4,1)
+						//1 triple + 2 pairs
+						+ DMath.combination(2,1)*DMath.combination(2,1)*DMath.combination(3,1)
+						+ DMath.combination(3,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(3,1)*DMath.combination(3,2)
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(3,1)
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
 			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;				
 		}else if (dealt == 6){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue >= 4){
-					temp = 1;
-				}else if (numValue == 3){
-					temp = ((double)DMath.combination((4-numValue),1)
-							)/(double)DMath.combination(decksize, remaining);
-				}else{
-					temp = 0;
-				}
-				//System.out.println(temp);
-				sumProbability = sumProbability + temp;
+			if (dist.toString().equals("[3, 3]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(11,1)*DMath.combination(4,1)
+						//1 triple + 1 pair + 2 kickers
+						+ 0
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[3, 2, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ DMath.combination(2,1)
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(10,1)*DMath.combination(4,1)
+						//1 triple + 2 pairs
+						+ DMath.combination(3,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[3, 1, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(3,1)*DMath.combination(3,1)
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 2, 2]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ 0
+						//1 triple + 2 pairs
+						+ DMath.combination(3,1)*DMath.combination(2,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 2, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ DMath.combination(2,1)*DMath.combination(2,1)
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
 			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;					
 		}else if (dealt == 7){
-			for (int i=0;i<cardValues.size();i++){
-				numValue = countValue(sorted, cardValues.get(i));
-				//System.out.println(cardValues.get(i)+" "+num);
-				if (numValue >= 4){
-					temp = 1;
-				}else{
-					temp = 0;
-				}
-				//System.out.println(temp);
-				sumProbability = sumProbability + temp;
+			if (dist.toString().equals("[3, 3, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 1
+						//1 triple + 1 pair + 2 kickers
+						+ 0
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[3, 2, 2]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ 0
+						//1 triple + 2 pairs
+						+ 1
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[3, 2, 1, 1]")){
+				temp = (double)(0
+						//2 triples + 1 kicker
+						+ 0
+						//1 triple + 1 pair + 2 kickers
+						+ 1
+						//1 triple + 2 pairs
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
 			}
-		}
-		//System.out.println("Probability for Full House is "+sumProbability);		
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;		
+		}	
 		return sumProbability;
 	}
 	
@@ -1099,10 +1235,159 @@ public class Hand extends Object implements Observer{
 	 * Calculates the probability of having 2 pair - 
 	 * Two sets of two of a kind, 2,2,1,1,1 or 2,2,2,1
 	 */
-	//TODO	
 	private double calculate2Pair() throws Exception {
+		//System.out.println("Calculating... 2 Pair");
+		ArrayList<Card> sorted = sortByValue(getCombined());
+		int dealt = sorted.size();
+		int remaining = 7-dealt;
+		int decksize = 52-dealt;
 		
-		return 0;
+		int numValue = 0;
+		double temp = 0;			
+		double sumProbability = 0;
+		ArrayList<Integer> dist = getCountDistribution(getCombined());
+		
+		if (dealt == 2){
+				if (dist.toString().equals("[2]")){
+					temp = (double)(0
+							//3 pairs + 1 kicker
+							+ DMath.combination(12,2)*Math.pow(DMath.combination(4,2),2)*DMath.combination(10,1)*DMath.combination(4,1)
+							//2 pairs + 3 kickers
+							+ DMath.combination(12,1)*DMath.combination(4,2)*DMath.combination(11,3)*Math.pow(DMath.combination(4,1),3)
+							)/(double)DMath.combination(decksize, remaining);
+				}else if (dist.toString().equals("[1, 1]")){
+					temp = (double)(0
+							//3 pairs + 1 kicker
+							+ Math.pow(DMath.combination(3,1),2)*DMath.combination(11,1)*DMath.combination(4,2)*DMath.combination(10,1)*DMath.combination(4,1)
+							+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(11,2)*Math.pow(DMath.combination(4,2),2)
+							//2 pairs + 3 kickers
+							+ Math.pow(DMath.combination(3,1),2)*DMath.combination(11,3)*Math.pow(DMath.combination(4,1),3)
+							+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,2)*DMath.combination(10,1)*DMath.combination(4,1)
+							+ DMath.combination(11,1)*DMath.combination(3,1)*DMath.combination(10,2)*Math.pow(DMath.combination(4,2),2)
+							)/(double)DMath.combination(decksize, remaining);
+				}else{
+					temp = 0;
+				}
+				//System.out.println(temp);
+				sumProbability = sumProbability + temp;
+		}else if (dealt == 3){
+			if (dist.toString().equals("[2, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+DMath.combination(11,2)*Math.pow(DMath.combination(4,2),2)
+						+DMath.combination(3,1)*DMath.combination(11,1)*DMath.combination(4,2)*DMath.combination(10,1)*DMath.combination(4,1)
+						//2 pairs + 3 kickers
+						+DMath.combination(3,1)*DMath.combination(11,3)*Math.pow(DMath.combination(4,1),3)
+						+DMath.combination(11,2)*Math.pow(DMath.combination(4,1),2)*DMath.combination(9,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);	
+			}else if (dist.toString().equals("[1, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+DMath.combination(3,1)*Math.pow(DMath.combination(3,1),2)*DMath.combination(10,1)*DMath.combination(4,2)
+						+Math.pow(DMath.combination(3,1),3)*DMath.combination(10,1)*DMath.combination(4,1)
+						//2 pairs + 3 kickers
+						+DMath.combination(10,2)*Math.pow(DMath.combination(4,2),2)
+						+DMath.combination(3,1)*Math.pow(DMath.combination(3,1),2)*DMath.combination(10,2)*Math.pow(DMath.combination(4,1),2)
+						+DMath.combination(3,1)*DMath.combination(3,1)*DMath.combination(10,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);				
+			}else{
+				temp = 0;
+			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;			
+		}else if (dealt == 4){
+			if (dist.toString().equals("[2, 2]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+DMath.combination(11,1)*DMath.combination(4,2)*DMath.combination(10,2)*Math.pow(DMath.combination(4,1),2)
+						//2 pairs + 3 kickers
+						+DMath.combination(11,3)*Math.pow(DMath.combination(4,1),3)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ Math.pow(DMath.combination(3,1),2)*DMath.combination(10,1)*DMath.combination(4,1)
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(10,1)*DMath.combination(4,2)
+						//2 pairs + 3 kickers
+						+ DMath.combination(2,1)*DMath.combination(3,1)*DMath.combination(10,2)*Math.pow(DMath.combination(4,1),2)
+						+ DMath.combination(10,1)*DMath.combination(4,2)*DMath.combination(9,1)*DMath.combination(4,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[1, 1, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ DMath.combination(4,3)*Math.pow(DMath.combination(3,1),3)
+						//2 pairs + 3 kickers
+						+ DMath.combination(4,2)*Math.pow(DMath.combination(3,1),2)*DMath.combination(9,1)*DMath.combination(4,1)
+						+ DMath.combination(4,1)*DMath.combination(3,1)*DMath.combination(9,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
+			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;	
+		}else if (dealt == 5){
+			if (dist.toString().equals("[2, 2, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ DMath.combination(3,1)*DMath.combination(10,1)*DMath.combination(4,1)
+						+ DMath.combination(10,1)*DMath.combination(4,2)
+						//2 pairs + 3 kickers
+						+ DMath.combination(10,2)*Math.pow(DMath.combination(4,1),2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ DMath.combination(3,2)*DMath.combination(4,1)
+						//2 pairs + 3 kickers
+						+ DMath.combination(3,1)*DMath.combination(3,1)
+						+ DMath.combination(9,1)*DMath.combination(4,2)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[1, 1, 1, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ 0
+						//2 pairs + 3 kickers
+						+ DMath.combination(5,2)*DMath.combination(3,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else{
+				temp = 0;
+			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;				
+		}else if (dealt == 6){
+			if (dist.toString().equals("[2, 2, 2]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ DMath.combination(10,1)*DMath.combination(4,1)
+						//2 pairs + 3 kickers
+						+ 0
+						)/(double)DMath.combination(decksize, remaining);				
+			}else if (dist.toString().equals("[2, 2, 1, 1]")){
+				temp = (double)(0
+						//3 pairs + 1 kicker
+						+ DMath.combination(2,1)*DMath.combination(2,1)
+						//2 pairs + 3 kickers
+						+ DMath.combination(9,1)*DMath.combination(4,1)
+						)/(double)DMath.combination(decksize, remaining);
+			}else if (dist.toString().equals("[2, 1, 1, 1, 1]")){
+
+			}else{
+				temp = 0;
+			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;					
+		}else if (dealt == 7){
+			if (dist.toString().equals("[2, 2, 2, 1]")){
+				temp = 1;
+			}else if (dist.toString().equals("[2, 2, 1, 1, 1]")){
+				temp = 1;
+			}else{
+				temp = 0;
+			}
+			//System.out.println(temp);
+			sumProbability = sumProbability + temp;			
+		}	
+		return sumProbability;
 	}
 	
 	/*
@@ -1301,29 +1586,30 @@ public class Hand extends Object implements Observer{
 	private int countValueRange(ArrayList<Card> collection, CardValue vStart, CardValue vEnd) throws Exception{
 		//non-suited
 		int counter = 0;
-	
-		ArrayList<CardValue> cardValues = CardValue.getAll();
-		cardValues.add(0,new CardValue(CardValue.ACE));
-
 		
+		ArrayList<CardValue> cardValues = CardValue.getAll();
+		if (vStart.getValue().equals(CardValue.ACE)){
+			vStart.setRank(1);
+			cardValues.add(0,new CardValue(CardValue.ACE));
+			cardValues.get(0).setRank(1);
+			cardValues.remove(cardValues.size()-1);
+		}
+				
 		for (int i=0;i<cardValues.size();i++){
 			CardValue card = cardValues.get(i);
-			if (cardValues.get(i).getAbbrv().equals("A")){
-				if (card.getRank(true)>=vStart.getRank(true) && card.getRank(true)<=vEnd.getRank()){
-					int num = countValue(collection, cardValues.get(i));
-					if (num > 0){
-						counter++;
-					}
-				}
-			}else{
-				if (card.getRank()>=vStart.getRank() && card.getRank()<=vEnd.getRank()){
-					int num = countValue(collection, cardValues.get(i));
-					if (num > 0){
-						counter++;
-					}
-				}
+			if (card.getRank()<vStart.getRank() || vEnd.getRank()<card.getRank()){
+				cardValues.remove(i);
+				i--;
 			}
 		}
+		
+		for (int i=0;i<cardValues.size();i++){
+			int num = countValue(collection, cardValues.get(i));
+			if (num > 0){
+				counter++;
+			}
+		}
+		
 		return counter;
 	}
 
@@ -1337,26 +1623,28 @@ public class Hand extends Object implements Observer{
 		int counter = 0;
 		
 		ArrayList<CardValue> cardValues = CardValue.getAll();
-		cardValues.add(0,new CardValue(CardValue.ACE));
+		if (vStart.getValue().equals(CardValue.ACE)){
+			vStart.setRank(1);
+			cardValues.add(0,new CardValue(CardValue.ACE));
+			cardValues.get(0).setRank(1);
+			cardValues.remove(cardValues.size()-1);
+		}
 		
 		for (int i=0;i<cardValues.size();i++){
 			CardValue card = cardValues.get(i);
-			if (cardValues.get(i).getAbbrv().equals("A")){
-				if (card.getRank(true)>=vStart.getRank(true) && card.getRank(true)<=vEnd.getRank()){
-					int num = countValue(collection, cardValues.get(i), suit);
-					if (num > 0){
-						counter++;
-					}
-				}
-			}else{
-				if (card.getRank()>=vStart.getRank() && card.getRank()<=vEnd.getRank()){
-					int num = countValue(collection, cardValues.get(i), suit);
-					if (num > 0){
-						counter++;
-					}
-				}
+			if (card.getRank()<vStart.getRank() || vEnd.getRank()<card.getRank()){
+				cardValues.remove(i);
+				i--;
 			}
 		}
+		
+		for (int i=0;i<cardValues.size();i++){
+			int num = countValue(collection, cardValues.get(i), suit);
+			if (num > 0){
+				counter++;
+			}
+		}
+		
 		return counter;
 	}	
 	
@@ -1413,4 +1701,57 @@ public class Hand extends Object implements Observer{
 		return sorted;
 	}	
 
+	/*
+	 * Used to sort the collection by number of cards of a particular value.
+	 * The card counts with the most is listed first.
+	 */
+	private ArrayList<Integer> getCountDistribution(ArrayList<Card> combined){
+		HashMap<String, Integer> map = new HashMap<String,Integer>();
+		combined = sortByCount(combined);
+		for (int i=0;i<combined.size();i++){
+			Card c = combined.get(i);
+			Integer count = (Integer) map.get(c.getValue().getValue());
+			if (count == null){
+				count = 0;
+			}
+			map.put(c.getValue().getValue(),++count);
+		}
+		map = sortHashMap(map, "desc");
+		
+		ArrayList<Integer> dist = new ArrayList<Integer>();
+		for (Map.Entry<String, Integer> entry: map.entrySet()) {
+			dist.add(entry.getValue());
+	    }
+	    return dist;
+	}	
+	
+	private HashMap<String, Integer> sortHashMap(HashMap<String, Integer> passedMap, String type){
+
+		List mapKeys = new ArrayList(passedMap.keySet());
+		List mapValues = new ArrayList(passedMap.values());
+		Collections.sort(mapValues);
+		Collections.sort(mapKeys);
+		
+		if (type.equals("desc")){
+			Collections.reverse(mapValues);
+		}
+
+		LinkedHashMap someMap = new LinkedHashMap();
+		Iterator valueIt = mapValues.iterator();
+		while (valueIt.hasNext()) {
+			Object val = valueIt.next();
+			Iterator keyIt = mapKeys.iterator();
+			while (keyIt.hasNext()) {
+				Object key = keyIt.next();
+				if (passedMap.get(key).toString().equals(val.toString())) {
+					passedMap.remove(key);
+					mapKeys.remove(key);
+					someMap.put(key, val);
+					break;
+				}
+			}
+		}
+		return someMap;
+	}
+	
 }
