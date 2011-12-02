@@ -28,7 +28,7 @@ public class GameScreen extends JFrame{
 	private final JMenuItem logoutItem = new JMenuItem("Logout");
 	
 	private JButton nextButton = new JButton("Next");
-	private JButton newGameButton = new JButton("New Game");
+	private JButton newGameFoldButton = new JButton();
 	
 	private JLabel card1 = new JLabel();
 	private JLabel card2 = new JLabel();
@@ -36,12 +36,10 @@ public class GameScreen extends JFrame{
 	private JLabel card4 = new JLabel();
 	private JLabel card5 = new JLabel();
 	
-	//TODO:  determine if we're going to have the save option
-	//private final JMenuItem saveLogoutItem = new JMenuItem("Save and Logout");
-	
-	private final JMenuItem statisticsItem = new JMenuItem("Show/Hide Statistics");
+	private final JMenuItem statisticsItem = new JMenuItem();
 	
 	final JPanel statisticsPanel = statisticsPanel();
+	final JPanel cpuPanel = cpuPanelHidden();
 	
 	private boolean showStatistics = false;
 	
@@ -65,9 +63,8 @@ public class GameScreen extends JFrame{
 		menuBar.add(fileMenu);
 		fileMenu.add(statisticsItem);
 		fileMenu.add(logoutItem);
-		//fileMenu.add(saveLogoutItem);
 		
-		newGameButton.addActionListener(
+		newGameFoldButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
 						newGame();
@@ -75,39 +72,47 @@ public class GameScreen extends JFrame{
 				}
 			);
 			
-			nextButton.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						Game currentGame = gc.getCurrentGame();
+		nextButton.addActionListener(
+			new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					Game currentGame = gc.getCurrentGame();
+					
+					switch (currentGame.getState()) {
+					case START:
+						currentGame.dealFlop();
+						card1.setVisible(true);
+						card2.setVisible(true);
+						card3.setVisible(true);
+						show();
 						
-						switch (currentGame.getState()) {
-						case START:
-							currentGame.dealFlop();
-							card1.setVisible(true);
-							card2.setVisible(true);
-							card3.setVisible(true);
-							show();
-							currentGame.setState(Game.GameState.FLOP);
-							break;
-						case FLOP:
-							currentGame.dealTurn();
-							card4.setVisible(true);
-							show();
-							currentGame.setState(Game.GameState.TURN);
-							break;
-						case TURN:
-							currentGame.dealRiver();
-							card5.setVisible(true);
-							show();
-							currentGame.setState(Game.GameState.RIVER);
-							nextButton.setEnabled(false);
-							break;
-						case RIVER:
-							break;
-						}
+						currentGame.setState(Game.GameState.FLOP);
+						break;
+					case FLOP:
+						currentGame.dealTurn();
+						card4.setVisible(true);
+						show();
+						
+						currentGame.setState(Game.GameState.TURN);
+						break;
+					case TURN:
+						currentGame.dealRiver();
+						card5.setVisible(true);
+	
+						currentGame.setState(Game.GameState.RIVER);
+						nextButton.setEnabled(false);
+						
+						gamePanel.remove(cpuPanel);
+						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
+						newGameFoldButton.setText("New Game");
+						
+						show();
+						break;
+					case RIVER:
+						break;
 					}
 				}
-			);
+			}
+		);
 		
 		logoutItem.addActionListener(
 			new ActionListener() {
@@ -122,29 +127,18 @@ public class GameScreen extends JFrame{
 			}
 		);
 		
-//		saveLogoutItem.addActionListener(
-//			new ActionListener() {
-//				public void actionPerformed(ActionEvent event) {
-//					int choice = JOptionPane.showConfirmDialog(null, 
-//							"Are you sure you want to save and logout?", 
-//							"Warning!", JOptionPane.YES_NO_OPTION);
-//					if (choice == 0) {
-//						logout();
-//					}
-//				}
-//			}
-//		);
-		
 		statisticsItem.addActionListener(
 			new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					if (showStatistics) {
 						showStatistics = false;
 						statisticsPanel.setVisible(false);
+						statisticsItem.setText("Show Statistics");
 						show();
 					} else {
 						showStatistics = true;
 						statisticsPanel.setVisible(true);
+						statisticsItem.setText("Hide Statistics");
 						show();
 					}
 				}
@@ -160,7 +154,7 @@ public class GameScreen extends JFrame{
 		
 		gamePanel.setLayout(new BorderLayout());
 		
-		gamePanel.add(cpuPanel(), BorderLayout.NORTH);
+		gamePanel.add(cpuPanel, BorderLayout.NORTH);
 		gamePanel.add(probabilityPanel(), BorderLayout.EAST);
 		gamePanel.add(southPanel(), BorderLayout.SOUTH);
 		gamePanel.add(statisticsPanel, BorderLayout.WEST);
@@ -172,6 +166,9 @@ public class GameScreen extends JFrame{
 	}
 	
 	private void newGame() {
+		statisticsItem.setText("Show Statistics");
+		showStatistics = false;
+		
 		getContentPane().removeAll();
 		gamePanel = gamePanel();
 		add(gamePanel);
@@ -210,7 +207,9 @@ public class GameScreen extends JFrame{
 		
 		panel.setLayout(new FlowLayout());
 		
-		panel.add(newGameButton);
+		newGameFoldButton.setText("Fold");
+		
+		panel.add(newGameFoldButton);
 		panel.add(nextButton);
 		
 		return panel;
@@ -227,7 +226,7 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
-	private JPanel cpuPanel() {		
+	private JPanel cpuPanelRevealed() {		
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new FlowLayout());
@@ -237,6 +236,24 @@ public class GameScreen extends JFrame{
 			card.setIcon(c.getImage());
 			panel.add(card);
 		}
+		
+		return panel;
+	}
+	
+	private JPanel cpuPanelHidden() {
+		JPanel panel = new JPanel();
+		
+		panel.setLayout(new FlowLayout());
+		
+		JLabel card1 = new JLabel();
+		card1.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
+		
+		panel.add(card1);
+		
+		JLabel card2 = new JLabel();
+		card2.setIcon(new ImageIcon(getClass().getResource("graphics/back.png")));
+		
+		panel.add(card2);
 		
 		return panel;
 	}
@@ -267,12 +284,6 @@ public class GameScreen extends JFrame{
 		card5.setIcon(cards.get(4).getImage());
 		panel.add(card5);
 		card5.setVisible(false);
-		
-//		for (Card c : gc.getCurrentGame().getTableCards()) {
-//			JLabel card = new JLabel();
-//			card.setIcon(c.getImage());
-//			panel.add(card);
-//		}
 		
 		return panel;
 	}
