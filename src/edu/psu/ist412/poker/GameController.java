@@ -20,7 +20,7 @@ public class GameController {
 		super();
 		players.add(new Player(1,100,true));
 		//players.get(players.size()-1).setTablePosition(JPanel panel1);
-		//players.add(new Player(2,100,false));
+		players.add(new Player(2,100,false));
 		//players.get(players.size()-1).setTablePosition(JPanel panel2);
 	}
 	/**
