@@ -275,7 +275,7 @@ public class LoginScreen extends JFrame{
 			if (login(userField.getText(), passField.getText())) {
 				GameScreen gameScreen = new GameScreen(loginScreen, controller);
 				gameScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				gameScreen.setSize(625, 525);
+				gameScreen.setSize(875, 525);
 				gameScreen.setVisible(true);
 				gameScreen.setLocationRelativeTo(null);
 			} else {

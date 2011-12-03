@@ -1,10 +1,13 @@
 package edu.psu.ist412.view;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import edu.psu.ist412.poker.Card;
 import edu.psu.ist412.poker.Game;
@@ -39,6 +43,7 @@ public class GameScreen extends JFrame{
 	private final JMenuItem statisticsItem = new JMenuItem();
 	
 	final JPanel statisticsPanel = statisticsPanel();
+	JPanel probabilityPanel;
 	final JPanel cpuPanel = cpuPanelHidden();
 	
 	private boolean showStatistics = false;
@@ -67,6 +72,18 @@ public class GameScreen extends JFrame{
 		newGameFoldButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
+						if (gc.getCurrentGame().getState() != Game.GameState.RIVER) {
+							gamePanel.remove(cpuPanel);
+							gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
+							show();
+							
+							//TODO: add logic to determine whether the user
+							//      really should have folded
+							JOptionPane.showMessageDialog(null, 
+									"You made a good/bad decision.", 
+									"FYI", JOptionPane.INFORMATION_MESSAGE);
+						}
+						
 						newGame();
 					}
 				}
@@ -83,6 +100,11 @@ public class GameScreen extends JFrame{
 						card1.setVisible(true);
 						card2.setVisible(true);
 						card3.setVisible(true);
+						
+						gamePanel.remove(probabilityPanel);
+						probabilityPanel = probabilityPanel();
+						gamePanel.add(probabilityPanel, BorderLayout.EAST);
+						
 						show();
 						
 						currentGame.setState(Game.GameState.FLOP);
@@ -90,6 +112,11 @@ public class GameScreen extends JFrame{
 					case FLOP:
 						currentGame.dealTurn();
 						card4.setVisible(true);
+						
+						gamePanel.remove(probabilityPanel);
+						probabilityPanel = probabilityPanel();
+						gamePanel.add(probabilityPanel, BorderLayout.EAST);
+						
 						show();
 						
 						currentGame.setState(Game.GameState.TURN);
@@ -104,6 +131,10 @@ public class GameScreen extends JFrame{
 						gamePanel.remove(cpuPanel);
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						newGameFoldButton.setText("New Game");
+						
+						gamePanel.remove(probabilityPanel);
+						probabilityPanel = probabilityPanel();
+						gamePanel.add(probabilityPanel, BorderLayout.EAST);
 						
 						show();
 						break;
@@ -152,10 +183,12 @@ public class GameScreen extends JFrame{
 		
 		gc.createGame();
 		
+		probabilityPanel = probabilityPanel();
+		
 		gamePanel.setLayout(new BorderLayout());
 		
 		gamePanel.add(cpuPanel, BorderLayout.NORTH);
-		gamePanel.add(probabilityPanel(), BorderLayout.EAST);
+		gamePanel.add(probabilityPanel, BorderLayout.EAST);
 		gamePanel.add(southPanel(), BorderLayout.SOUTH);
 		gamePanel.add(statisticsPanel, BorderLayout.WEST);
 		gamePanel.add(communityPanel(), BorderLayout.CENTER);
@@ -265,6 +298,11 @@ public class GameScreen extends JFrame{
 		
 		ArrayList<Card> cards = gc.getCurrentGame().getTableCards();
 		
+		JLabel label = new JLabel();
+		label.setIcon(new ImageIcon(getClass().getResource("graphics/blank.png")));
+		
+		panel.add(label);
+		
 		card1.setIcon(cards.get(0).getImage());
 		panel.add(card1);
 		card1.setVisible(false);
@@ -290,8 +328,27 @@ public class GameScreen extends JFrame{
 	
 	private JPanel probabilityPanel() {
 		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("win probability"));
+		
+		Map<String, Double> probability = 
+			gc.getCurrentGame().getPlayers().get(0).getHand().getProbability();
+		
+		Set <String> keys = probability.keySet();
+		
+		JTextArea area = new JTextArea(10,1);
+		area.append("Hand Probability:");
+		area.append("\n\n");
+		
+		for (String key : keys) {
+			if (probability.get(key) != 0) {
+				area.append(key + ":");
+				area.append("     " + String.format("%3.2f", probability.get(key) * 100) 
+						+ "% \n");
+			}
+		}
+		
+		area.setEditable(false);
+		area.setBackground(new Color(238,238,238));
+		panel.add(area);
 		
 		return panel;
 	}
