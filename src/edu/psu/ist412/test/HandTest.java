@@ -70,6 +70,7 @@ public class HandTest extends TestCase {
 		}
 	}
 	
+	// I DON'T THINK THIS TEST IS NECESSARY - BK
 	/*
 	public void testGetProbability(){
 		Map<String, Double> p;
@@ -86,7 +87,6 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.ACE)));
-			h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.size() == 9);
 			assertTrue(p.get(Hand.ROYAL_FLUSH) instanceof Double);
@@ -104,7 +104,7 @@ public class HandTest extends TestCase {
 			e.printStackTrace();
 		}		
 	}
-	*/
+	 */
 	
 	public void testRoyalFlush(){
 		System.out.println("-------------------");
@@ -115,7 +115,6 @@ public class HandTest extends TestCase {
 		Table t;
 		
 		try {
-			
 			h = new Hand();
 			t = new Table();
 			h.setTable(t);
@@ -124,7 +123,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.ACE)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.ROYAL_FLUSH) == 1);
 
@@ -136,7 +135,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.ACE)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.ROYAL_FLUSH) == 0);
 			
@@ -167,7 +166,9 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.JACK)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
-			h.calculateProbability();	
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.JACK)));	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.STRAIGHT_FLUSH) == 1);
 
@@ -178,8 +179,10 @@ public class HandTest extends TestCase {
 			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.JACK)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
-			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));			
-			h.calculateProbability();	
+			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));	
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.JACK)));			
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.STRAIGHT_FLUSH) == 0);
 			
@@ -189,7 +192,7 @@ public class HandTest extends TestCase {
 		}
 		
 	}
-	
+
 	public void test4Kind(){
 		System.out.println("-------------------");
 		System.out.println("TESTING 4 OF A KIND");
@@ -209,7 +212,9 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.NINE)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.NINE)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
-			h.calculateProbability();	
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FOUR_KIND) == 1);
 
@@ -221,7 +226,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.JACK)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FOUR_KIND) == 0);
 			
@@ -251,7 +256,9 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.NINE)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
-			h.calculateProbability();	
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TWO)));	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.THREE_KIND) == 1);
 
@@ -264,7 +271,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.QUEEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TWO)));				
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.THREE_KIND) == 0);
 			
@@ -296,7 +303,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.NINE)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.TWO_KIND) == 1);
 
@@ -304,13 +311,13 @@ public class HandTest extends TestCase {
 			t = new Table();
 			h.setTable(t);
 			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
-			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));
+			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.NINE)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.FIVE)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.TWO_KIND) == 0);
 			
@@ -338,7 +345,7 @@ public class HandTest extends TestCase {
 			h.setTable(t);
 			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
 			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));	
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FULL_HOUSE) > 0);
 			
@@ -352,7 +359,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.ACE)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FULL_HOUSE) == 1);
 
@@ -366,7 +373,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FULL_HOUSE) == 0);
 			
@@ -398,7 +405,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.ACE)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.TWO_PAIR) == 1);
 
@@ -406,13 +413,13 @@ public class HandTest extends TestCase {
 			t = new Table();
 			h.setTable(t);
 			h.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.NINE)));
-			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.EIGHT)));
+			h.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.NINE)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
-			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.SIX)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FOUR)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.TWO_PAIR) == 0);
 			
@@ -440,7 +447,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.FIVE)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.SIX)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.SEVEN)));
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.STRAIGHT) == 1);
 
@@ -453,7 +460,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.STRAIGHT) == 0);
 			
@@ -483,6 +490,9 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.FIVE)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TEN)));
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
+			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.JACK)));	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FLUSH) == 1);
 
@@ -496,7 +506,7 @@ public class HandTest extends TestCase {
 			t.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.KING)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.TWO)));
 			t.addCard(new Card(new CardSuit(CardSuit.SPADES),new CardValue(CardValue.JACK)));			
-			h.calculateProbability();	
+			//h.calculateProbability();	
 			p = h.getProbability();
 			assertTrue(p.get(Hand.FLUSH) == 0);
 			

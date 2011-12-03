@@ -160,20 +160,21 @@ public class Hand extends Object implements Observer{
 			
 			probability = new HashMap<String, Double>(9);
 			probability.put(Hand.ROYAL_FLUSH, calculateRoyalFlush());
-			probability.put(Hand.STRAIGHT_FLUSH, calculateStraightFlush());
+			probability.put(Hand.STRAIGHT_FLUSH, Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
 			probability.put(Hand.FOUR_KIND, calculate4Kind());
 			probability.put(Hand.FULL_HOUSE, calculateFullHouse());
-			probability.put(Hand.FLUSH, calculateFlush());
-			probability.put(Hand.STRAIGHT, calculateStraight());
-			probability.put(Hand.THREE_KIND, calculate3Kind());
+			probability.put(Hand.FLUSH, Math.max(0,calculateFlush()-calculateStraightFlush()));
+			probability.put(Hand.STRAIGHT, Math.max(0,calculateStraight()-calculateStraightFlush()));
+			probability.put(Hand.THREE_KIND, Math.max(0,calculate3Kind()-calculate4Kind()));
 			probability.put(Hand.TWO_PAIR, calculate2Pair());
-			probability.put(Hand.TWO_KIND, calculate2Kind());
+			probability.put(Hand.TWO_KIND,Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
 			
 		    for (Map.Entry<String, Double> entry: probability.entrySet()) {
 		        String padding = "";
 		    	for (int p=0;p<15-entry.getKey().toString().length();p++){
 		    		 padding+=" ";
 		    	}
+		    	if(entry.getValue() != 0)
 		    	System.out.println("Probability of "+ entry.getKey() +padding+  " : " + entry.getValue() );
 		    }
 		    System.out.println("");
@@ -193,13 +194,13 @@ public class Hand extends Object implements Observer{
 		int decksize = 52-dealt;
 		
 		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
-		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numValue = 0;
 		double temp = 0;
 		double sumProbability = 0;
-		if (dealt == 2){
-			for (int j=0;j<cardSuits.size();j++){
+		for (int j=0;j<cardSuits.size();j++){
+		
+			if (dealt == 2){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 2){
@@ -216,9 +217,7 @@ public class Hand extends Object implements Observer{
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
-		}else if (dealt == 3){
-			for (int j=0;j<cardSuits.size();j++){
+			}else if (dealt == 3){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 3){
@@ -235,9 +234,7 @@ public class Hand extends Object implements Observer{
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
-		}else if (dealt == 4){
-			for (int j=0;j<cardSuits.size();j++){
+			}else if (dealt == 4){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue == 4){
@@ -254,9 +251,7 @@ public class Hand extends Object implements Observer{
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
-		}else if (dealt == 5){
-			for (int j=0;j<cardSuits.size();j++){
+			}else if (dealt == 5){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
@@ -272,9 +267,7 @@ public class Hand extends Object implements Observer{
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
-		}else if (dealt == 6){
-			for (int j=0;j<cardSuits.size();j++){
+			}else if (dealt == 6){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
@@ -287,9 +280,7 @@ public class Hand extends Object implements Observer{
 				}
 				//System.out.println(temp);
 				sumProbability = sumProbability + temp;
-			}
-		}else if (dealt == 7){
-			for (int j=0;j<cardSuits.size();j++){
+			}else if (dealt == 7){
 				numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 				//System.out.println(cardSuits.get(j).getValue()+" 10 to Ace :"+numValue);
 				if (numValue >= 5){
@@ -318,13 +309,14 @@ public class Hand extends Object implements Observer{
 		
 		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
 		ArrayList<CardValue> cardValues = CardValue.getAll();
+		cardValues.add(0,new CardValue(CardValue.ACE));
+		cardValues.get(0).setRank(1);
 		
 		int numValue = 0;
 		double temp = 0;
 		double sumProbability = 0;
-
-		cardValues.add(0,new CardValue(CardValue.ACE));
-		for (int i=0;i<cardValues.size()-5;i++){
+		
+		for (int i=0;i<cardValues.size()-4;i++){
 		CardValue startCard = cardValues.get(i);
 		CardValue endCard = cardValues.get(i+4);
 		//System.out.println(startCard.getValue()+" to "+endCard.getValue());
@@ -848,7 +840,6 @@ public class Hand extends Object implements Observer{
 		int decksize = 52-dealt;
 		
 		ArrayList<CardSuit> cardSuits = CardSuit.getAll();
-		ArrayList<CardValue> cardValues = CardValue.getAll();
 		
 		int numSuit = 0;
 		double temp = 0;		
