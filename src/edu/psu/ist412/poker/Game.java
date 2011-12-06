@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Game {
 	
-	public enum GameState {START, FLOP, TURN, RIVER};
+	public enum GameState {START, FLOP, TURN, RIVER, END};
 	
 	private GameState state = GameState.START;
 	private ArrayList<Card> tableCards = new ArrayList<Card>();
