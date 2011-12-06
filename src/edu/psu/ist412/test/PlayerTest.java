@@ -11,9 +11,9 @@ import edu.psu.ist412.poker.PlayerStatus;
  */
 
 public class PlayerTest extends TestCase {
-//	private Hand hand;
+	private Hand hand;
 	private PlayerStatus playerStatus;
-	Player p = new Player(1,10,true);
+	
 	
 	public PlayerTest(String name) {
 		super(name);
@@ -21,17 +21,24 @@ public class PlayerTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
+
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 	public void testPlayer() {
-//??		p.setStatus(ACTIVE);
-		assertTrue(p.getStatus()== playerStatus);		
+		Player p = new Player(1,10,true);
+		assertTrue(p.getStatus()== playerStatus);
+		p.setStatus(playerStatus);
 		assertTrue(p.getPosition()== 1);
+		p.setPosition(2);
+		assertTrue(p.getPosition()== 2);
 		assertTrue(p.getAmount()== 10);
 		assertTrue(p.isHuman()== true);
+		assertTrue(p.getHand()== hand);
 		assertTrue(p.clearHand()instanceof Hand);
+		assertEquals(p.toString(),"Player [position=2]");
+		
 	}
 }

@@ -42,7 +42,8 @@ public class CardTest extends TestCase {
 	public void testCard(){
 		assertTrue(c.getSuit()== s);
 		assertTrue(c.getValue()== v);
-		assertTrue(c.getImage() instanceof ImageIcon);
+		assertTrue(c.getImage()instanceof ImageIcon);
+		assertTrue(c.getImageBack()instanceof ImageIcon);
 	}
 	
 	/**

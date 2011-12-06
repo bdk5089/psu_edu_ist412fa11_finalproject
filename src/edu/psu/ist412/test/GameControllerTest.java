@@ -1,10 +1,7 @@
 package edu.psu.ist412.test;
 
-import java.util.ArrayList;
-
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.GameController;
-import edu.psu.ist412.poker.Player;
 import junit.framework.TestCase;
 
 /**
@@ -14,8 +11,6 @@ import junit.framework.TestCase;
 
 public class GameControllerTest extends TestCase {
 	GameController gc = new GameController();
-	ArrayList<Game> games = new ArrayList<Game>();
-	ArrayList<Player> players = new ArrayList<Player>();
 	
 	public GameControllerTest(String name) {
 		super(name);
@@ -30,10 +25,9 @@ public class GameControllerTest extends TestCase {
 	}
 	public void testGameController() {
 		gc.createGame();
+		assertTrue(gc.getCurrentGame().getPlayers().size()== 1);
 		assertTrue(gc.getCurrentGame() instanceof Game);
-		System.out.println(games.size());
-		System.out.println(players.size());
-//		assertFalse(games.size() == 1);
-//		assertTrue(players.size() == 1);
+		assertNotNull(gc.getCurrentGame().getTable());
+
 	}
 }
