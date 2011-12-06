@@ -24,7 +24,11 @@ import edu.psu.ist412.poker.Card;
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.GameController;
 
-
+/**
+ * This class builds the main game screen, and allows the game to be played.
+ * @author Jeff
+ *
+ */
 public class GameScreen extends JFrame{
 	
 	private final JMenuBar menuBar = new JMenuBar();
@@ -32,8 +36,9 @@ public class GameScreen extends JFrame{
 	private final JMenuItem logoutItem = new JMenuItem("Logout");
 	
 	private JButton nextButton = new JButton("Next");
-	private JButton newGameFoldButton = new JButton();
+	private JButton foldButton = new JButton("Fold");
 	
+	// used to hold the 5 community cards
 	private JLabel card1 = new JLabel();
 	private JLabel card2 = new JLabel();
 	private JLabel card3 = new JLabel();
@@ -53,8 +58,15 @@ public class GameScreen extends JFrame{
 	
 	private JPanel gamePanel;
 	
+	// a reference to the game controller
 	GameController gc;
 
+	/**
+	 * This constructor builds the JFrame that holds the main game components.
+	 * 
+	 * @param login - the login screen that created this screen
+	 * @param controller - the game controller that controls the back end
+	 */
 	public GameScreen(JFrame login, GameController controller) {
 		super("IST 412 Texas Hold'em");
 		
@@ -69,20 +81,18 @@ public class GameScreen extends JFrame{
 		fileMenu.add(statisticsItem);
 		fileMenu.add(logoutItem);
 		
-		newGameFoldButton.addActionListener(
+		foldButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
-						if (gc.getCurrentGame().getState() != Game.GameState.RIVER) {
-							gamePanel.remove(cpuPanel);
-							gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
-							show();
-							
-							//TODO: add logic to determine whether the user
-							//      really should have folded
-							JOptionPane.showMessageDialog(null, 
-									"You made a good/bad decision.", 
-									"FYI", JOptionPane.INFORMATION_MESSAGE);
-						}
+						gamePanel.remove(cpuPanel);
+						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
+						show();
+						
+						//TODO: add logic to determine whether the user
+						//      really should have folded
+						JOptionPane.showMessageDialog(null, 
+								"You made a good/bad decision.", 
+								"FYI", JOptionPane.INFORMATION_MESSAGE);
 						
 						newGame();
 					}
@@ -126,11 +136,6 @@ public class GameScreen extends JFrame{
 						card5.setVisible(true);
 	
 						currentGame.setState(Game.GameState.RIVER);
-						nextButton.setEnabled(false);
-						
-						gamePanel.remove(cpuPanel);
-						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
-						newGameFoldButton.setText("New Game");
 						
 						gamePanel.remove(probabilityPanel);
 						probabilityPanel = probabilityPanel();
@@ -139,6 +144,17 @@ public class GameScreen extends JFrame{
 						show();
 						break;
 					case RIVER:
+						currentGame.setState(Game.GameState.END);
+						
+						foldButton.setEnabled(false);
+						nextButton.setText("New Game");
+						gamePanel.remove(cpuPanel);
+						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
+						
+						show();
+						break;
+					case END:
+						newGame();
 						break;
 					}
 				}
@@ -178,6 +194,11 @@ public class GameScreen extends JFrame{
 		
 	}
 	
+	/**
+	 * Creates the main panel for holding the player's cards, the cpu's cards,
+	 * the community cards, the user statistics, and the hand probability.
+	 * @return - the created panel
+	 */
 	private JPanel gamePanel() {
 		JPanel gamePanel = new JPanel();
 		
@@ -198,6 +219,9 @@ public class GameScreen extends JFrame{
 		return gamePanel;
 	}
 	
+	/**
+	 * Reinitializes the game.
+	 */
 	private void newGame() {
 		statisticsItem.setText("Show Statistics");
 		showStatistics = false;
@@ -208,7 +232,8 @@ public class GameScreen extends JFrame{
 		show();
 		
 		gc.getCurrentGame().setState(Game.GameState.START);
-		nextButton.setEnabled(true);
+		nextButton.setText("Next");
+		foldButton.setEnabled(true);
 	}
 	
 	/**
@@ -221,6 +246,10 @@ public class GameScreen extends JFrame{
 		loginScreen.toFront();
 	}
 	
+	/**
+	 * Creates the panel that holds the player's cards.
+	 * @return - the player panel
+	 */
 	private JPanel playerPanel() {
 		JPanel panel = new JPanel();
 		
@@ -235,19 +264,27 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the game buttons.
+	 * @return - the button panel
+	 */
 	private JPanel buttonPanel() {
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new FlowLayout());
 		
-		newGameFoldButton.setText("Fold");
+		foldButton.setText("Fold");
 		
-		panel.add(newGameFoldButton);
+		panel.add(foldButton);
 		panel.add(nextButton);
 		
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the players cards and the game buttons.
+	 * @return - the bottom most panel
+	 */
 	private JPanel southPanel() {
 		JPanel panel = new JPanel();
 		
@@ -259,6 +296,10 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the cpu's cards (face up)
+	 * @return - the cpu panel that shows the cpu's cards
+	 */
 	private JPanel cpuPanelRevealed() {		
 		JPanel panel = new JPanel();
 		
@@ -273,6 +314,10 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the cpu's cards (face down)
+	 * @return - the cpu panel that shows the back of the cpu's cards
+	 */
 	private JPanel cpuPanelHidden() {
 		JPanel panel = new JPanel();
 		
@@ -291,6 +336,10 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the community cards.
+	 * @return - the community card panel
+	 */
 	private JPanel communityPanel() {
 		JPanel panel = new JPanel();
 		
@@ -326,6 +375,10 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the hand probability.
+	 * @return - the probability panel
+	 */
 	private JPanel probabilityPanel() {
 		JPanel panel = new JPanel();
 		
@@ -353,6 +406,10 @@ public class GameScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that holds the user statistics.
+	 * @return - the statistics panel
+	 */
 	private JPanel statisticsPanel() {
 		JPanel panel = new JPanel();
 		
