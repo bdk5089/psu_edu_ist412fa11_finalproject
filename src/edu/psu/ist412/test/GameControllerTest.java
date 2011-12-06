@@ -25,7 +25,7 @@ public class GameControllerTest extends TestCase {
 	}
 	public void testGameController() {
 		gc.createGame();
-		assertTrue(gc.getCurrentGame().getPlayers().size()== 1);
+		assertTrue(gc.getCurrentGame().getPlayers().size() > 0);
 		assertTrue(gc.getCurrentGame() instanceof Game);
 		assertNotNull(gc.getCurrentGame().getTable());
 
