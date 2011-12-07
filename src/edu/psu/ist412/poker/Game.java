@@ -44,12 +44,18 @@ public class Game {
 	
 	
 	/**
-	 * 
+	 * Returns the player that has the greatest-valued hand.
 	 * @return
 	 */
 	public Player getWinner(){
-		//TODO figure out who the winner is.
-		return players.get(0);
+		Player winner = players.get(0);
+		for (int i=1;i<players.size();i++){
+			Player opponent = players.get(i);
+			if (opponent.getHand().isGreaterThan(winner.getHand())){
+				winner = opponent;
+			}
+		}
+		return winner;
 	}
 	
 	/**

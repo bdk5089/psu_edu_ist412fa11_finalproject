@@ -304,6 +304,7 @@ public class Hand extends Object implements Observer{
 	 * greater than 0 pertaining to high card of Royal Flush.
 	 */
 	private int hasRoyalFlush(){
+		//TODO
 		return 0;
 	}
 	
@@ -442,6 +443,14 @@ public class Hand extends Object implements Observer{
 	}
 	
 	/*
+	 * @return 0 if does not have Straight Flush, return value
+	 * greater than 0 pertaining to high card of Straigh Flush.
+	 */
+	private int hasStraightFlush(){
+		//TODO
+		return 0;
+	}	
+	/*
 	 * Calculates the probability of having 4 of a kind -
 	 * 4 cards of the same value all different suits.
 	 */
@@ -571,6 +580,15 @@ public class Hand extends Object implements Observer{
 		//System.out.println("Probability for 4 of Kind is "+sumProbability);	
 		return sumProbability;
 	}
+
+	/*
+	 * @return 0 if does not have 4 of a Kind, return value
+	 * greater than 0 pertaining to high card of 4 of a Kind.
+	 */
+	private int has4Kind(){
+		//TODO
+		return 0;
+	}	
 	
 	/*
 	 * Calculates the probability of having a full house -
@@ -838,7 +856,16 @@ public class Hand extends Object implements Observer{
 		}	
 		return sumProbability;
 	}
-	
+
+	/*
+	 * @return 0 if does not have Full House, return value
+	 * greater than 0 pertaining to high card of Full House.
+	 */
+	private int hasFullHouse(){
+		//TODO
+		return 0;
+	}	
+		
 	/*
 	 * Calculates the probability of having a flush -
 	 * 5 cards of the same suit, all different values.
@@ -968,7 +995,16 @@ public class Hand extends Object implements Observer{
 		//System.out.println("Probability for Flush is "+sumProbability);		
 		return sumProbability;
 	}
-	
+
+	/*
+	 * @return 0 if does not have Flush, return value
+	 * greater than 0 pertaining to high card of Flush.
+	 */
+	private int hasFlush(){
+		//TODO
+		return 0;
+	}	
+		
 	/*
 	 * Calculates the probability of having a straight -
 	 * 5 sequential cards of different suits.
@@ -1102,7 +1138,16 @@ public class Hand extends Object implements Observer{
 		//System.out.println("Probability for Straight is "+sumProbability);
 		return sumProbability;
 	}
-	
+
+	/*
+	 * @return 0 if does not have Straight, return value
+	 * greater than 0 pertaining to high card of Straight.
+	 */
+	private int hasStraight(){
+		//TODO
+		return 0;
+	}	
+		
 	/*
 	 * Calculates the probability of having 3 of a kind -
 	 * 3 cards of the same value of different suits.
@@ -1232,7 +1277,16 @@ public class Hand extends Object implements Observer{
 		//System.out.println("Probability for 3 of Kind is "+sumProbability);
 		return sumProbability;
 	}
-	
+
+	/*
+	 * @return 0 if does not have 3 Kind, return value
+	 * greater than 0 pertaining to high card of 3 Kind.
+	 */
+	private int has3Kind(){
+		//TODO
+		return 0;
+	}	
+		
 	/*
 	 * Calculates the probability of having 2 pair - 
 	 * Two sets of two of a kind, 2,2,1,1,1 or 2,2,2,1
@@ -1391,7 +1445,16 @@ public class Hand extends Object implements Observer{
 		}	
 		return sumProbability;
 	}
-	
+
+	/*
+	 * @return 0 if does not have 2 Pair Flush, return value
+	 * greater than 0 pertaining to high card of 2 Pair.
+	 */
+	private int has2Pair(){
+		//TODO
+		return 0;
+	}	
+		
 	/*
 	 * Calculates the probability of having 1 set of 2 -
 	 * Two cars of the same value, 2,1,1,1,1,1; if 2,2,1,1,1 then
@@ -1514,6 +1577,25 @@ public class Hand extends Object implements Observer{
 		//System.out.println("Probability for 2 of Kind is "+sumProbability);	
 		return sumProbability;
 	}
+
+	/*
+	 * @return 0 if does not have 2 of a Kind, return value
+	 * greater than 0 pertaining to high card of 2 of a Kind.
+	 */
+	private int has2Kind(){
+		//TODO
+		return 0;
+	}	
+
+	/*
+	 * @return value of the highest card in hand to resolve any 
+	 * other tie breaker.
+	 */
+	private int hasHighCard(){
+		//TODO
+		return 0;
+	}	
+	
 	
 	/*
 	 * Returns an ArrayList of card combined from the 
