@@ -24,17 +24,6 @@ public class Hand extends Object implements Observer{
 	private Table table;
 	private Deck deck;
 	
-	public static String ROYAL_FLUSH = "Royal Flush";
-	public static String STRAIGHT_FLUSH = "Straight Flush";
-	public static String FULL_HOUSE = "Full House";
-	public static String STRAIGHT = "Straight";
-	public static String FOUR_KIND = "4 of a Kind";
-	public static String THREE_KIND = "3 of a Kind";
-	public static String TWO_KIND = "2 of a Kind";
-	public static String TWO_PAIR = "2 Pair";
-	public static String FLUSH = "Flush";
-	public static String HIGH_CARD = "High Card"; //Not in probability calculation
-
 	/**
 	 * Constructor for the Hand class, used as a container
 	 * for dealt cards and to calculate probabilities of 
@@ -146,6 +135,17 @@ public class Hand extends Object implements Observer{
 		}
 		return probability;
 	}
+	
+	/**
+	 * 
+	 * @param hand
+	 * @return
+	 */
+	public boolean isGreaterThan(Hand hand){
+		//TODO determine if this.hand is greater than hand
+		return false;
+	}
+	
 	/**
 	 * Calculates the probability for nine hand formations.
 	 * @throws Exception
@@ -158,6 +158,7 @@ public class Hand extends Object implements Observer{
 			System.out.println("HAND: "+this);
 			System.out.println("TABLE: "+ table);
 			
+			//TODO figure this out....
 			probability = new HashMap<String, Double>(9);
 			probability.put(Hand.ROYAL_FLUSH, calculateRoyalFlush());
 			probability.put(Hand.STRAIGHT_FLUSH, Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
@@ -168,6 +169,8 @@ public class Hand extends Object implements Observer{
 			probability.put(Hand.THREE_KIND, Math.max(0,calculate3Kind()-calculate4Kind()));
 			probability.put(Hand.TWO_PAIR, calculate2Pair());
 			probability.put(Hand.TWO_KIND,Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
+			
+			
 			
 		    for (Map.Entry<String, Double> entry: probability.entrySet()) {
 		        String padding = "";
@@ -294,6 +297,14 @@ public class Hand extends Object implements Observer{
 		}
 		//System.out.println("Probability for Royal Flush is "+sumProbability);	
 		return sumProbability;
+	}
+	
+	/*
+	 * @return 0 if does not have Royal Flush, return value
+	 * greater than 0 pertaining to high card of Royal Flush.
+	 */
+	private int hasRoyalFlush(){
+		return 0;
 	}
 	
 	/*

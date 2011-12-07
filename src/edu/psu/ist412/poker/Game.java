@@ -41,6 +41,17 @@ public class Game {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Player getWinner(){
+		//TODO figure out who the winner is.
+		return players.get(0);
+	}
+	
 	/**
 	 * @return the table
 	 */
