@@ -3,7 +3,7 @@ package edu.psu.ist412.poker;
 public class HandData {
 	private HandType handType;
 	private int rank;
-	private double probability;
+	private static double probability;
 	private boolean hasHand;
 	
 	
@@ -40,8 +40,8 @@ public class HandData {
 		return probability;
 	}
 
-	public void setProbability(double probability) {
-		this.probability = probability;
+	public static void setProbability(double prob) {
+		probability = prob;
 	}
 
 	public boolean hasHand() {
@@ -51,6 +51,7 @@ public class HandData {
 	public void hasHand(boolean hasHand) {
 		this.hasHand = hasHand;
 	}
+
 	
 	
 }

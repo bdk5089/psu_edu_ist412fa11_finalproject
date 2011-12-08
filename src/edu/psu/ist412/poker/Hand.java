@@ -20,7 +20,7 @@ import java.util.TreeSet;
 public class Hand extends Object implements Observer{
 	
 	private ArrayList<Card> cards = new ArrayList<Card>();
-	private Map<String, Double> probability;
+	private Map<HandType, HandData> probability;
 	private Table table;
 	private Deck deck;
 	
@@ -127,7 +127,7 @@ public class Hand extends Object implements Observer{
 	 * hands that can be formed by the hand and the table cards.
 	 * @return
 	 */
-	public Map<String, Double> getProbability(){
+	public Map<HandType, HandData> getProbability(){
 		try {
 			calculateProbability();
 		} catch (Exception e) {
@@ -158,21 +158,54 @@ public class Hand extends Object implements Observer{
 			System.out.println("HAND: "+this);
 			System.out.println("TABLE: "+ table);
 			
-			//TODO figure this out....
-			probability = new HashMap<String, Double>(9);
-			probability.put(Hand.ROYAL_FLUSH, calculateRoyalFlush());
-			probability.put(Hand.STRAIGHT_FLUSH, Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
-			probability.put(Hand.FOUR_KIND, calculate4Kind());
-			probability.put(Hand.FULL_HOUSE, calculateFullHouse());
-			probability.put(Hand.FLUSH, Math.max(0,calculateFlush()-calculateStraightFlush()));
-			probability.put(Hand.STRAIGHT, Math.max(0,calculateStraight()-calculateStraightFlush()));
-			probability.put(Hand.THREE_KIND, Math.max(0,calculate3Kind()-calculate4Kind()));
-			probability.put(Hand.TWO_PAIR, calculate2Pair());
-			probability.put(Hand.TWO_KIND,Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
+			for(HandType handType : HandType.values()) {
+				HandType h = HandType.ROYAL_FLUSH;
+				
+				switch(h) {
+				case ROYAL_FLUSH:
+					HandData.setProbability(calculateRoyalFlush());
+					break;
+				case STRAIGHT_FLUSH:
+					HandData.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
+					break;
+				case FOUR_KIND:
+					HandData.setProbability(calculate4Kind());
+					break;
+				case FULL_HOUSE:
+					HandData.setProbability(calculateFullHouse());
+					break;
+				case FLUSH:
+					HandData.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush()));
+					break;
+				case STRAIGHT:
+					HandData.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush()));
+					break;
+				case THREE_KIND:
+					HandData.setProbability(Math.max(0,calculate3Kind()-calculate4Kind()));
+					break;
+				case TWO_PAIR:
+					HandData.setProbability(calculate2Pair());
+					break;
+				case TWO_KIND:
+					HandData.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
+					break;
+				}
+			}
+			probability = new HashMap<HandType, HandData>(9);
+			probability.put(HandType.ROYAL_FLUSH, HandData(HandType.ROYAL_FLUSH).getProbability();
+			
+			probability.put(HandType.STRAIGHT_FLUSH, HandData.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush())));
+			probability.put(HandType.FOUR_KIND, HandData.setProbability(calculate4Kind()));
+			probability.put(HandType.FULL_HOUSE, HandData.setProbability(calculateFullHouse()));
+			probability.put(HandType.FLUSH, HandData.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush())));
+			probability.put(HandType.STRAIGHT, HandData.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush())));
+			probability.put(HandType.THREE_KIND, HandData.setProbability(Math.max(0,calculate3Kind()-calculate4Kind())));
+			probability.put(HandType.TWO_PAIR, HandData.setProbability(calculate2Pair()));
+			probability.put(HandType.TWO_KIND, HandData.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair())));
 			
 			
 			
-		    for (Map.Entry<String, Double> entry: probability.entrySet()) {
+		    for (Map.Entry<HandType, HandData> entry: probability.entrySet()) {
 		        String padding = "";
 		    	for (int p=0;p<15-entry.getKey().toString().length();p++){
 		    		 padding+=" ";
