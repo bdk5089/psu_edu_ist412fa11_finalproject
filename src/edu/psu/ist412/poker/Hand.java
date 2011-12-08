@@ -144,6 +144,7 @@ public class Hand extends Object implements Observer{
 	 */
 	public boolean isGreaterThan(Hand hand) throws Exception{
 		//TODO determine if this.hand is greater than hand
+		
 		return false;
 	}
 	
@@ -195,7 +196,7 @@ public class Hand extends Object implements Observer{
 		    	for (int p=0;p<15-entry.getKey().toString().length();p++){
 		    		 padding+=" ";
 		    	}
-		    	if(entry.getValue() != 0)
+		    	if(entry.getValue().getProbability() != 0)
 		    	System.out.println("Probability of "+ entry.getKey() +padding+  " : " + entry.getValue() );
 		    }
 		    System.out.println("");
