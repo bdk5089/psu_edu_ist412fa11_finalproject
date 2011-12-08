@@ -46,8 +46,9 @@ public class Game {
 	/**
 	 * Returns the player that has the greatest-valued hand.
 	 * @return
+	 * @throws Exception 
 	 */
-	public Player getWinner(){
+	public Player getWinner() throws Exception{
 		Player winner = players.get(0);
 		for (int i=1;i<players.size();i++){
 			Player opponent = players.get(i);

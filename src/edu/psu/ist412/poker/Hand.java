@@ -140,8 +140,9 @@ public class Hand extends Object implements Observer{
 	 * 
 	 * @param hand
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean isGreaterThan(Hand hand){
+	public boolean isGreaterThan(Hand hand) throws Exception{
 		//TODO determine if this.hand is greater than hand
 		return false;
 	}
@@ -158,52 +159,36 @@ public class Hand extends Object implements Observer{
 			System.out.println("HAND: "+this);
 			System.out.println("TABLE: "+ table);
 			
-			for(HandType handType : HandType.values()) {
-				HandType h = HandType.ROYAL_FLUSH;
-				
-				switch(h) {
-				case ROYAL_FLUSH:
-					HandData.setProbability(calculateRoyalFlush());
-					break;
-				case STRAIGHT_FLUSH:
-					HandData.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
-					break;
-				case FOUR_KIND:
-					HandData.setProbability(calculate4Kind());
-					break;
-				case FULL_HOUSE:
-					HandData.setProbability(calculateFullHouse());
-					break;
-				case FLUSH:
-					HandData.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush()));
-					break;
-				case STRAIGHT:
-					HandData.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush()));
-					break;
-				case THREE_KIND:
-					HandData.setProbability(Math.max(0,calculate3Kind()-calculate4Kind()));
-					break;
-				case TWO_PAIR:
-					HandData.setProbability(calculate2Pair());
-					break;
-				case TWO_KIND:
-					HandData.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
-					break;
-				}
-			}
+			HandData royal_flush = new HandData(HandType.ROYAL_FLUSH);
+			HandData straight_flush = new HandData(HandType.STRAIGHT_FLUSH);
+			HandData four_kind = new HandData(HandType.FOUR_KIND);
+			HandData full_house = new HandData(HandType.FULL_HOUSE);
+			HandData flush = new HandData(HandType.FLUSH);
+			HandData straight = new HandData(HandType.STRAIGHT);
+			HandData three_kind = new HandData(HandType.THREE_KIND);
+			HandData two_pair = new HandData(HandType.TWO_PAIR);
+			HandData two_kind = new HandData(HandType.TWO_KIND);
+			
+			royal_flush.setProbability(calculateRoyalFlush());
+			straight_flush.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
+			four_kind.setProbability(calculate4Kind());
+			full_house.setProbability(calculateFullHouse());
+			flush.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush()));
+			straight.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush()));
+			three_kind.setProbability(Math.max(0,calculate3Kind()-calculate4Kind()));
+			two_pair.setProbability(calculate2Pair());
+			two_kind.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
+			
 			probability = new HashMap<HandType, HandData>(9);
-			probability.put(HandType.ROYAL_FLUSH, HandData(HandType.ROYAL_FLUSH).getProbability();
-			
-			probability.put(HandType.STRAIGHT_FLUSH, HandData.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush())));
-			probability.put(HandType.FOUR_KIND, HandData.setProbability(calculate4Kind()));
-			probability.put(HandType.FULL_HOUSE, HandData.setProbability(calculateFullHouse()));
-			probability.put(HandType.FLUSH, HandData.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush())));
-			probability.put(HandType.STRAIGHT, HandData.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush())));
-			probability.put(HandType.THREE_KIND, HandData.setProbability(Math.max(0,calculate3Kind()-calculate4Kind())));
-			probability.put(HandType.TWO_PAIR, HandData.setProbability(calculate2Pair()));
-			probability.put(HandType.TWO_KIND, HandData.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair())));
-			
-			
+			probability.put(HandType.ROYAL_FLUSH, royal_flush );
+			probability.put(HandType.STRAIGHT_FLUSH, straight_flush);
+			probability.put(HandType.FOUR_KIND, four_kind);
+			probability.put(HandType.FULL_HOUSE, full_house);
+			probability.put(HandType.FLUSH, flush);
+			probability.put(HandType.STRAIGHT, straight);
+			probability.put(HandType.THREE_KIND, three_kind);
+			probability.put(HandType.TWO_PAIR, two_pair);
+			probability.put(HandType.TWO_KIND, two_kind);
 			
 		    for (Map.Entry<HandType, HandData> entry: probability.entrySet()) {
 		        String padding = "";
