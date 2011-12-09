@@ -421,7 +421,7 @@ public class Hand extends Object implements Observer{
 		for (int j=0;j<cardSuits.size();j++){
 			numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 			if (numValue >= 5){
-				return  sorted.get(0).getValue().getRank();
+				return  sorted.get(sorted.size()-1).getValue().getRank();
 			}		
 		}
 		return 0;
@@ -1008,7 +1008,7 @@ public class Hand extends Object implements Observer{
 	 * greater than 0 pertaining to high card of Full House.
 	 */
 	private int hasFullHouse(){
-		ArrayList<Card> sorted = sortByValue(getCombined());
+		ArrayList<Card> sorted = sortByCount(getCombined());
 		ArrayList<Integer> dist = getCountDistribution(getCombined());
 		
 		int pos1 = -1;
@@ -1169,7 +1169,7 @@ public class Hand extends Object implements Observer{
 		for (int i=0;i<cardSuits.size();i++){
 			numSuit = countSuit(sorted, cardSuits.get(i));
 			if (numSuit >= 5){
-				for (int j=0;j<sorted.size();j++){
+				for (int j=sorted.size()-1;j>=0;j--){
 					if (sorted.get(j).getSuit().getAbbrv().equals(cardSuits.get(i).getAbbrv())){
 						return sorted.get(j).getValue().getRank();
 					}
@@ -1634,7 +1634,7 @@ public class Hand extends Object implements Observer{
 	 * two pair values.
 	 */
 	private int has2Pair(){
-		ArrayList<Card> sorted = sortByValue(getCombined());
+		ArrayList<Card> sorted = sortByCount(getCombined());
 		ArrayList<Integer> dist = getCountDistribution(getCombined());
 		
 		int pos1 = -1;
@@ -1799,7 +1799,7 @@ public class Hand extends Object implements Observer{
 	 * other tie breaker.
 	 */
 	private int hasHighCard(){
-		ArrayList<Card> sorted = sortByValue(getCombined());
+		ArrayList<Card> sorted = sortByCount(getCombined());
 		return sorted.get(0).getValue().getRank();
 	}	
 	
