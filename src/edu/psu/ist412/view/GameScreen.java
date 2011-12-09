@@ -166,6 +166,24 @@ public class GameScreen extends JFrame{
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						
 						show();
+						
+						Player player = gc.getCurrentGame().getPlayers().get(0);
+						
+						try {
+							if (gc.getCurrentGame().getWinner().equals(player)) {
+								JOptionPane.showMessageDialog(null, 
+										"You made a good decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, 
+										"You made a bad decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						break;
 					case END:
 						newGame();
