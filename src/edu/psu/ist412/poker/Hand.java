@@ -148,7 +148,7 @@ public class Hand extends Object implements Observer{
 		
 		if(hand.hasRoyalFlush() != 0) {
 			high_card = hand.hasRoyalFlush();
-			if(this.hand.hasRoyalFlush() > high_card) {
+			if(this.hasRoyalFlush() > high_card) {
 				return true;
 			}
 			else {
@@ -157,7 +157,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.hasStraightFlush() != 0) {
 			high_card = hand.hasStraightFlush();
-			if(this.hand.hasStraightFlush() > high_card) {
+			if(this.hasStraightFlush() > high_card) {
 				return true;
 			}
 			else {
@@ -166,7 +166,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.has4Kind() != 0) {
 			high_card = hand.has4Kind();
-			if(this.hand.has4Kind() > high_card) {
+			if(this.has4Kind() > high_card) {
 				return true;
 			}
 			else {
@@ -175,7 +175,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.hasFullHouse() != 0) {
 			high_card = hand.hasFullHouse();
-			if(this.hand.hasFullHouse() > high_card) {
+			if(this.hasFullHouse() > high_card) {
 				return true;
 			}
 			else {
@@ -184,7 +184,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.hasFlush() != 0) {
 			high_card = hand.hasFlush();
-			if(this.hand.hasFlush() > high_card) {
+			if(this.hasFlush() > high_card) {
 				return true;
 			}
 			else {
@@ -193,7 +193,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.hasStraight() != 0) {
 			high_card = hand.hasStraight();
-			if(this.hand.hasStraight() > high_card) {
+			if(this.hasStraight() > high_card) {
 				return true;
 			}
 			else {
@@ -202,7 +202,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.has3Kind() != 0) {
 			high_card = hand.has3Kind();
-			if(this.hand.has3Kind() > high_card) {
+			if(this.has3Kind() > high_card) {
 				return true;
 			}
 			else {
@@ -211,7 +211,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.has2Pair() != 0) {
 			high_card = hand.has2Pair();
-			if(this.hand.has2Pair() > high_card) {
+			if(this.has2Pair() > high_card) {
 				return true;
 			}
 			else {
@@ -220,7 +220,7 @@ public class Hand extends Object implements Observer{
 		}
 		else if(hand.has2Kind() != 0) {
 			high_card = hand.has2Kind();
-			if(this.hand.has2Kind() > high_card) {
+			if(this.has2Kind() > high_card) {
 				return true;
 			}
 			else {
@@ -229,7 +229,7 @@ public class Hand extends Object implements Observer{
 		}
 		else {
 			high_card = hand.hasHighCard();
-			if(this.hand.hasHighCard() > high_card) {
+			if(this.hasHighCard() > high_card) {
 				return true;
 			}
 			else {
