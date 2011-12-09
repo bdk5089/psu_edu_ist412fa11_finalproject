@@ -23,6 +23,9 @@ import javax.swing.JTextArea;
 import edu.psu.ist412.poker.Card;
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.GameController;
+import edu.psu.ist412.poker.HandData;
+import edu.psu.ist412.poker.HandType;
+import edu.psu.ist412.poker.Player;
 
 /**
  * This class builds the main game screen, and allows the game to be played.
@@ -88,11 +91,22 @@ public class GameScreen extends JFrame{
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						show();
 						
-						//TODO: add logic to determine whether the user
-						//      really should have folded
-						JOptionPane.showMessageDialog(null, 
-								"You made a good/bad decision.", 
-								"FYI", JOptionPane.INFORMATION_MESSAGE);
+						Player player = gc.getCurrentGame().getPlayers().get(0);
+						
+						try {
+							if (gc.getCurrentGame().getWinner().equals(player)) {
+								JOptionPane.showMessageDialog(null, 
+										"You made a bad decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, 
+										"You made a good decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
 						newGame();
 					}
@@ -382,20 +396,20 @@ public class GameScreen extends JFrame{
 	private JPanel probabilityPanel() {
 		JPanel panel = new JPanel();
 		
-		Map<String, Double> probability = 
+		Map<HandType, HandData> probability = 
 			gc.getCurrentGame().getPlayers().get(0).getHand().getProbability();
 		
-		Set <String> keys = probability.keySet();
+		Set <HandType> keys = probability.keySet();
 		
 		JTextArea area = new JTextArea(10,1);
 		area.append("Hand Probability:");
 		area.append("\n\n");
 		
-		for (String key : keys) {
-			if (probability.get(key) != 0) {
-				area.append(key + ":");
-				area.append("     " + String.format("%3.2f", probability.get(key) * 100) 
-						+ "% \n");
+		for (HandType key : keys) {
+			if (probability.get(key).getProbability() != 0) {
+				area.append(key.getLabel() + ":");
+				area.append("     " + String.format("%3.2f", 
+						probability.get(key).getProbability() * 100) + "% \n");
 			}
 		}
 		
