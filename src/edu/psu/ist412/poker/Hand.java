@@ -23,6 +23,7 @@ public class Hand extends Object implements Observer{
 	private Map<HandType, HandData> probability;
 	private Table table;
 	private Deck deck;
+	private Hand hand;
 	
 	/**
 	 * Constructor for the Hand class, used as a container
@@ -143,59 +144,97 @@ public class Hand extends Object implements Observer{
 	 * @throws Exception 
 	 */
 	public boolean isGreaterThan(Hand hand) throws Exception{
-		//TODO determine if this.hand is greater than hand
-		//Decide how to compare like hands
 		int high_card;
 		
 		if(hand.hasRoyalFlush() != 0) {
 			high_card = hand.hasRoyalFlush();
-			
-			return true;
+			if(this.hand.hasRoyalFlush() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.hasStraightFlush() != 0) {
 			high_card = hand.hasStraightFlush();
-			
-			return true;
+			if(this.hand.hasStraightFlush() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.has4Kind() != 0) {
 			high_card = hand.has4Kind();
-			
-			return true;
+			if(this.hand.has4Kind() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.hasFullHouse() != 0) {
 			high_card = hand.hasFullHouse();
-			
-			return true;
+			if(this.hand.hasFullHouse() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.hasFlush() != 0) {
 			high_card = hand.hasFlush();
-			
-			return true;
+			if(this.hand.hasFlush() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.hasStraight() != 0) {
 			high_card = hand.hasStraight();
-			
-			return true;
+			if(this.hand.hasStraight() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.has3Kind() != 0) {
 			high_card = hand.has3Kind();
-			
-			return true;
+			if(this.hand.has3Kind() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.has2Pair() != 0) {
 			high_card = hand.has2Pair();
-			
-			return true;
+			if(this.hand.has2Pair() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else if(hand.has2Kind() != 0) {
 			high_card = hand.has2Kind();
-			
-			return true;
+			if(this.hand.has2Kind() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
 			high_card = hand.hasHighCard();
-			
-			return true;
+			if(this.hand.hasHighCard() > high_card) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 	}
 	
