@@ -144,8 +144,59 @@ public class Hand extends Object implements Observer{
 	 */
 	public boolean isGreaterThan(Hand hand) throws Exception{
 		//TODO determine if this.hand is greater than hand
+		//Decide how to compare like hands
+		int high_card;
 		
-		return false;
+		if(hand.hasRoyalFlush() != 0) {
+			high_card = hand.hasRoyalFlush();
+			
+			return true;
+		}
+		else if(hand.hasStraightFlush() != 0) {
+			high_card = hand.hasStraightFlush();
+			
+			return true;
+		}
+		else if(hand.has4Kind() != 0) {
+			high_card = hand.has4Kind();
+			
+			return true;
+		}
+		else if(hand.hasFullHouse() != 0) {
+			high_card = hand.hasFullHouse();
+			
+			return true;
+		}
+		else if(hand.hasFlush() != 0) {
+			high_card = hand.hasFlush();
+			
+			return true;
+		}
+		else if(hand.hasStraight() != 0) {
+			high_card = hand.hasStraight();
+			
+			return true;
+		}
+		else if(hand.has3Kind() != 0) {
+			high_card = hand.has3Kind();
+			
+			return true;
+		}
+		else if(hand.has2Pair() != 0) {
+			high_card = hand.has2Pair();
+			
+			return true;
+		}
+		else if(hand.has2Kind() != 0) {
+			high_card = hand.has2Kind();
+			
+			return true;
+		}
+		else {
+			high_card = hand.hasHighCard();
+			
+			return true;
+		}
 	}
 	
 	/**
