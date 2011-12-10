@@ -41,7 +41,7 @@ public class Card {
 	public String toString() {
 		return "Card ["+value+" of "+ suit + "]";
 	}
-
+ 
 	/**
 	 * @return the suit
 	 */
