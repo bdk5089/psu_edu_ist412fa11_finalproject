@@ -65,6 +65,8 @@ public class CardTest extends TestCase {
 		assertTrue(v.getRank()== 10);
 		v.setRank(5);
 		assertTrue(v.getRank()== 5);
+		v.setRank(10);
+		assertTrue(v.getRank()== 10);
 		assertTrue(CardValue.getAll().size()==13);
 	}
 }
