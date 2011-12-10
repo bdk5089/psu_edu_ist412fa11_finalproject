@@ -13,6 +13,14 @@ Dan Sackett	(des5188)
 Aaron Davidovits (axd5060)
 
 [SETUP]
-This is where we describe how to setup the application to run on any system.
-Additional information as needed. JSR
+This program is a stand-alone program that should execute without
+any outside setup required.  The program will have to be run in 
+a directory where a text file can be created, thus it cannot
+be a read-only directory.
+
+[Execution]
+To execute the program you can run the following jar file:
+\dist\IST412_WorldCampusTeam1_FinalProject.jar
+
+
 
