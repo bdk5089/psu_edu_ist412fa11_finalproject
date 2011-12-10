@@ -53,6 +53,7 @@ public class CardTest extends TestCase {
 		assertTrue(s.getValue().equals("Hearts"));
 		assertTrue(s.getAbbrv().equals("H"));
 		assertTrue(s.toString().equals(s.getAbbrv()));
+		assertTrue(CardSuit.getAll().size()==4);
 	}
 	
 	/**
@@ -62,5 +63,8 @@ public class CardTest extends TestCase {
 		assertTrue(v.getValue() == "10");
 		assertTrue(v.getAbbrv()=="T");
 		assertTrue(v.getRank()== 10);
+		v.setRank(5);
+		assertTrue(v.getRank()== 5);
+		assertTrue(CardValue.getAll().size()==13);
 	}
 }
