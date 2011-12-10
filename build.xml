@@ -62,6 +62,14 @@ the src directory, putting the generated .class files into the bin directory.
 		<copy todir="${binDirectory}">
 		  <fileset dir="${srcDirectory}" includes="*.properties"/>
 		</copy>
+		<!-- Because we have graphics within the folder structure
+		in the src directory we need to copy those to the 
+		bin directory --> 
+		<copy todir="${binDirectory}">
+		  <fileset dir="${srcDirectory}">
+		    <exclude name="**/*.java"/>
+		  </fileset>
+	    </copy>
 		<unzip dest="${binDirectory}">
 			<fileset dir="${libDirectory}">
 				<include name="**/*.jar" />
