@@ -93,8 +93,9 @@ public class GameScreen extends JFrame{
 						JOptionPane.showMessageDialog(null, 
 								"You made a good/bad decision.", 
 								"FYI", JOptionPane.INFORMATION_MESSAGE);
-						
-						newGame();
+						//TODO Add method call to save stats of hand before
+						//     a new game is started.
+						newGame(true);
 					}
 				}
 			);
@@ -154,7 +155,9 @@ public class GameScreen extends JFrame{
 						show();
 						break;
 					case END:
-						newGame();
+						//TODO Add method call to save stats of hand before
+						//     a new game is started.
+						newGame(false);
 						break;
 					}
 				}
@@ -218,11 +221,37 @@ public class GameScreen extends JFrame{
 		
 		return gamePanel;
 	}
-	
 	/**
-	 * Reinitializes the game.
+	 * Reinitializes the game. Used the first time.
 	 */
 	private void newGame() {
+		statisticsItem.setText("Show Statistics");
+		showStatistics = false;
+		
+		getContentPane().removeAll();
+		gamePanel = gamePanel();
+		add(gamePanel);
+		show();
+		
+		gc.getCurrentGame().setState(Game.GameState.START);
+		nextButton.setText("Next");
+		foldButton.setEnabled(true);
+	}
+	
+	/**
+	 * @param folded  Boolean of whether or not this game was folded or completed.
+	 * Reinitializes the game and updates stats on fold/completed games.
+	 */
+	private void newGame(boolean folded) {		
+		if(gc.getCurrentGame() != null){
+			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
+				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+					gc.getCurrentGame().getPlayers().get(i).addGame(folded);
+					gc.getCurrentGame().getPlayers().get(i).addStats(gc.getCurrentGame().getPlayers().get(i).getHand().getStatArray());
+				}
+			}				
+		}		
+
 		statisticsItem.setText("Show Statistics");
 		showStatistics = false;
 		
@@ -413,7 +442,26 @@ public class GameScreen extends JFrame{
 	private JPanel statisticsPanel() {
 		JPanel panel = new JPanel();
 		
-		panel.add(new JLabel("stats"));
+		String toAdd = "<html>Statistics<br>";
+		int [] stats = new int[20];
+		for(int i=0; i<gc.getCurrentGame().getPlayers().size();i++){
+			if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+					stats = gc.getCurrentGame().getPlayers().get(i).getStats();
+					toAdd+="Completed Hands: "+stats[0]+"<br>";
+					toAdd+="    Pair: "+stats[2]+"<br>";
+					toAdd+="	Two Pair: "+stats[4]+"<br>";
+					toAdd+="    Three of a Kind: "+stats[6]+"<br>";
+					toAdd+="    Straight: "+stats[8]+"<br>";
+					toAdd+="    Flush: "+stats[10]+"<br>";
+					toAdd+="    Full House"+stats[12]+"<br>";
+					toAdd+="    Four of a Kind: "+stats[14]+"<br>";
+					toAdd+="    Straight Flush: "+stats[16]+"<br>";
+					toAdd+="Games Folded: "+stats[20];					
+			}
+		}
+		
+		toAdd+="</html>";
+		panel.add(new JLabel(toAdd));
 		
 		return panel;
 	}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author KennedyBD
+ * @author KennedyBD, AaronD
  *
  */
 public class Game {
@@ -66,7 +66,7 @@ public class Game {
 		return table;
 	}
 	
-	public void startGame(){
+	public void startGame(){	
 		startRound();
 		dealHands();
 	}

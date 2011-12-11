@@ -33,7 +33,7 @@ public class GameController {
 	 * A game is only stored in memory for the length of the session
 	 * and can be accessed to display statistical information.
 	 */
-	public void createGame(){
+	public void createGame(){		
 		games.add(new Game(players));
 		games.get(games.size()-1).startGame();
 	}

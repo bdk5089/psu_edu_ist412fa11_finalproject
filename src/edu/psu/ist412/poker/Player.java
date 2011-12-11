@@ -2,7 +2,7 @@ package edu.psu.ist412.poker;
 
 /**
  * 
- * @author KennedyBD
+ * @author KennedyBD, AaronD
  *
  */
 public class Player {
@@ -10,6 +10,7 @@ public class Player {
 	private Hand hand;
 	private int amount = 0;
 	private boolean isHuman = false;
+	private int[] stats = new int[21];
 	
 	private PlayerStatus status;
 
@@ -112,7 +113,40 @@ public class Player {
 	public void allIn(){
 		//TODO
 	}
+
+	/**
+	 * @return the stats
+	 */
+	public int[] getStats() {
+		return stats;
+	}
+
+	/**
+	 * @param stats to set array to, overwrites data.
+	 */
+	public void setStats(int[] stats) {
+		this.stats = stats;
+	}
+	/**
+	 * @param stats to be added to current stat array.
+	 */
+	public void addStats(int[] stats){
+		for(int i =0; i<stats.length;i++){
+			this.stats[i]+=stats[i];
+		}
+	}
 	
+	/**
+	 * @param fold if the game added to stats was a fold or a completed game
+	 */
+	public void addGame(boolean fold){
+		if(fold){
+			stats[20]++;
+		}
+		else{
+			stats[0]++;
+		}
+	}
 	
 	
 }
