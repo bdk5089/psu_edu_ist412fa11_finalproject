@@ -160,7 +160,7 @@ public class Hand extends Object implements Observer{
 	public boolean isGreaterThan(Hand hand) throws Exception{
 		getProbability();
 		hand.getProbability();
-		
+		/*
 	    for (HandType i : HandType.values()) {
 	    	for (HandType j : HandType.values()) {
 	    		if (probability.get(i).getProbability() == 1.0
@@ -173,6 +173,30 @@ public class Hand extends Object implements Observer{
 				}
 		    }
 	    }
+	    */
+		for (HandType i : HandType.values()) {
+	    	for (HandType j : HandType.values()) {
+	    		if (i.getRank() < j.getRank()){
+	    			//COMPARE A GOOD HAND TYPE (i) TO BAD HAND TYPE (j)
+	    			System.out.println("COMPARE: "+i+ " to "+j);
+	    			System.out.println("  RANK OF i: " +probability.get(i).getRank());
+	    			if (probability.get(i).getRank() > 0){
+	    				return true;
+	    			}
+	    		}else if (i.getRank() == j.getRank()){
+	    			//COMPARE TWO SAME HANDTYPES
+	    			System.out.println("COMPARE: "+i+ " to "+j);
+	    			System.out.println("  RANK OF i: " +probability.get(i).getRank());
+	    			System.out.println("  RANK OF j: " + hand.getProbability(false).get(j).getRank());
+	    			if(probability.get(i).getRank() > hand.getProbability(false).get(j).getRank()){
+	    				return true;
+	    			}else if(probability.get(i).getRank() < hand.getProbability(false).get(j).getRank()){
+	    				return false;
+	    			}
+	    		}
+		    }
+	    }
+		
 		if (hasHighCard()>hand.hasHighCard()){
 			return true;
 		}
