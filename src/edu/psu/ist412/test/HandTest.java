@@ -83,12 +83,12 @@ public class HandTest extends TestCase {
 		t = new Table();
 		
 		try {
-			h1 = new Hand();
+			h1 = new Hand(); //Construct to be Full house
 			h1.setTable(t);
 			h1.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.TEN)));
 			h1.addCard(new Card(new CardSuit(CardSuit.HEARTS),new CardValue(CardValue.TEN)));
 
-			h2 = new Hand();
+			h2 = new Hand(); //Construct to be 2 pair
 			h2.setTable(t);
 			h2.addCard(new Card(new CardSuit(CardSuit.DIAMONDS),new CardValue(CardValue.KING)));
 			h2.addCard(new Card(new CardSuit(CardSuit.CLUBS),new CardValue(CardValue.KING)));
