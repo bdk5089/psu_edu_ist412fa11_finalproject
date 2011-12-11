@@ -23,6 +23,9 @@ import javax.swing.JTextArea;
 import edu.psu.ist412.poker.Card;
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.GameController;
+import edu.psu.ist412.poker.HandData;
+import edu.psu.ist412.poker.HandType;
+import edu.psu.ist412.poker.Player;
 
 /**
  * This class builds the main game screen, and allows the game to be played.
@@ -47,7 +50,7 @@ public class GameScreen extends JFrame{
 	
 	private final JMenuItem statisticsItem = new JMenuItem();
 	
-	final JPanel statisticsPanel = statisticsPanel();
+	JPanel statisticsPanel = statisticsPanel();
 	JPanel probabilityPanel;
 	final JPanel cpuPanel = cpuPanelHidden();
 	
@@ -60,6 +63,7 @@ public class GameScreen extends JFrame{
 	
 	// a reference to the game controller
 	GameController gc;
+	private int gameNumber = 0;
 
 	/**
 	 * This constructor builds the JFrame that holds the main game components.
@@ -88,14 +92,24 @@ public class GameScreen extends JFrame{
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						show();
 						
-						//TODO: add logic to determine whether the user
-						//      really should have folded
-						JOptionPane.showMessageDialog(null, 
-								"You made a good/bad decision.", 
-								"FYI", JOptionPane.INFORMATION_MESSAGE);
-						//TODO Add method call to save stats of hand before
-						//     a new game is started.
-						newGame(true);
+						Player player = gc.getCurrentGame().getPlayers().get(0);
+						
+						try {
+							if (gc.getCurrentGame().getWinner().equals(player)) {
+								JOptionPane.showMessageDialog(null, 
+										"You made a bad decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, 
+										"You made a good decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						newGame();
 					}
 				}
 			);
@@ -153,6 +167,24 @@ public class GameScreen extends JFrame{
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						
 						show();
+						
+						Player player = gc.getCurrentGame().getPlayers().get(0);
+						
+						try {
+							if (gc.getCurrentGame().getWinner().equals(player)) {
+								JOptionPane.showMessageDialog(null, 
+										"You made a good decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, 
+										"You made a bad decision.", 
+										"FYI", JOptionPane.INFORMATION_MESSAGE);
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						break;
 					case END:
 						//TODO Add method call to save stats of hand before
@@ -187,6 +219,9 @@ public class GameScreen extends JFrame{
 						show();
 					} else {
 						showStatistics = true;
+						gamePanel.remove(statisticsPanel);
+						statisticsPanel = statisticsPanel();
+						gamePanel.add(statisticsPanel, BorderLayout.WEST);
 						statisticsPanel.setVisible(true);
 						statisticsItem.setText("Hide Statistics");
 						show();
@@ -225,6 +260,7 @@ public class GameScreen extends JFrame{
 	 * Reinitializes the game. Used the first time.
 	 */
 	private void newGame() {
+		gameNumber++;
 		statisticsItem.setText("Show Statistics");
 		showStatistics = false;
 		
@@ -242,8 +278,9 @@ public class GameScreen extends JFrame{
 	 * @param folded  Boolean of whether or not this game was folded or completed.
 	 * Reinitializes the game and updates stats on fold/completed games.
 	 */
-	private void newGame(boolean folded) {		
-		if(gc.getCurrentGame() != null){
+	private void newGame(boolean folded) {
+		gameNumber++;
+		if(gameNumber != 0){
 			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
 				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
 					gc.getCurrentGame().getPlayers().get(i).addGame(folded);
@@ -411,20 +448,20 @@ public class GameScreen extends JFrame{
 	private JPanel probabilityPanel() {
 		JPanel panel = new JPanel();
 		
-		Map<String, Double> probability = 
+		Map<HandType, HandData> probability = 
 			gc.getCurrentGame().getPlayers().get(0).getHand().getProbability();
 		
-		Set <String> keys = probability.keySet();
+		Set <HandType> keys = probability.keySet();
 		
 		JTextArea area = new JTextArea(10,1);
 		area.append("Hand Probability:");
 		area.append("\n\n");
 		
-		for (String key : keys) {
-			if (probability.get(key) != 0) {
-				area.append(key + ":");
-				area.append("     " + String.format("%3.2f", probability.get(key) * 100) 
-						+ "% \n");
+		for (HandType key : keys) {
+			if (probability.get(key).getProbability() != 0) {
+				area.append(key.getLabel() + ":");
+				area.append("     " + String.format("%3.2f", 
+						probability.get(key).getProbability() * 100) + "% \n");
 			}
 		}
 		
@@ -443,25 +480,31 @@ public class GameScreen extends JFrame{
 		JPanel panel = new JPanel();
 		
 		String toAdd = "<html>Statistics<br>";
-		int [] stats = new int[20];
-		for(int i=0; i<gc.getCurrentGame().getPlayers().size();i++){
-			if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
-					stats = gc.getCurrentGame().getPlayers().get(i).getStats();
-					toAdd+="Completed Hands: "+stats[0]+"<br>";
-					toAdd+="    Pair: "+stats[2]+"<br>";
-					toAdd+="	Two Pair: "+stats[4]+"<br>";
-					toAdd+="    Three of a Kind: "+stats[6]+"<br>";
-					toAdd+="    Straight: "+stats[8]+"<br>";
-					toAdd+="    Flush: "+stats[10]+"<br>";
-					toAdd+="    Full House"+stats[12]+"<br>";
-					toAdd+="    Four of a Kind: "+stats[14]+"<br>";
-					toAdd+="    Straight Flush: "+stats[16]+"<br>";
-					toAdd+="Games Folded: "+stats[20];					
+		
+		if(gameNumber != 0){		
+			for(int i=0; i<gc.getCurrentGame().getPlayers().size();i++){
+				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+						int[] stats = gc.getCurrentGame().getPlayers().get(i).getStats();
+						
+						toAdd+="Completed Hands: "+stats[0]+"<br>";
+						toAdd+="...Pair: "+stats[2]+"<br>";
+						toAdd+="...Two Pair: "+stats[4]+"<br>";
+						toAdd+="...Three of a Kind: "+stats[6]+"<br>";
+						toAdd+="...Straight: "+stats[8]+"<br>";
+						toAdd+="...Flush: "+stats[10]+"<br>";
+						toAdd+="...Full House"+stats[12]+"<br>";
+						toAdd+="...Four of a Kind: "+stats[14]+"<br>";
+						toAdd+="...Straight Flush: "+stats[16]+"<br>";
+						toAdd+="Games Folded: "+stats[20];
+									
+				}
 			}
 		}
 		
 		toAdd+="</html>";
-		panel.add(new JLabel(toAdd));
+		JLabel statsLabel = new JLabel(toAdd);
+		panel.add(statsLabel);
+		System.out.println(toAdd);
 		
 		return panel;
 	}

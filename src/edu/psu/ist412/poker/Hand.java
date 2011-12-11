@@ -13,6 +13,8 @@ import java.util.Observer;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.JTextArea;
+
 /**
  * 
  * @author KennedyBD, AaronD
@@ -24,6 +26,7 @@ public class Hand extends Object implements Observer{
 	private Map<HandType, HandData> probability;
 	private Table table;
 	private Deck deck;
+	private Hand hand;
 	
 	/**
 	 * Constructor for the Hand class, used as a container
@@ -126,16 +129,27 @@ public class Hand extends Object implements Observer{
 	/**
 	 * Returns the probability map for all the types of 
 	 * hands that can be formed by the hand and the table cards.
-	 * @return
+	 * @return probability
 	 */
 	public Map<HandType, HandData> getProbability(){
-		try {
-			calculateProbability();
-		} catch (Exception e) {
-			e.printStackTrace();
+		return getProbability(true);
+	}
+	/**
+	 * Returns the probability map for all the types of 
+	 * hands that can be formed by the hand and the table cards.
+	 * @return probability
+	 */	
+	public Map<HandType, HandData> getProbability(boolean doCalculation){
+		if (doCalculation){
+			try {
+				calculateProbability();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return probability;
 	}
+	
 	
 	/**
 	 * 
@@ -144,13 +158,31 @@ public class Hand extends Object implements Observer{
 	 * @throws Exception 
 	 */
 	public boolean isGreaterThan(Hand hand) throws Exception{
-		//TODO determine if this.hand is greater than hand
+		getProbability();
+		hand.getProbability();
 		
-		return false;
+	    for (HandType i : HandType.values()) {
+	    	for (HandType j : HandType.values()) {
+	    		if (probability.get(i).getProbability() == 1.0
+	    			&& hand.getProbability(false).get(j).getProbability() == 0){
+	    			return true;
+	    		}else if(probability.get(i).getProbability() == 1.0
+		    		&& hand.getProbability(false).get(j).getProbability() == 1.0
+	    			&& probability.get(i).getRank() > hand.getProbability(false).get(j).getRank()){
+					return true;
+				}
+		    }
+	    }
+		if (hasHighCard()>hand.hasHighCard()){
+			return true;
+		}
+	    
+	    return false;
+
 	}
 	
 	/**
-	 * Calculates the probability for nine hand formations.
+	 * Calculates the probability for nine hand type combinations.
 	 * @throws Exception
 	 */
 	public void calculateProbability() throws Exception{
@@ -162,24 +194,40 @@ public class Hand extends Object implements Observer{
 			System.out.println("TABLE: "+ table);
 			
 			HandData royal_flush = new HandData(HandType.ROYAL_FLUSH);
-			HandData straight_flush = new HandData(HandType.STRAIGHT_FLUSH);
-			HandData four_kind = new HandData(HandType.FOUR_KIND);
-			HandData full_house = new HandData(HandType.FULL_HOUSE);
-			HandData flush = new HandData(HandType.FLUSH);
-			HandData straight = new HandData(HandType.STRAIGHT);
-			HandData three_kind = new HandData(HandType.THREE_KIND);
-			HandData two_pair = new HandData(HandType.TWO_PAIR);
-			HandData two_kind = new HandData(HandType.TWO_KIND);
-			
 			royal_flush.setProbability(calculateRoyalFlush());
+			royal_flush.setRank(hasRoyalFlush());
+			
+			HandData straight_flush = new HandData(HandType.STRAIGHT_FLUSH);
 			straight_flush.setProbability(Math.max(0,calculateStraightFlush()-calculateRoyalFlush()));
+			straight_flush.setRank(hasStraightFlush());
+			
+			HandData four_kind = new HandData(HandType.FOUR_KIND);
 			four_kind.setProbability(calculate4Kind());
+			four_kind.setRank(has4Kind());
+			
+			HandData full_house = new HandData(HandType.FULL_HOUSE);
 			full_house.setProbability(calculateFullHouse());
+			full_house.setRank(hasFullHouse());
+			
+			HandData flush = new HandData(HandType.FLUSH);
 			flush.setProbability(Math.max(0,calculateFlush()-calculateStraightFlush()));
+			flush.setRank(hasFlush());
+			
+			HandData straight = new HandData(HandType.STRAIGHT);
 			straight.setProbability(Math.max(0,calculateStraight()-calculateStraightFlush()));
+			straight.setRank(hasStraight());
+			
+			HandData three_kind = new HandData(HandType.THREE_KIND);
 			three_kind.setProbability(Math.max(0,calculate3Kind()-calculate4Kind()));
+			three_kind.setRank(has3Kind());
+			
+			HandData two_pair = new HandData(HandType.TWO_PAIR);
 			two_pair.setProbability(calculate2Pair());
+			two_pair.setRank(has2Pair());
+			
+			HandData two_kind = new HandData(HandType.TWO_KIND);
 			two_kind.setProbability(Math.max(0,calculate2Kind()-calculate3Kind()-calculate2Pair()));
+			two_kind.setRank(has2Kind());
 			
 			probability = new HashMap<HandType, HandData>(9);
 			probability.put(HandType.ROYAL_FLUSH, royal_flush );
@@ -213,7 +261,8 @@ public class Hand extends Object implements Observer{
 		while(itr.hasNext()){
 			HandData temp = itr.next();
 			if(temp.hasHand()){
-				switch(temp.getRank()){
+				int rank = temp.getHandType().getRank();
+				switch(rank){
 				case 1: stats[18]++; break;
 				case 2: stats[16]++; break;
 				case 3: stats[14]++; break;
@@ -359,7 +408,7 @@ public class Hand extends Object implements Observer{
 		for (int j=0;j<cardSuits.size();j++){
 			numValue = countValueRange(sorted, new CardValue(CardValue.TEN), new CardValue(CardValue.ACE),cardSuits.get(j));
 			if (numValue >= 5){
-				return  sorted.get(0).getValue().getRank();
+				return  sorted.get(sorted.size()-1).getValue().getRank();
 			}		
 		}
 		return 0;
@@ -667,7 +716,7 @@ public class Hand extends Object implements Observer{
 		for (int i=0;i<cardValues.size();i++){
 			numValue = countValue(sorted, cardValues.get(i));
 			//System.out.println(cardValues.get(i)+" "+num);
-			if (numValue == 4){
+			if (numValue >= 4){
 				return cardValues.get(i).getRank();
 			}
 		}
@@ -946,20 +995,21 @@ public class Hand extends Object implements Observer{
 	 * greater than 0 pertaining to high card of Full House.
 	 */
 	private int hasFullHouse(){
-		ArrayList<Card> sorted = sortByValue(getCombined());
+		ArrayList<Card> sorted = sortByCount(getCombined());
 		ArrayList<Integer> dist = getCountDistribution(getCombined());
 		
 		int pos1 = -1;
 		int counter = 0;
 		int sum = 0;
 		for (int i=0;i<dist.size();i++){
-			if (dist.get(i)==3 && pos1==-1){
+			if (dist.get(i)>=3 && pos1==-1){
+				pos1=i;
 				sum = sum + sorted.get(counter).getValue().getRank();
 			}else if(dist.get(i)>=2 && pos1!=-1){
 				sum = sum + sorted.get(counter).getValue().getRank();
 				return sum;
 			}
-			counter = counter + dist.size();
+			counter = counter + dist.get(i);
 		}
 				
 		return 0;
@@ -1107,7 +1157,7 @@ public class Hand extends Object implements Observer{
 		for (int i=0;i<cardSuits.size();i++){
 			numSuit = countSuit(sorted, cardSuits.get(i));
 			if (numSuit >= 5){
-				for (int j=0;j<sorted.size();j++){
+				for (int j=sorted.size()-1;j>=0;j--){
 					if (sorted.get(j).getSuit().getAbbrv().equals(cardSuits.get(i).getAbbrv())){
 						return sorted.get(j).getValue().getRank();
 					}
@@ -1400,7 +1450,7 @@ public class Hand extends Object implements Observer{
 		for (int i=0;i<cardValues.size();i++){
 			numValue = countValue(sorted, cardValues.get(i));
 			//System.out.println(cardValues.get(i)+" "+num);
-			if (numValue == 3){
+			if (numValue >= 3){
 				return cardValues.get(i).getRank();
 			}
 		}
@@ -1572,20 +1622,21 @@ public class Hand extends Object implements Observer{
 	 * two pair values.
 	 */
 	private int has2Pair(){
-		ArrayList<Card> sorted = sortByValue(getCombined());
+		ArrayList<Card> sorted = sortByCount(getCombined());
 		ArrayList<Integer> dist = getCountDistribution(getCombined());
-		
+	
 		int pos1 = -1;
 		int counter = 0;
 		int sum = 0;
 		for (int i=0;i<dist.size();i++){
-			if (dist.get(i)==2 && pos1==-1){
+			if (dist.get(i)>=2 && pos1==-1){
+				pos1 = i;
 				sum = sum + sorted.get(counter).getValue().getRank();
-			}else if(dist.get(i)==2 && pos1!=-1){
+			}else if(dist.get(i)>=2 && pos1!=-1){
 				sum = sum + sorted.get(counter).getValue().getRank();
 				return sum;
 			}
-			counter = counter + dist.size();
+			counter = counter + dist.get(i);
 		}
 				
 		return 0;
@@ -1725,7 +1776,7 @@ public class Hand extends Object implements Observer{
 		int numValue = 0;
 		for (int i=0;i<cardValues.size();i++){
 			numValue = countValue(sorted, cardValues.get(i));
-			if (numValue == 2){
+			if (numValue >= 2){
 				return cardValues.get(i).getRank();
 			}
 		}
@@ -1738,7 +1789,7 @@ public class Hand extends Object implements Observer{
 	 */
 	private int hasHighCard(){
 		ArrayList<Card> sorted = sortByValue(getCombined());
-		return sorted.get(0).getValue().getRank();
+		return sorted.get(sorted.size()-1).getValue().getRank();
 	}	
 	
 	

@@ -22,6 +22,13 @@ public class Card {
 		this.suit = suit;
 		this.value = value;
 	}
+	/**
+	 * Card Constructor is used to instantiate a card in a deck
+	 * Must set the suit and value from the static string values
+	 * contained in their defined classes.
+	 * @param suit
+	 * @param value
+	 */
 	public Card(String suit, String value) throws Exception{
 		this.suit = new CardSuit(suit);
 		this.value = new CardValue(value);
@@ -34,18 +41,18 @@ public class Card {
 	public String toString() {
 		return "Card ["+value+" of "+ suit + "]";
 	}
-
+ 
 	/**
 	 * @return the suit
 	 */
 	public CardSuit getSuit() {
-		return suit;
+		return this.suit;
 	}
 	/**
 	 * @return the value
 	 */
 	public CardValue getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**

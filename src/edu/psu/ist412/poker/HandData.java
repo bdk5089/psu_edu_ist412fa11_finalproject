@@ -17,7 +17,7 @@ public class HandData {
 	@Override
 	public String toString() {
 		return "HandData [handType=" + handType.getLabel() + ", rank=" + rank
-				+ ", probability=" + probability + "]";
+				+ ", probability=" + probability + ", hasHand="+ hasHand+"]";
 	}
 
 
@@ -42,6 +42,9 @@ public class HandData {
 
 	public void setProbability(double probability) {
 		this.probability = probability;
+		if (probability == 1){
+			this.hasHand = true;
+		}
 	}
 
 	public boolean hasHand() {

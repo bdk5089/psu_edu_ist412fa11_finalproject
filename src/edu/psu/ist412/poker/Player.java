@@ -146,7 +146,5 @@ public class Player {
 		else{
 			stats[0]++;
 		}
-	}
-	
-	
+	}	
 }
