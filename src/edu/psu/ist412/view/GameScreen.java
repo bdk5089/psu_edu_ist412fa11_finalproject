@@ -184,7 +184,13 @@ public class GameScreen extends JFrame{
 						
 						show();
 						gamePanel.remove(statisticsPanel);					
-						
+						if(gameNumber != 0){
+							for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
+								if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+										gc.getCurrentGame().getPlayers().get(i).addGame(false);
+										}
+								}
+							}
 						Player player = gc.getCurrentGame().getPlayers().get(0);
 						
 						try {

@@ -300,6 +300,16 @@ public class Hand extends Object implements Observer{
 				}
 			}
 		}
+		int highestIndex =0;
+		for(int i = 1; i<stats.length;i++){
+			if(stats[i] == 1){
+				highestIndex = i;
+			}
+		}
+		for(int i = 0; i<highestIndex;i++){
+			stats[i] = 0;
+		}
+		
 		return stats;
 		
 	}
