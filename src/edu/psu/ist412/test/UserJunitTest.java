@@ -36,7 +36,7 @@ public class UserJunitTest extends TestCase {
 	 * @param user - desired username
 	 * @return - true if both rules pass, false otherwise
 	 */
-	private static boolean validateUser(String user) {
+	public boolean validateUser(String user) {
 //		if (checkUserName(user)) {
 //			JOptionPane.showMessageDialog(null, 
 //					"Your user name already exists.", 

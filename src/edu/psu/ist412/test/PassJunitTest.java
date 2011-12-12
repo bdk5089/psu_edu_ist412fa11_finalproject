@@ -64,7 +64,7 @@ public class PassJunitTest extends TestCase {
 	 * @param confirmPass - confirmation password
 	 * @return - true if all rules pass, false otherwise
 	 */
-	private static boolean validatePassword(String password) {
+	public boolean validatePassword(String password) {
 		boolean upper = false;
 		boolean number = false;
 		boolean special = false;

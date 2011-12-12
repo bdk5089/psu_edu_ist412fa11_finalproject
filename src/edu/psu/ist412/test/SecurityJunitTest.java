@@ -40,7 +40,7 @@ public class SecurityJunitTest extends TestCase {
 	 * @param answer - the answer (or lackthereof) from the screen
 	 * @return - true if answered, false otherwise
 	 */
-	private static boolean validateSecurityQuestion(String answer) {
+	public boolean validateSecurityQuestion(String answer) {
 		if (answer.length() == 0) {
 			//JOptionPane.showMessageDialog(null, 
 			//		"You must answer the security question.", "Warning!", 
