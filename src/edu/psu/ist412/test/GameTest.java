@@ -29,6 +29,15 @@ public class GameTest extends TestCase {
 
 	protected void tearDown() throws Exception {
 	}
+	
+	public void testToString(){
+		assertTrue(g.toString() instanceof String);
+	}
+	
+	public void testGetPlayers(){
+		assertTrue(g.getPlayers().size()==2);
+	}
+	
 	public void testGame() {
 		assertTrue(g.getState().toString() == "START");
 		assertEquals(g.toString(),"Game [players=[Player [position=0], Player [position=1]], table=null, currentPlayer=null]");
@@ -37,6 +46,7 @@ public class GameTest extends TestCase {
 		assertTrue(g.getPlayers().get(0).getHand().getCards().size() == 2);
 		assertTrue(g.getPlayers().get(1).getHand().getCards().size() == 2);
 		assertTrue(g.getTable().getCards().size() == 0);
+		assertTrue(g.getTableCards().size()==5);
 		g.dealFlop();
 		assertTrue(g.getTable().getCards().size() == 3);
 		g.dealTurn();
@@ -46,6 +56,15 @@ public class GameTest extends TestCase {
 		assertTrue(g.getTableCards().size()==5);
 		g.setState(GameState.RIVER);
 		assertTrue(g.getState().toString() == "RIVER");
-
+	}
+	
+	public void testGetWinner(){
+		testGame();
+		try {
+			assertTrue(g.getWinner() == p1 || g.getWinner() == p2);
+		} catch (Exception e) {
+			assertTrue("Exception: "+e.getMessage(), false);
+			e.printStackTrace();
+		}
 	}
 }

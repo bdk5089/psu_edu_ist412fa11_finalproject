@@ -52,10 +52,10 @@ public class Hand extends Object implements Observer{
 	
 	public void update(Observable o, Object arg) {
 		if (arg instanceof Table){
-			System.out.println("Table has been added to...");
+			//System.out.println("Table has been added to...");
 		}
 		if (arg instanceof Deck){
-			System.out.println("Deck has been removed from...");
+			//System.out.println("Deck has been removed from...");
 			try {
 				calculateProbability();
 			} catch (Exception e) {}
@@ -178,16 +178,16 @@ public class Hand extends Object implements Observer{
 	    	for (HandType j : HandType.values()) {
 	    		if (i.getRank() < j.getRank()){
 	    			//COMPARE A GOOD HAND TYPE (i) TO BAD HAND TYPE (j)
-	    			System.out.println("COMPARE: "+i+ " to "+j);
-	    			System.out.println("  RANK OF i: " +probability.get(i).getRank());
+	    			//System.out.println("COMPARE: "+i+ " to "+j);
+	    			//System.out.println("  RANK OF i: " +probability.get(i).getRank());
 	    			if (probability.get(i).getRank() > 0){
 	    				return true;
 	    			}
 	    		}else if (i.getRank() == j.getRank()){
 	    			//COMPARE TWO SAME HANDTYPES
-	    			System.out.println("COMPARE: "+i+ " to "+j);
-	    			System.out.println("  RANK OF i: " +probability.get(i).getRank());
-	    			System.out.println("  RANK OF j: " + hand.getProbability(false).get(j).getRank());
+	    			//System.out.println("COMPARE: "+i+ " to "+j);
+	    			//System.out.println("  RANK OF i: " +probability.get(i).getRank());
+	    			//System.out.println("  RANK OF j: " + hand.getProbability(false).get(j).getRank());
 	    			if(probability.get(i).getRank() > hand.getProbability(false).get(j).getRank()){
 	    				return true;
 	    			}else if(probability.get(i).getRank() < hand.getProbability(false).get(j).getRank()){
@@ -213,9 +213,9 @@ public class Hand extends Object implements Observer{
 		if (cards.size()<2){
 			throw(new Exception("Too few cards in deck to calculate probability."));
 		}else{
-			System.out.println("CALCULATING PROBABILITIES");
-			System.out.println("HAND: "+this);
-			System.out.println("TABLE: "+ table);
+			//System.out.println("CALCULATING PROBABILITIES");
+			//System.out.println("HAND: "+this);
+			//System.out.println("TABLE: "+ table);
 			
 			HandData royal_flush = new HandData(HandType.ROYAL_FLUSH);
 			royal_flush.setProbability(calculateRoyalFlush());
@@ -264,6 +264,7 @@ public class Hand extends Object implements Observer{
 			probability.put(HandType.TWO_PAIR, two_pair);
 			probability.put(HandType.TWO_KIND, two_kind);
 			
+			/*
 		    for (Map.Entry<HandType, HandData> entry: probability.entrySet()) {
 		        String padding = "";
 		    	for (int p=0;p<15-entry.getKey().toString().length();p++){
@@ -273,6 +274,7 @@ public class Hand extends Object implements Observer{
 		    	System.out.println("Probability of "+ entry.getKey() +padding+  " : " + entry.getValue() );
 		    }
 		    System.out.println("");
+		    */
 		}
 	}
 	

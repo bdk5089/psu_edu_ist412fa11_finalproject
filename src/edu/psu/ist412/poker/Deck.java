@@ -3,7 +3,9 @@ package edu.psu.ist412.poker;
 import java.util.ArrayList;
 import java.util.Observable;
 /**
- * 
+ * Deck class defines a full 52 card deck.  It also is observable
+ * so that it will "broadcast" to those classes that the deck has
+ * dealt a card out.
  * @author KennedyBD
  *
  */
@@ -15,12 +17,16 @@ public class Deck extends Observable{
 	private ArrayList<Card> cards = new ArrayList<Card>();
 
 	/**
-	 * 
+	 * Deck constructor.  Creates a shuffled deck.
 	 */
 	public Deck(){
 		this(true);
 	}
 	
+	/**
+	 * Deck constructor.  Creates a deck, the boolean 
+	 * @param shuffle
+	 */
 	public Deck(boolean shuffle) {
 		
 		if (cardValues == null){
@@ -35,13 +41,6 @@ public class Deck extends Observable{
 			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
 		}
 		}
-		/*
-		for (int i=cardSuits.size()-1;i>=0;i--){
-		for (int j=cardValues.size()-1;j>=0;j--){
-			cards.add(new Card(cardSuits.get(i), cardValues.get(j)));
-		}
-		}
-		*/
 		
 		if (shuffle){
 			for (int i=0;i<10;i++){
@@ -52,7 +51,7 @@ public class Deck extends Observable{
 	}
 	
 	/**
-	 * Returns string representation of Deck, multiple lines, 1 line per card.
+	 * @Return string representation of Deck, multiple lines, 1 line per card.
 	 */
 	@Override
 	public String toString() {
@@ -72,7 +71,9 @@ public class Deck extends Observable{
 	}
 
 	/**
-	 * 
+	 * Shuffles the contents of the cards between the idxStart and idxEnd inclusively.
+	 * The indexes are 1-indexed, i.e. 1 = first card, 52 = 52nd card, 0 is not 
+	 * a valid index for this method.
 	 */
 	public void shuffle(int idxStart, int idxEnd ){
 				
@@ -102,16 +103,28 @@ public class Deck extends Observable{
 		}
 		
 	}
+	
+	/**
+	 * Shuffles all the cards in the deck from the 1st to the 52nd.
+	 */
 	public void shuffle(){
 		shuffle(1,cards.size());
 	}
 	/**
-	 * 
+	 * Deals a card from the deck to the hand, removes the card 
+	 * from the top of the deck.
 	 * @param hand
 	 */
 	public void dealCard(Hand hand){
 		dealCard(hand,1);
 	}
+	
+	/**
+	 * Deals the i-th card from the deck to the hand, removes the card 
+	 * from the i-th location of the deck.
+	 * @param hand
+	 * @param i
+	 */
 	public void dealCard(Hand hand, int i){
 		Card cardToDeal = getCardAt(i);
 		if (cardToDeal != null && hand.isReady()){
@@ -124,13 +137,22 @@ public class Deck extends Observable{
 			}
 		}
 	}
+	
 	/**
-	 * 
-	 * @param hand
+	 * Deals a card from the deck to the table, removes the card 
+	 * from the top of the deck.
+	 * @param table
 	 */
 	public void dealCard(Table table){
 		dealCard(table,1);
 	}
+	
+	/**
+	 * Deals the i-th card from the deck to the table, removes the card 
+	 * from the i-th location of the deck.
+	 * @param table
+	 * @param i
+	 */
 	public void dealCard(Table table, int i){
 		Card cardToDeal = getCardAt(i);
 		if (cardToDeal != null && table.isReady()){
@@ -143,6 +165,7 @@ public class Deck extends Observable{
 			}
 		}
 	}
+	
 	/**
 	 * getCardAt()
 	 * @param idx
@@ -156,6 +179,10 @@ public class Deck extends Observable{
 		}
 	}
 	
+	/**
+	 * Removes the card from the deck from the i-th location. (first index is 1, not 0)
+	 * @param idx
+	 */
 	public void removeCardAt(int idx){
 		if (idx > 0 && idx <= cards.size()){
 			cards.remove(idx-1);
@@ -163,6 +190,7 @@ public class Deck extends Observable{
 			notifyObservers(this);
 		}
 	}
+	
 	/**
 	 * getCardCount()
 	 * @return the number of the cards in the deck
