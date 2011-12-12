@@ -96,6 +96,10 @@ public class LoginScreen extends JFrame{
 		passField.addActionListener(new LoginHandler());
 	}
 	
+	/**
+	 * Creates the panel that contains the reset and register buttons/labels.
+	 * @return reset/register panel
+	 */
 	private JPanel rightPanel() {	
 		ResetButtonHandler resetHandler = new ResetButtonHandler();
 		RESET_BUTTON.addActionListener(resetHandler);
@@ -124,6 +128,10 @@ public class LoginScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that contains the user name and password text fields.
+	 * @return the text field panel
+	 */
 	private JPanel leftPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(4,2));
@@ -141,6 +149,10 @@ public class LoginScreen extends JFrame{
 		return panel;
 	}
 	
+	/**
+	 * Creates the panel that contains the login and quit buttons.
+	 * @return login/quit panel
+	 */
 	private JPanel leftButtonPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
@@ -275,7 +287,7 @@ public class LoginScreen extends JFrame{
 			if (login(userField.getText(), passField.getText())) {
 				GameScreen gameScreen = new GameScreen(loginScreen, controller);
 				gameScreen.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				gameScreen.setSize(875, 525);
+				gameScreen.setSize(875, 625);
 				gameScreen.setVisible(true);
 				gameScreen.setLocationRelativeTo(null);
 			} else {
