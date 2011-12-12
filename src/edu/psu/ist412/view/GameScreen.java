@@ -266,27 +266,7 @@ public class GameScreen extends JFrame{
 	}
 	
 	/**
-	 * Reinitializes the game. Used the first time.
-	 */
-	/*
-	private void newGame() {
-		gameNumber++;
-		statisticsItem.setText("Show Statistics");
-		showStatistics = false;
-		
-		getContentPane().removeAll();
-		gamePanel = gamePanel();
-		add(gamePanel);
-		show();
-		
-		gc.getCurrentGame().setState(Game.GameState.START);
-		nextButton.setText("Next");
-		foldButton.setEnabled(true);
-	}*/
-	
-	/**
-	 * @param folded  Boolean of whether or not this game was folded or completed.
-	 * Reinitializes the game and updates stats on fold/completed games.
+	 * Reinitializes the game and updates stats from last completed game.
 	 */
 	private void newGame() {
 		if(gameNumber != 0){
