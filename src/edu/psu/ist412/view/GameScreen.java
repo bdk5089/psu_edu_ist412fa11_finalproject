@@ -96,22 +96,23 @@ public class GameScreen extends JFrame{
 										}
 								}
 							}
-						gamePanel.remove(statisticsPanel);
-												
+																	
 						gamePanel.remove(cpuPanel);
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						show();
 						
 						Player player = gc.getCurrentGame().getPlayers().get(0);
-						
+						gamePanel.remove(statisticsPanel);
 						try {
 							if (gc.getCurrentGame().getWinner().equals(player)) {
+								gameNumber++;
 								statisticsPanel = statisticsPanel(false);
 								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								JOptionPane.showMessageDialog(null, 
 										"You made a bad decision.", 
 										"FYI", JOptionPane.INFORMATION_MESSAGE);								
 							} else {
+								gameNumber++;
 								statisticsPanel = statisticsPanel(true);
 								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								JOptionPane.showMessageDialog(null, 
@@ -188,6 +189,7 @@ public class GameScreen extends JFrame{
 						
 						try {
 							if (gc.getCurrentGame().getWinner().equals(player)) {
+								gameNumber++;
 								statisticsPanel = statisticsPanel(true);
 								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								if(!showStatistics){statisticsPanel.setVisible(false);}
@@ -195,6 +197,7 @@ public class GameScreen extends JFrame{
 										"You made a good decision.", 
 										"FYI", JOptionPane.INFORMATION_MESSAGE);								
 							} else {
+								gameNumber++;
 								statisticsPanel = statisticsPanel(false);
 								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								if(!showStatistics){statisticsPanel.setVisible(false);}
@@ -502,7 +505,7 @@ public class GameScreen extends JFrame{
 		JPanel panel = new JPanel();
 		String toAdd ="";
 		if(gameNumber != 0){	
-			toAdd = "<html>Statistics<br>";
+			toAdd = "<html>Statistics<br> # Wins (#Total)<br>";
 		
 			for(int i=0; i<gc.getCurrentGame().getPlayers().size();i++){
 				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
@@ -528,7 +531,6 @@ public class GameScreen extends JFrame{
 		
 		JLabel statsLabel = new JLabel(toAdd);
 		panel.add(statsLabel);
-		gameNumber++;
 		return panel;
 	}
 
