@@ -10,8 +10,7 @@ public class Player {
 	private Hand hand;
 	private int amount = 0;
 	private boolean isHuman = false;
-	private int[] stats = new int[21];
-	
+	private int[] stats = new int[22];
 	private PlayerStatus status;
 
 	/**

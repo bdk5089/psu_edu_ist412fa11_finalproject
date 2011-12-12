@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import edu.psu.ist412.poker.Card;
 import edu.psu.ist412.poker.Game;
 import edu.psu.ist412.poker.GameController;
+import edu.psu.ist412.poker.Hand;
 import edu.psu.ist412.poker.HandData;
 import edu.psu.ist412.poker.HandType;
 import edu.psu.ist412.poker.Player;
@@ -48,9 +49,9 @@ public class GameScreen extends JFrame{
 	private JLabel card4 = new JLabel();
 	private JLabel card5 = new JLabel();
 	
-	private final JMenuItem statisticsItem = new JMenuItem();
+	private final JMenuItem statisticsItem = new JMenuItem("Statistics");
 	
-	JPanel statisticsPanel = statisticsPanel();
+	JPanel statisticsPanel = statisticsPanel(false);
 	JPanel probabilityPanel;
 	final JPanel cpuPanel = cpuPanelHidden();
 	
@@ -95,7 +96,8 @@ public class GameScreen extends JFrame{
 										}
 								}
 							}
-					
+						gamePanel.remove(statisticsPanel);
+												
 						gamePanel.remove(cpuPanel);
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						show();
@@ -104,19 +106,23 @@ public class GameScreen extends JFrame{
 						
 						try {
 							if (gc.getCurrentGame().getWinner().equals(player)) {
+								statisticsPanel = statisticsPanel(false);
+								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								JOptionPane.showMessageDialog(null, 
 										"You made a bad decision.", 
-										"FYI", JOptionPane.INFORMATION_MESSAGE);
+										"FYI", JOptionPane.INFORMATION_MESSAGE);								
 							} else {
+								statisticsPanel = statisticsPanel(true);
+								gamePanel.add(statisticsPanel, BorderLayout.WEST);
 								JOptionPane.showMessageDialog(null, 
 										"You made a good decision.", 
 										"FYI", JOptionPane.INFORMATION_MESSAGE);
+								
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
 						newGame();
 					}
 				}
@@ -164,6 +170,7 @@ public class GameScreen extends JFrame{
 						probabilityPanel = probabilityPanel();
 						gamePanel.add(probabilityPanel, BorderLayout.EAST);
 						
+						
 						show();
 						break;
 					case RIVER:
@@ -175,28 +182,32 @@ public class GameScreen extends JFrame{
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						
 						show();
+						gamePanel.remove(statisticsPanel);					
 						
 						Player player = gc.getCurrentGame().getPlayers().get(0);
 						
 						try {
 							if (gc.getCurrentGame().getWinner().equals(player)) {
+								statisticsPanel = statisticsPanel(true);
+								gamePanel.add(statisticsPanel, BorderLayout.WEST);
+								if(!showStatistics){statisticsPanel.setVisible(false);}
 								JOptionPane.showMessageDialog(null, 
 										"You made a good decision.", 
-										"FYI", JOptionPane.INFORMATION_MESSAGE);
+										"FYI", JOptionPane.INFORMATION_MESSAGE);								
 							} else {
+								statisticsPanel = statisticsPanel(false);
+								gamePanel.add(statisticsPanel, BorderLayout.WEST);
+								if(!showStatistics){statisticsPanel.setVisible(false);}
 								JOptionPane.showMessageDialog(null, 
 										"You made a bad decision.", 
-										"FYI", JOptionPane.INFORMATION_MESSAGE);
+										"FYI", JOptionPane.INFORMATION_MESSAGE);								
 							}
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
 						break;
 					case END:
-						//TODO Add method call to save stats of hand before
-						//     a new game is started.
 						newGame();
 						break;
 					}
@@ -220,19 +231,18 @@ public class GameScreen extends JFrame{
 		statisticsItem.addActionListener(
 			new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
-					if (showStatistics) {
-						showStatistics = false;
-						statisticsPanel.setVisible(false);
-						statisticsItem.setText("Show Statistics");
-						show();
-					} else {
-						showStatistics = true;
-						gamePanel.remove(statisticsPanel);
-						statisticsPanel = statisticsPanel();
-						gamePanel.add(statisticsPanel, BorderLayout.WEST);
-						statisticsPanel.setVisible(true);
-						statisticsItem.setText("Hide Statistics");
-						show();
+					if(gameNumber != 0){
+						if (showStatistics) {
+							showStatistics = false;
+							statisticsPanel.setVisible(false);
+							statisticsItem.setText("Show Statistics");
+							show();
+						} else {
+							showStatistics = true;
+							statisticsPanel.setVisible(true);
+							statisticsItem.setText("Hide Statistics");
+							show();
+						}
 					}
 				}
 			}
@@ -260,26 +270,16 @@ public class GameScreen extends JFrame{
 		gamePanel.add(statisticsPanel, BorderLayout.WEST);
 		gamePanel.add(communityPanel(), BorderLayout.CENTER);
 		
-		statisticsPanel.setVisible(false);
-		
+		if(gameNumber == 0){
+			statisticsPanel.setVisible(false);	
+		}		
 		return gamePanel;
 	}
 	
 	/**
-	 * Reinitializes the game and updates stats from last completed game.
+	 * Reinitializes the game.
 	 */
-	private void newGame() {
-		if(gameNumber != 0){
-			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
-				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
-					gc.getCurrentGame().getPlayers().get(i).addStats(gc.getCurrentGame().getPlayers().get(i).getHand().getStatArray());
-				}
-			}				
-		}		
-		gameNumber++;
-		statisticsItem.setText("Show Statistics");
-		showStatistics = false;
-		
+	private void newGame() {	
 		getContentPane().removeAll();
 		gamePanel = gamePanel();
 		add(gamePanel);
@@ -464,36 +464,71 @@ public class GameScreen extends JFrame{
 	 * Creates the panel that holds the user statistics.
 	 * @return - the statistics panel
 	 */
-	private JPanel statisticsPanel() {
+	private JPanel statisticsPanel(boolean winner) {
+		Hand cpu = new Hand();
+		Hand player = new Hand();
+		if(gameNumber != 0){
+			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
+				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+					player = gc.getCurrentGame().getPlayers().get(i).getHand();
+				}
+				else{
+					cpu = gc.getCurrentGame().getPlayers().get(i).getHand();
+				}
+			}
+			int[] stats = player.getStatArray();
+			try{
+				if(winner){
+					for(int i=0; i<stats.length;i++){
+						if((i%2==0 && i<19 && i>1) && stats[i] == 1){
+							stats[i-1]++;
+						}
+					}
+				}
+			}
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
+				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+						gc.getCurrentGame().getPlayers().get(i).addStats(stats);
+				}
+			}
+						
+		}		
+	
 		JPanel panel = new JPanel();
+		String toAdd ="";
+		if(gameNumber != 0){	
+			toAdd = "<html>Statistics<br>";
 		
-		String toAdd = "<html>Statistics<br>";
-		
-		if(gameNumber != 0){		
 			for(int i=0; i<gc.getCurrentGame().getPlayers().size();i++){
 				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
 						int[] stats = gc.getCurrentGame().getPlayers().get(i).getStats();
 						
-						toAdd+="Completed Hands: "+stats[0]+"<br>";
-						toAdd+="...Pair: "+stats[2]+"<br>";
-						toAdd+="...Two Pair: "+stats[4]+"<br>";
-						toAdd+="...Three of a Kind: "+stats[6]+"<br>";
-						toAdd+="...Straight: "+stats[8]+"<br>";
-						toAdd+="...Flush: "+stats[10]+"<br>";
-						toAdd+="...Full House"+stats[12]+"<br>";
-						toAdd+="...Four of a Kind: "+stats[14]+"<br>";
-						toAdd+="...Straight Flush: "+stats[16]+"<br>";
+						
+						toAdd+="Completed Hands: ("+stats[0]+")<br>";
+						toAdd+=". . . Pair: "+stats[1]+" ("+stats[2]+")<br>";
+						toAdd+=". . . Two Pair: "+stats[3]+" ("+stats[4]+")<br>";
+						toAdd+=". . . Three of a Kind: "+stats[5]+" ("+stats[6]+")<br>";
+						toAdd+=". . . Straight: "+stats[7]+" ("+stats[8]+")<br>";
+						toAdd+=". . . Flush: "+stats[9]+" ("+stats[10]+")<br>";
+						toAdd+=". . . Full House: "+stats[11]+" ("+stats[12]+")<br>";
+						toAdd+=". . . Four of a Kind: "+stats[13]+" ("+stats[14]+")<br>";
+						toAdd+=". . . Straight Flush: "+stats[15]+" ("+stats[16]+")<br>";
+						toAdd+=". . . Royal Flush: "+stats[17]+" ("+stats[18]+")<br>";
 						toAdd+="Games Folded: "+stats[20];
 									
 				}
 			}
+			toAdd+="</html>";
 		}
 		
-		toAdd+="</html>";
 		JLabel statsLabel = new JLabel(toAdd);
 		panel.add(statsLabel);
-		System.out.println(toAdd);
-		
+		gameNumber++;
 		return panel;
 	}
 
