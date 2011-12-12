@@ -30,7 +30,7 @@ import edu.psu.ist412.poker.Player;
 
 /**
  * This class builds the main game screen, and allows the game to be played.
- * @author Jeff
+ * @author Jeff, AaronD
  *
  */
 public class GameScreen extends JFrame{
