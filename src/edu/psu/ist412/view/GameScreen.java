@@ -88,6 +88,14 @@ public class GameScreen extends JFrame{
 		foldButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
+						if(gameNumber != 0){
+							for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
+								if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
+										gc.getCurrentGame().getPlayers().get(i).addGame(true);
+										}
+								}
+							}
+					
 						gamePanel.remove(cpuPanel);
 						gamePanel.add(cpuPanelRevealed(), BorderLayout.NORTH);
 						show();
@@ -189,7 +197,7 @@ public class GameScreen extends JFrame{
 					case END:
 						//TODO Add method call to save stats of hand before
 						//     a new game is started.
-						newGame(false);
+						newGame();
 						break;
 					}
 				}
@@ -256,9 +264,11 @@ public class GameScreen extends JFrame{
 		
 		return gamePanel;
 	}
+	
 	/**
 	 * Reinitializes the game. Used the first time.
 	 */
+	/*
 	private void newGame() {
 		gameNumber++;
 		statisticsItem.setText("Show Statistics");
@@ -272,23 +282,21 @@ public class GameScreen extends JFrame{
 		gc.getCurrentGame().setState(Game.GameState.START);
 		nextButton.setText("Next");
 		foldButton.setEnabled(true);
-	}
+	}*/
 	
 	/**
 	 * @param folded  Boolean of whether or not this game was folded or completed.
 	 * Reinitializes the game and updates stats on fold/completed games.
 	 */
-	private void newGame(boolean folded) {
-		gameNumber++;
+	private void newGame() {
 		if(gameNumber != 0){
 			for(int i=0;i<gc.getCurrentGame().getPlayers().size();i++){
 				if(gc.getCurrentGame().getPlayers().get(i).isHuman()){
-					gc.getCurrentGame().getPlayers().get(i).addGame(folded);
 					gc.getCurrentGame().getPlayers().get(i).addStats(gc.getCurrentGame().getPlayers().get(i).getHand().getStatArray());
 				}
 			}				
 		}		
-
+		gameNumber++;
 		statisticsItem.setText("Show Statistics");
 		showStatistics = false;
 		
