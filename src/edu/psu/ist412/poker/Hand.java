@@ -1,6 +1,7 @@
 package edu.psu.ist412.poker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import javax.swing.JTextArea;
 
 /**
  * 
- * @author KennedyBD
+ * @author KennedyBD, AaronD
  *
  */
 public class Hand extends Object implements Observer{
@@ -273,6 +274,44 @@ public class Hand extends Object implements Observer{
 		    }
 		    System.out.println("");
 		}
+	}
+	
+	public int[] getStatArray(){
+		int[] stats = new int[20];
+		
+		Collection<HandData> col = probability.values();
+		Iterator<HandData> itr = col.iterator();
+		
+		while(itr.hasNext()){
+			HandData temp = itr.next();
+			if(temp.hasHand()){
+				int rank = temp.getHandType().getRank();
+				switch(rank){
+				case 1: stats[18]++; break;
+				case 2: stats[16]++; break;
+				case 3: stats[14]++; break;
+				case 4: stats[12]++; break;
+				case 5: stats[10]++; break;
+				case 6: stats[8]++; break;
+				case 7: stats[6]++; break;
+				case 8: stats[4]++; break;
+				case 9: stats[2]++; break;
+				default: break;
+				}
+			}
+		}
+		int highestIndex =0;
+		for(int i = 1; i<stats.length;i++){
+			if(stats[i] == 1){
+				highestIndex = i;
+			}
+		}
+		for(int i = 0; i<highestIndex;i++){
+			stats[i] = 0;
+		}
+		
+		return stats;
+		
 	}
 	
 	/*

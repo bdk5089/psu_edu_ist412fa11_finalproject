@@ -7,7 +7,7 @@ import edu.psu.ist412.poker.PlayerStatus;
 
 /**
  * JUnit test for the Player class/methods
- * @author PEdmonston
+ * @author PEdmonston, AaronD
  */
 
 public class PlayerTest extends TestCase {
@@ -39,6 +39,20 @@ public class PlayerTest extends TestCase {
 		assertTrue(p.getHand()== hand);
 		assertTrue(p.clearHand()instanceof Hand);
 		assertEquals(p.toString(),"Player [position=2]");
+		
+		int[] stats =  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+		p.setStats(stats);
+		for(int i = 0; i<stats.length;i++){
+			assertTrue(p.getStats()[i] == stats[i]);
+		}
+		p.addStats(stats);
+		for(int i=0;i<stats.length;i++){
+			assertTrue(p.getStats()[i] == 2);
+		}
+		p.addGame(false);
+		assertTrue(p.getStats()[0]==3);
+		p.addGame(true);
+		assertTrue(p.getStats()[20] == 3);
 		
 	}
 }
