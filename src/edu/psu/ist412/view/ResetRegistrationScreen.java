@@ -67,19 +67,28 @@ public class ResetRegistrationScreen extends JFrame {
 		setLayout(new BorderLayout());
 		
 		add(buttonPanel(), BorderLayout.SOUTH);
-		add(leftPanel(), BorderLayout.WEST);
+		add(topPanel(), BorderLayout.WEST);
 	}
 	
-	private JPanel leftPanel() {
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(3,1));
+	/**
+	 * Creates the panel that contains the user name/password/security question
+	 * labels and text boxes
+	 * @return panel with user name/passwords/security questions
+	 */
+	private JPanel topPanel() {
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new GridLayout(3,1));
 		
-		leftPanel.add(userPassPanel());
-		leftPanel.add(questionPanel());
+		topPanel.add(userPassPanel());
+		topPanel.add(questionPanel());
 		
-		return leftPanel;
+		return topPanel;
 	}
 	
+	/**
+	 * Creates the panel that contains the submit and cancel buttons.
+	 * @return button panel
+	 */
 	private JPanel buttonPanel() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
@@ -93,6 +102,11 @@ public class ResetRegistrationScreen extends JFrame {
 		return buttonPanel;
 	}
 	
+	/**
+	 * Creates the panel that contains the labels/text boxes for the
+	 * user name & passwords
+	 * @return user name and passwords panel
+	 */
 	private JPanel userPassPanel() {
 		JPanel userPassPanel = new JPanel();
 		userPassPanel.setLayout(new GridLayout(3,2));
@@ -107,6 +121,10 @@ public class ResetRegistrationScreen extends JFrame {
 		return userPassPanel;
 	}
 	
+	/**
+	 * Creates the panel that contains the security question label/text field.
+	 * @return security question panel
+	 */
 	private JPanel questionPanel() {
 		JPanel questionPanel = new JPanel();
 		questionPanel.setLayout(new GridLayout(3,1));
